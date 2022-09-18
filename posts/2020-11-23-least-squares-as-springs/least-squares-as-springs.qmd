@@ -7,6 +7,7 @@ author:
     url: https://joshualoftus.com/
     affiliation: New York University    
 date: 02-16-2022
+image: "./least-squares-as-springs_files/figure-html/unnamed-chunk-6-1.png"
 categories:
   - statistics
   - machine learning

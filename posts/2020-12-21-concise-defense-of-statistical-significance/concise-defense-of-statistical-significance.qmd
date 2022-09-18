@@ -6,6 +6,7 @@ author:
   - name: Joshua Loftus
     url: https://joshualoftus.com/
 date: 11-18-2019
+image: "zscores.png"
 categories:
   - statistics
   - reproducibility

@@ -6,6 +6,7 @@ author:
   - name: Joshua Loftus
     url: https://joshualoftus.com/
 date: 02-26-2018
+image: "./a-conditional-approach-to-inference-after-model-selection_files/figure-html/unnamed-chunk-2-1.png"
 categories:
   - statistics
   - reproducibility
