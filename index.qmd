@@ -1,0 +1,17 @@
+---
+title: ""
+image: me.jpg
+about:
+  template: solana
+---
+
+[{{< fa solid building-columns size=Large title="university" >}}](https://www.lse.ac.uk/Statistics/People/Dr-Joshua-Loftus)
+[{{< ai google-scholar size=Large title="scholar" >}}](https://scholar.google.com/citations?user=SIbr3XUAAAAJ&hl=en)
+[{{< fa brands github size=Large title="github" >}}](https://github.com/joftius/)
+[{{< fa brands linkedin size=Large title="linkedin" >}}](https://www.linkedin.com/in/joftius/)
+[{{< fa solid envelope size=Large title="email" >}}](mailto:J.R.Lastname@lse.ac.uk)
+[{{< fa brands twitter size=Large title="twitter" >}}](https://twitter.com/joftius)
+
+Random wanderer from the United States, professor of Statistics and Data Science at LSE.
+
+I think technology, institutions, and ideas should serve people, but much of humanity is stuck with this upside-down. How can we change that?

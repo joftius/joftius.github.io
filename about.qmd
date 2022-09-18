@@ -1,0 +1,35 @@
+---
+title: "joshua loftus"
+subtitle: "[{{< fa solid building-columns size=Large title='university' >}}](https://www.lse.ac.uk/Statistics/People/Dr-Joshua-Loftus)
+[{{< ai google-scholar size=Large title='scholar' >}}](https://scholar.google.com/citations?user=SIbr3XUAAAAJ&hl=en)
+[{{< fa brands github size=Large title='github' >}}](https://github.com/joftius/)
+[{{< fa brands linkedin size=Large title='linkedin' >}}](https://www.linkedin.com/in/joftius/)
+[{{< fa solid envelope size=Large title='email' >}}](mailto:J.R.Lastname@lse.ac.uk)
+[{{< fa brands twitter size=Large title='twitter' >}}](https://twitter.com/joftius)"
+image: me.jpg
+about:
+  template: trestles
+---
+
+
+I'm a professor of statistics and data science, and have also studied mathematics and biostatistics. From my background--as a first-generation college graduate starting in community college--I was very fortunate to finish a PhD in Statistics at Stanford University. I'm grateful for that opportunity and to the teachers who helped me along the way, and I care about diversity, inclusion, and mentoring students from underprivileged backgrounds. In my teaching I want to empower students: to understand deeply, to correctly interpret, and to wisely use the powerful tools of data science for good.
+
+My research focuses on common practices in machine learning and data science pipelines with the goal of correcting biases that have previously been overlooked. Some key applications include finding and repairing the causes of the replication crisis in science and socially harmful applications of machine learning, artificial intelligence, or data-driven systems more broadly. My peer reviewed research has been published in the **Annals of Statistics**, **Biometrika**, **Advances in Neural Information Processing Systems** (NeurIPS), and the **International Conference on Machine Learning** (ICML).
+
+## Education
+
+- Ph.D. Statistics, (Biostatistics trainee), **Stanford University**, 2016.
+- M.A. Mathematics, (concentration in computational biology), **Rutgers University**, 2011.
+- B.S. Mathematics, (summa cum laude), **Western Michigan University**, 2009.
+- A.A. **Kalamazoo Valley Community College**, 2007.
+
+## Experience
+
+- Assistant Professor, **London School of Economics**, Department of Statistics, and Affiliate of the Data Science Institute, 2021-present.
+- Assistant Professor, **New York University**, Department of Technology, Operations, and Statistics, and Affiliate of the Center for Data Science, 2017-2020.
+- Research Fellow, **Alan Turing Institute** and **University of Cambridge**, 2016-17. 
+
+### The meaning of "Neurath's Speedboat"
+
+"[We are like sailors](https://en.wikipedia.org/wiki/Neurath%27s_boat) who on the open sea must reconstruct their ship" while traveling at 90mph
+  

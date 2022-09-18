@@ -1,0 +1,16 @@
+---
+title: "neurath's speedboat"
+description: |
+preview: https://pbs.twimg.com/profile_images/1338678247022845952/e5426I0l_400x400.jpg
+listing:
+  contents: posts
+  sort: "date desc"
+  type: default
+  categories: true
+  sort-ui: false
+  filter-ui: false
+page-layout: full
+title-block-banner: true
+---
+
+ 

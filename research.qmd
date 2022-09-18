@@ -1,0 +1,57 @@
+---
+title: "Research"
+name: "Joshua Loftus"
+orcid: "0000-0002-2905-1632"
+description: |
+---
+
+Page for recent [talks/slides](../../talks.html). More information can be found on my [Google Scholar](https://scholar.google.com/citations?user=SIbr3XUAAAAJ) profile page.
+
+
+# Causal inference in fairness
+
+This work approaches fair machine learning from a causal inference perspective, arguing that determining what is fair is a similar challenge to determining causality.
+
+### Press
+
+Some of this work was covered in the [New Scientist](https://www.newscientist.com/article/mg23431195-300-bias-test-to-prevent-algorithms-discriminating-unfairly/) and [36Kr](https://36kr.com/p/5106656.html).
+
+### Publications
+
+-   L. E. J. Bynum, J. R. Loftus, J. Stoyanovich, **Disaggregated Interventions to Reduce Inequality**. Equity and Access in Algorithms, Mechanisms, and Optimization, 2021. \[[link](https://eaamo.org/accepted/)\]
+
+-   K. Yang, J. R. Loftus, J. Stoyanovich, **Causal intersectionality and fair ranking**. Foundations of Responsible Computing, 2021. \[[link](https://drops.dagstuhl.de/opus/frontdoor.php?source_opus=13875)\]
+
+-   M. J. Kusner, C. Russell, J. R. Loftus, R. Silva. **Making Decisions that Reduce Discriminatory Impact**. International Conference on Machine Learning, 2019. \[[link](http://proceedings.mlr.press/v97/kusner19a/kusner19a.pdf)\]
+
+-   M. J. Kusner, J. R. Loftus, C. Russell, R. Silva. **Counterfactual fairness**. Advances in Neural Information Processing Systems, 2017. \[[link](http://papers.nips.cc/paper/6995-counterfactual-fairness)\]
+
+-   C. Russell, M. J. Kusner, J. R. Loftus, R. Silva. **When worlds collide: integrating different counterfactual assumptions in fairness**. Advances in Neural Information Processing Systems, 2017. \[[link](http://papers.nips.cc/paper/7220-when-worlds-collide-integrating-different-counterfactual-assumptions-in-fairness)\]
+
+-   J. R. Loftus, C. Russell, M. J. Kusner, R. Silva. **Causal reasoning for algorithmic fairness**. Preprint.
+
+# Post-selection inference
+
+This work involves challenging mathematical and computational aspects of conducting inference after model selection procedures with complicated underlying geometry. This enables significance testing, for example, after using some of the most popular model selection procedures such as the lasso with regularization chosen by cross-validation, or forward stepwise with number of steps chosen by AIC or BIC. Often the resulting significance tests are slightly modified versions of the classical tests in regression analysis.
+
+### Software
+
+I'm a co-author of the [selectiveInference](https://cran.r-project.org/web/packages/selectiveInference/) package on CRAN.
+
+### Publications
+
+-   X. Tian, J. R. Loftus, J. E. Taylor. **Selective inference with unknown variance via the square-root LASSO**. Biometrika, 2018. \[[link](https://academic.oup.com/biomet/article/105/4/755/5105991)\]
+
+-   J. E. Taylor, J. R. Loftus, and R. J. Tibshirani. **Inference in adaptive regression via the Kac-Rice formula**. Annals of Statistics, 2016. \[[link](http://projecteuclid.org/euclid.aos/1458245734)\]
+
+-   J. R. Loftus. **Selective inference after cross-validation**. Preprint.
+
+-   J. R. Loftus and J. E. Taylor. **Selective inference in regression models with groups of variables**. Preprint.
+
+-   J. R. Loftus, J. E. Taylor. **A significance test for forward stepwise model selection**. Preprint.
+
+# Collaborations
+
+-   Xu, J., et al. **Landscape of monoallelic DNA accessibility in mouse embryonic stem cells and neural progenitor cells**. Nature genetics. Chang lab. \[[link](https://www.nature.com/articles/ng.3769)\]
+
+-   E. T. Richardson, et. al. **Modeling cash incentives vs. oral preexposure prophylaxis in high-risk African women: the Cash-PreP Study**. Poster, AIDS Conference.

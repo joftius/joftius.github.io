@@ -1,0 +1,16 @@
+{
+  "hash": "31ee0551ee05b9426a5490136ef29c84",
+  "result": {
+    "markdown": "---\ntitle: \"Fairness and causality in machine learning\"\ndescription: |\n  Counterfactual fairness formulates fair machine learning within a causal inference perspective, motivated by the intuition that defining or verifying fairness is a similar challenge to determining causality.\nimage: http://joshualoftus.com/talks/2021-04-18-conference-on-machine-learning-and-inequality/preview.png\nauthor:\n  - name: Joshua Loftus\n    url: {}\ndate: 2022-02-17\noutput:\n  distill::distill_article:\n    self_contained: false\n---\n\n\n\n\n# Causal inference in fairness\n\nThis work approaches fair machine learning from a causal inference perspective, arguing that determining what is fair is a similar challenge to determining causality.\n\n### Press\n\nSome of this work was covered in the [New Scientist](https://www.newscientist.com/article/mg23431195-300-bias-test-to-prevent-algorithms-discriminating-unfairly/) and [36Kr](https://36kr.com/p/5106656.html).\n\n### Publications\n\n-   L. E. J. Bynum, J. R. Loftus, J. Stoyanovich, **Disaggregated Interventions to Reduce Inequality**. Equity and Access in Algorithms, Mechanisms, and Optimization, 2021. \\[[link](https://eaamo.org/accepted/)\\]\n\n-   K. Yang, J. R. Loftus, J. Stoyanovich, **Causal intersectionality and fair ranking**. Foundations of Responsible Computing, 2021. \\[[link](https://drops.dagstuhl.de/opus/frontdoor.php?source_opus=13875)\\]\n\n-   M. J. Kusner, C. Russell, J. R. Loftus, R. Silva. **Making Decisions that Reduce Discriminatory Impact**. International Conference on Machine Learning, 2019. \\[[link](http://proceedings.mlr.press/v97/kusner19a/kusner19a.pdf)\\]\n\n-   M. J. Kusner, J. R. Loftus, C. Russell, R. Silva. **Counterfactual fairness**. Advances in Neural Information Processing Systems, 2017. \\[[link](http://papers.nips.cc/paper/6995-counterfactual-fairness)\\]\n\n-   C. Russell, M. J. Kusner, J. R. Loftus, R. Silva. **When worlds collide: integrating different counterfactual assumptions in fairness**. Advances in Neural Information Processing Systems, 2017. \\[[link](http://papers.nips.cc/paper/7220-when-worlds-collide-integrating-different-counterfactual-assumptions-in-fairness)\\]\n\n-   J. R. Loftus, C. Russell, M. J. Kusner, R. Silva. **Causal reasoning for algorithmic fairness**. Preprint.\n",
+    "supporting": [
+      "fairness-and-causality-in-machine-learning_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

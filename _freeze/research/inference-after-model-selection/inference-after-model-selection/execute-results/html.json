@@ -1,0 +1,16 @@
+{
+  "hash": "1bb4d143f328fd19145f4be314bc6aa4",
+  "result": {
+    "markdown": "---\ntitle: \"Inference after model selection\"\ndescription: |\n  This work involves challenging mathematical and computational aspects of conducting inference after model selection procedures with complicated underlying geometry. This enables significance testing, for example, after using some of the most popular model selection procedures such as the lasso with regularization chosen by cross-validation, or forward stepwise with number of steps chosen by AIC or BIC. Often the resulting significance tests are slightly modified versions of the classical tests in regression analysis.\nimage: https://joshualoftus.com/posts/2020-12-22-a-conditional-approach-to-inference-after-model-selection/a-conditional-approach-to-inference-after-model-selection_files/figure-html5/unnamed-chunk-2-1.png\nauthor:\n  - name: Joshua Loftus\ndate: 2022-02-17\noutput:\n  distill::distill_article:\n    self_contained: false\n---\n\n\n\n\n# Post-selection inference\n\nThis work involves challenging mathematical and computational aspects of conducting inference after model selection procedures with complicated underlying geometry. This enables significance testing, for example, after using some of the most popular model selection procedures such as the lasso with regularization chosen by cross-validation, or forward stepwise with number of steps chosen by AIC or BIC. Often the resulting significance tests are slightly modified versions of the classical tests in regression analysis.\n\n### Software\n\nI'm a co-author of the [selectiveInference](https://cran.r-project.org/web/packages/selectiveInference/) package on CRAN.\n\n### Publications\n\n-   X. Tian, J. R. Loftus, J. E. Taylor. **Selective inference with unknown variance via the square-root LASSO**. Biometrika, 2018. \\[[link](https://academic.oup.com/biomet/article/105/4/755/5105991)\\]\n\n-   J. E. Taylor, J. R. Loftus, and R. J. Tibshirani. **Inference in adaptive regression via the Kac-Rice formula**. Annals of Statistics, 2016. \\[[link](http://projecteuclid.org/euclid.aos/1458245734)\\]\n\n-   J. R. Loftus. **Selective inference after cross-validation**. Preprint.\n\n-   J. R. Loftus and J. E. Taylor. **Selective inference in regression models with groups of variables**. Preprint.\n\n-   J. R. Loftus, J. E. Taylor. **A significance test for forward stepwise model selection**. Preprint.\n",
+    "supporting": [
+      "inference-after-model-selection_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

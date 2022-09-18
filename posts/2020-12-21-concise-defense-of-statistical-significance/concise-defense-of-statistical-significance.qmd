@@ -1,0 +1,69 @@
+---
+title: "A concise defense of statistical significance"
+description: |
+  Recent arguments against the use of p-values and significance testing are mostly weak. The weak ones are actually arguments against making decisions or mistakes in general, which is impossible.
+author:
+  - name: Joshua Loftus
+    url: https://joshualoftus.com/
+date: 11-18-2019
+categories:
+  - statistics
+  - reproducibility
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+A [letter](https://www.nature.com/articles/d41586-019-00857-9), signed by over 800 scientists and published in Nature called for an end to using p-values to decide whether data refutes or supports a scientific hypothesis. The letter has received [widespread](https://www.newyorker.com/magazine/2019/09/09/what-statistics-can-and-cant-tell-us-about-ourselves) [coverage](https://www.miamiherald.com/news/article237281119.html) and reignited an old debate.
+
+## Weaker arguments
+
+Most of the objections to p-values or the p \< 0.05 threshold in these articles can be summarized into two categories:
+
+-   Objections that would apply to any method resulting in a yes/no decision
+-   Objections that would apply to any method with yes/no decisions that might be wrong
+
+
+<aside>
+A histogram of z-scores showing apparent publication bias from Erik van Zwet and Eric Cator's "significance filter" [paper](https://arxiv.org/abs/2009.09440)
+```{r preview=TRUE}
+  knitr::include_graphics("zscores.png")
+```
+</aside>
+
+Banning p-values or "p \< 0.05" thresholds wouldn't address these objections. We will still have to make decisions, we can't just report a Bayes factor (or a p-value) and refuse to decide whether a drug trial should continue or not. So our decisions will still sometimes be wrong, and in both directions.
+
+## Stronger arguments
+
+The last kind of objection is more sensible--though less often the focal point of this debate--and I would summarize it as:
+
+-   Statistical significance is not sufficient for practical significance, we need to know something about the effect size.
+
+I more or less agree with this, but it is not an objection to using p-values or p \< 0.05, it's an objection to *misusing* them or *using them in isolation*.
+
+And any method can be misused! A scientist could do many tests and only report the significant results, or they could compute many effect size estimates or Bayes factors and only report the largest ones.
+
+## Real roots of the problem
+
+I think there are two underlying problems that the p-value debate is mostly a distraction from: the [rote](https://www.significancemagazine.com/2-uncategorised/593-cargo-cult-statistics-and-scientific-crisis), uncritical application of any kind of statistical method (because, as Jack Schwartz [put it](https://link.springer.com/chapter/10.1007/978-0-8176-4775-9_3), "... the simple-mindedness ... to dress scientific brilliancies and scientific absurdities alike in the impressive uniform of formulae and theorems. Unfortunately however, an absurdity in uniform is far more persuasive than an absurdity unclad."), and the incentive structure of scientific publication.
+
+From [Why most published research findings are false](https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124) (Ioannidis):
+
+-   Corollary 4: The greater the flexibility in designs, definitions, outcomes, and analytical modes in a scientific field, the less likely the research findings are to be true.
+-   Corollary 5: The greater the financial and other interests and prejudices in a scientific field, the less likely the research findings are to be true.
+-   Corollary 6: The hotter a scientific field (with more scientific teams involved), the less likely the research findings are to be true.
+
+## The burden of the burden of proof
+
+Lastly, it's unfortunate but amusing that the Herald article mentioned many people misunderstand p-values, and the New Yorker article had this correction: "An earlier version of this article incorrectly defined p-value."
+
+I sympathize with researchers who have done good work but can't get it published because the result isn't "significant." This is a problem with publication standards, not statistical methods. It should be normal to publish negative or unimpressive results, otherwise the literature has little to teach us about what *doesn't* work.
+
+It's also a resource issue. Collecting data is costly. There are many barriers to research other than arbitrary publication standards involving p-values, including many other arbitrary publication standards. While discontent has been focused on p-values, we may find ourselves suddenly facing *de facto* expectations of applying (often unnecessary) "artificial intelligence" to massive datasets in order to be published.
+
+No particular statistical methodology is the cause or solution of these issues. (More and better statistics education is necessary!)

@@ -1,0 +1,117 @@
+---
+title: "A conditional approach to inference after model selection"
+description: |
+  Model selection can invalidate inference, such as significance tests, but statisticians have recently made progress developing methods to adjust for this bias. This post motivates a conditional approach with a simple screening rule example and introduces an R package that can compute adjusted significance tests.
+author:
+  - name: Joshua Loftus
+    url: https://joshualoftus.com/
+date: 02-26-2018
+categories:
+  - statistics
+  - reproducibility
+  - selective inference
+  - R
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+options(scipen = 999, digits = 5)
+library(tidyverse)
+library(ggthemes)
+library(fivethirtyeight)
+library(stringr)
+set.seed(1)
+n <- nrow(candy_rankings)
+candy <- candy_rankings %>%
+  select(winpercent, chocolate, fruity, caramel, peanutyalmondy, nougat, 
+         crispedricewafer, hard, bar, pluribus, sugarpercent, pricepercent)
+```
+
+## Overly honest research methods?
+
+A high profile case of a scientist retracting multiple papers due to [p-hacking](https://xkcd.com/882/) is recently gaining new attention due to a [BuzzFeed article](https://www.buzzfeed.com/stephaniemlee/brian-wansink-cornell-p-hacking). Hopefully this will raise awareness and convince some that "keep hammering away at your data until you find want you were expecting" is a poor way to do science. But it's possible to get things wrong, for the same reason, no matter how well-intentioned we may be. Even if we aren't specifically seeking significant $p$-values, we can end up with biased results due to model selection. To see why, check out this earlier post on [model selection bias](../model-selection-bias-invalidates-significance-tests/). In this post I will describe a method to protect ourselves from this bias and compute *adjusted* $p$-values that are valid even though we've done model selection.
+
+## Model selection with forward stepwise
+
+We'll pick up on the same example from a previous post:
+
+> [...] consider the `candy_rankings` data from the [fivethirtyeight](https://cran.r-project.org/web/packages/fivethirtyeight/index.html) package. The **outcome variable** is how often a given candy won in popularity matchups against other candies, and the **predictor variables** are various properties like whether or not the candy has chocolate, whether or not it's fruit flavored, how sugary it is relative to other candies, and so on. There are 85 candies and 11 predictor variables in the dataset.
+
+This time we'll use the actual response variable, and run forward stepwise with AIC to pick a subset of the predictors that are highly predictive of the outcome (win percent). The resulting model, along with the biased $p$-values that popular software computes by default, is given below.
+
+```{r cache=TRUE}
+# Forward stepwise with AIC
+model <- step(lm(winpercent ~ ., candy), k = 2, trace = 0)
+# Significance tests for selected model
+print(summary(model)$coefficients[-1,], digits = 2)
+```
+
+These $p$-values are probably too small. The model selection method chose variables that seemed to be predictive of the outcome. The way $p$-values are computed is to consider how extreme the test statistic $T$ is under the null hypothesis: $P(T > |t|)$. But the model selection procedure picks variables that tend to have large observed values of $|t|$, whether or not the null hypothesis for any one of them is true. How can we correct this? By the end of this post we'll have adjusted $p$-values for this example, but first we need to understand how that adjustment works.
+
+## Adjusted inference by conditionional probability
+
+One approach, often referred to as [selective inference](http://www.pnas.org/content/112/25/7629.short), is to use *conditional* probabilities when computing $p$-values. Consider a random variable $M$ representing which model is chosen by the model selection method, and let $m$ be the observed value of $M$ after running the algorithm (e.g. forward stepwise) on our data and getting a specific model. To compute conditionally adjusted $p$-values, we use
+$$
+P(T > |t| \mid M = m)
+$$
+This conditional probability law usually has a simple form. For example, if the test statistic has a $t$-distribution, then the conditional law is usually a truncated $t$. The specifics depend on the kind of model selection algorithm being used, and working them out is an area of ongoing research in statistics. During my PhD, I worked on a few cases ([groups of variables](https://arxiv.org/abs/1511.01478), [cross-validation](https://arxiv.org/abs/1511.08866)) as part of my dissertation. To understand how/why the conditional law works, let's consider an example that's simpler than forward stepwise.
+
+## Marginal screening example
+
+Suppose that instead of regression, we are solving a many-means problem where we want to select the largest effects. (Regression is similar to this when the design matrix is orthogonal). That is, we have many effects $z_i$ for $i = 1, \ldots, p$ and the selection rule we use is to choose $z_i$ if $z_i > 1$. Then we want to do a one-sided test to see if those $z_i$ are significantly large. We can think of this procedure as first screening away the majority of the data which we think is just noise, and then testing what made it through the screening procedure. I'll generate data under the global null hypothesis where every effect is actually zero, and then plot some results.
+
+```{r preview = TRUE}
+Z <- rnorm(10000)
+selected_Z <- data.frame(Z = Z[Z > 1])
+maxZ <- max(Z) + .1
+truncated_Z_pdf <- function(z) dnorm(z)/pnorm(1, lower.tail = F)
+ggplot(selected_Z) + geom_histogram(bins = 50, aes(x = Z, y = ..density..)) + xlim(0, maxZ) +
+  stat_function(fun = truncated_Z_pdf, xlim = c(1, maxZ), linetype  = 2) +
+  stat_function(fun = dnorm, linetype  = 1) +
+  theme_tufte()
+```
+This plot shows three things:
+
+- A **histogram** of the selected effects.
+- The **solid line** shows the **standard** normal distribution. The upper tail areas of this distribution would be used for standard, unadjusted $p$-values.
+- The **dashed line** shows the truncated, **conditional** distribution $Z | Z > 1$ for a standard normal $Z$.
+
+If we used the tail areas of the standard normal to compute $p$-values, these would be very small, even though the data was all generated under a global null hypothesis. This shows that the selection effect can invalidate inference, leading to a high type 1 error rate. But it's pretty clear from the plot that the conditional distribution fits the data very well: if "significant" means extreme according to *this* distribution, then type 1 error rate would be small, it would match whatever nominal threshold $\alpha$ we decided. 
+
+## The selectiveInference R package
+
+Let's return to our first example about forward stepwise.
+
+The details for computing $p$-values with conditional probability when model selection is more complicated--like using forward stepwise with AIC, or the LASSO with cross-validation, etc--are harder than the marginal screening case. But fortunately, there is an R package for it: the `selectiveInference` package available on [CRAN](https://cran.r-project.org/web/packages/selectiveInference/index.html)! This package is still under development, and its authors include Ryan Tibshirani, Rob Tibshirani, Jonathan Taylor, Stephen Reid and some other guy. The package currently does not support R formulas, so first we need to create a `model.matrix`, then we'll run forward stepwise again with the `fs` function, then we'll compute adjusted inference for the fitted model using `fsInf`. These last two functions are among several others in the `selectiveInference` package, including ones for doing all of this with the [LASSO](https://en.wikipedia.org/wiki/Lasso_(statistics)) instead of forward stepwise.
+
+```{r cache=TRUE}
+suppressMessages(library(selectiveInference)) # suppress loading messages
+# Convert factor variables to indicators
+candy_dummies <- model.matrix(~ ., data = candy[,2:10])
+# Create design matrix
+x <- as.matrix(cbind(candy_dummies[,-1], candy[,11:12]))
+y <- candy$winpercent
+# Run forward stepwise
+fit <- fs(x, y)
+# Compute conditionally adjusted p-values for selected variables
+fit_inf <- fsInf(fit, type = "aic", ntimes = 1)
+# Look at the output
+fit_inf
+```
+
+There's a lot of output here, but let's focus on the adjusted $p$-values. We'll put them together in a readout with the unadjusted ones:
+
+```{r}
+output <- cbind(summary(model)$coefficients[-1,c(1,4)][order(fit_inf$vars),],
+                fit_inf$pv)
+colnames(output)[3] <- "Adj.Pr(>|t|)"
+print(output, digits = 3)
+```
+
+The adjusted $p$-values in the right column are all much larger than the unadjusted ones. In general, adjusted $p$-values will be larger, but by how much depends on a lot of specifics. In this case, and at the usual $\alpha = 0.05$ level, we went from 3 significant effects without adjusting for selection bias to zero. This reflects a fundamental tradeoff: **the more we use the data to search for interesting things, the less surprised we must be about what we find**. Otherwise, we may just be fooling ourselves, and maybe even end up needing to retract lots of papers...
+
+I hope this post was a useful introduction to the basic idea of using conditional probability to adjust for model selection, and makes more people aware of the `selectiveInference` package. This project is also on [github](https://github.com/selective-inference). In future posts I will describe more examples, including other approaches to adjusting inference for model selection bias.

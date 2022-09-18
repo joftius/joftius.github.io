@@ -1,0 +1,11 @@
+---
+title: "Teaching"
+description: |
+listing: teaching
+---
+
+ 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```

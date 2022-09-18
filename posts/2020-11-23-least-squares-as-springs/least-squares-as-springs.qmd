@@ -1,0 +1,361 @@
+---
+title: "Least squares as springs"
+description: |
+  Physics intuition for regression and other methods that minimize squared error. We can imagine springs pulling the model toward the data.
+author:
+  - name: Joshua Loftus
+    url: https://joshualoftus.com/
+    affiliation: New York University    
+date: 02-16-2022
+categories:
+  - statistics
+  - machine learning
+  - physics  
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+
+During a recent "Zoom" lecture a student asked me a question about outliers. In the process of answering I realized something that I knew was true but had never seen explained in any sources. This post is my first attempt to develop an **analogy that connects least squares methods, like regression or PCA, to physical intuition about springs or elastics**.
+
+```{r setup, include=FALSE}
+#knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(gapminder)
+theme_set(theme_minimal())
+set.seed(1)
+```
+
+## The simplest version
+
+To illustrate I will use data from [gapminder](https://cran.r-project.org/web/packages/gapminder/index.html) conveniently provided in an R package by Jenny Bryan. Consider these two variables in the dataset, GDP per capita and life expectancy, plotted here in a standard scatterplot: 
+
+```{r echo=FALSE}
+gm2007 <- filter(gapminder, year == 2007, continent == "Asia")
+regression_model <- lm(lifeExp ~ log10(gdpPercap), gm2007)
+gm2007 <- gm2007 %>% mutate(
+  yhat = predict(regression_model),
+  diameter = .02,
+  tension = 5 + (lifeExp - yhat)^2)
+
+xbar <- 10^mean(log10(gm2007$gdpPercap))
+ybar <- mean(gm2007$lifeExp)
+
+simple_plot <- ggplot(gm2007, aes(x = gdpPercap, y = lifeExp)) +
+  geom_point(size = 2) + 
+  geom_point(aes(x = xbar, y = ybar), color = "blue", size = 3) +
+  scale_x_log10() + 
+  ylim(c(40, 85))
+simple_plot
+```
+
+(To have a less busy plot, one with fewer points, I've subsetted the data to the year 2007 and countries in Asia).
+
+Now we're going to bring physical intuition into this by imagining these points as physical objects. For example, we can interpret the mean $(\bar x, \bar y)$ = `r  round(c(xbar, ybar), 1)` as the center of mass (if we assume every point has the same mass). This is the larger, blue point in the plot above. It's not really important to  think of mass specifically, just that this point is the center of the physical ensemble. 
+
+We need a few simple rules for our physical system:
+
+- Changing the data is not allowed, i.e. the points are immovable.
+- For methods like regression (or PCA), we imagine a rigid object like a line (or hyperplane, in multiple regression) passing through the points, and the points exerting some force that changes the position of this body
+- If these methods use the standard least squares loss function then this force can be represented by springs or elastics, all of the same length and strength, attached at one end to the points and on the other end to the line (or hyperplane).
+
+This line (or hyperplane) may bounce around at first as the springs pull it toward their anchoring points, but eventually it settles into an equilibrium where the forces from all the opposing springs are balanced out. In this equilibrium state we have two immediate consequences:
+
+1. The rigid object (line or hyperplane) *must pass through the center point*. If it did not, there would be a net force acting on the object pulling it toward the center point, hence it would not yet be at equilibrium. In other words, all of the forces that would *shift* the object are exactly balanced out so it does not shift.
+2. The same is true about *torques*, all of the forces that would *rotate* the object are balanced out.
+
+For regression we need one more rule: the springs are guided so they only pull in directions aligned with the axis of the outcome variable, i.e. "vertically." Let's call this the **vertical rule** for reference later.
+
+Here is our simple example in picture form:
+
+```{r ggspring, include=FALSE}
+create_spring <- function(x, y, xend, yend, diameter = 1, tension = 0.75, n = 50) {
+  if (tension <= 0) {
+    rlang::abort("`tension` must be larger than zero.")
+  }
+  if (diameter == 0) {
+    rlang::abort("`diameter` can not be zero.")
+  }
+  if (n == 0) {
+    rlang::abort("`n` must be greater than zero.")
+  }
+  # Calculate direct length of segment
+  length <- sqrt((x - xend)^2 + (y - yend)^2)
+  
+  # Figure out how many revolutions and points we need
+  n_revolutions <- length / (diameter * tension)
+  n_points <- n * n_revolutions
+  
+  # Calculate sequence of radians and x and y offset
+  radians <- seq(0, n_revolutions * 2 * pi, length.out = n_points)
+  x <- seq(x, xend, length.out = n_points)
+  y <- seq(y, yend, length.out = n_points)
+  
+  # Create the new data
+  data.frame(
+    x = cos(radians) * diameter/2 + x,
+    y = sin(radians) * diameter/2 + y
+  )
+}
+
+`%||%` <- function(x, y) {
+  if (is.null(x)) y else x
+}
+
+StatSpring <- ggproto("StatSpring", Stat, 
+  setup_data = function(data, params) {
+    if (anyDuplicated(data$group)) {
+      data$group <- paste(data$group, seq_len(nrow(data)), sep = "-")
+    }
+    data
+  },
+  compute_panel = function(data, scales, n = 50) {
+    cols_to_keep <- setdiff(names(data), c("x", "y", "xend", "yend"))
+    springs <- lapply(seq_len(nrow(data)), function(i) {
+      spring_path <- create_spring(data$x[i], data$y[i], data$xend[i], 
+                                   data$yend[i], data$diameter[i],
+                                   data$tension[i], n)
+      cbind(spring_path, unclass(data[i, cols_to_keep]))
+    })
+    do.call(rbind, springs)
+  },
+  required_aes = c("x", "y", "xend", "yend"),
+  optional_aes = c("diameter", "tension")
+)
+
+geom_spring <- function(mapping = NULL, data = NULL, stat = "spring", 
+                        position = "identity", ..., n = 50, arrow = NULL, 
+                        lineend = "butt", linejoin = "round", na.rm = FALSE,
+                        show.legend = NA, inherit.aes = TRUE) {
+  layer(
+    data = data, 
+    mapping = mapping, 
+    stat = stat, 
+    geom = GeomPath, 
+    position = position, 
+    show.legend = show.legend, 
+    inherit.aes = inherit.aes, 
+    params = list(
+      n = n, 
+      arrow = arrow, 
+      lineend = lineend, 
+      linejoin = linejoin, 
+      na.rm = na.rm, 
+      ...
+    )
+  )
+}
+```
+
+```{r echo=FALSE}
+spring_plot <- simple_plot + 
+  geom_spring(aes(x = gdpPercap,
+                  xend = gdpPercap,
+                  y = lifeExp,
+                  yend = yhat,
+                  diameter = diameter,
+                  tension = tension), color = "darkgray") +
+  stat_smooth(method = "lm", se = FALSE) +
+  geom_point(size = 2) 
+spring_plot
+```
+
+(To create this plot I have copied the `geom_spring` example by [Thomas Lin Pedersen](https://twitter.com/thomasp85/status/1331338379636649986) from (the new version of!) the [ggplot2 book](https://ggplot2-book.org/spring1.html)).
+
+If you are not immediately convinced that this intuition pays off, consider the issue that motivated me to think of this in the first place: [influential outliers](https://en.wikipedia.org/wiki/Influential_observation), points with high "leverage" in the statistical sense. The definition of statistical leverage is a bit complicated. But we can get the right intuition about it from a physical sense rather than those formal definitions. See the point in the bottom left of the plot above? Since it is pulling closer to the end of the line it has more leverage in the actual *physical* sense. This is the explanation I prefer to give students who aren't taking a mathematical statistics course.
+
+(In case you're wondering, that point is Afghanistan, a nation where the United States remains at war for almost two decades now...)
+
+Let's see what happens when we move this one point so its leverage is being used to rotate the line clockwise instead of counter-clockwise. The old regression line, before this change, is shown as a faded line below for comparison.
+
+```{r echo=FALSE}
+#par(mar = c(4, 4, .1, .1))
+#par(mfrow = c(1,2))
+gmaf <- filter(gapminder, year == 2007, continent == "Asia")
+gmaf[1,]$gdpPercap <- 38000
+xbaraf <- 10^mean(log10(gmaf$gdpPercap))
+ybaraf <- mean(gmaf$lifeExp)
+af_model <- lm(lifeExp ~ log10(gdpPercap), gmaf)
+gmaf <- gmaf %>% mutate(
+  yhat = predict(af_model),
+  diameter = .02,
+  tension = 5 + (lifeExp - yhat)^2)
+
+af_plot <- ggplot(gmaf, aes(x = gdpPercap, y = lifeExp)) +
+  geom_point(size = 2) + 
+  geom_point(aes(x = xbaraf, y = ybaraf), color = "blue", size = 3) +
+  scale_x_log10() + 
+  ylim(c(40, 85))
+
+moved_plot <- af_plot + 
+    geom_line(stat = "smooth", method = "lm",
+            se = FALSE,
+            data = gm2007,
+            color = "blue",
+#            linetype = "dashed",
+            size = 1,
+            alpha = .4) +
+  geom_spring(aes(x = gdpPercap,
+                  xend = gdpPercap,
+                  y = lifeExp,
+                  yend = yhat,
+                  diameter = diameter,
+                  tension = tension), color = "darkgray") +
+  stat_smooth(method = "lm", se = FALSE) +
+
+  geom_point(size = 2)
+#spring_plot
+moved_plot
+```
+
+Notice the following changes: the center of mass has shifted a little, the point we moved is now a greater distance from the line so its force is larger, and the line has rotated noticeably due to the influence of this one point, even though our dataset has over 30 points, because that point has a lot of leverage.
+
+### Hooke's law
+
+Is this intuition correct? Can we really think of least squares solutions (e.g. regression lines) as the equilibrium of a system of springs? Yes, or elastic rubber bands, or any material with linear elasticity, i.e. that follows [Hooke's law](https://en.wikipedia.org/wiki/Hooke's_law). Let's consider how to apply this to regression, where for each point $(x_i, y_i)$ in the data, the spring attaches to the regression line at the point $(x_i, \hat y_i)$. So the spring is stretched to a length of $|r_i| = |y_i - \hat y_i|$, and Hooke's law says each spring is pulling on the line with a force proportional to this distance.
+
+When the system of the line and springs has stopped moving and settled into an equilibrium, this equilibrium position minimizes the *energy* of the system, which in this case is just the [potential energy](https://en.wikipedia.org/wiki/Potential_energy#Potential_energy_for_a_linear_spring). The potential energy stored in a spring that is stretched a certain distance is the integral of the force over that distance, and since the force scales with the distance this means the energy scales with the squared distance. Hence, the equilibrium of this physical system **minimizes the total potential energy**:
+
+$$
+\sum_{i=1}^n \frac{1}{2}k |r_i|^2 = \frac{1}{2}k \sum_{i=1}^n  (y_i - \hat y_i)^2
+$$
+where $k > 0$ is the spring "stiffness" constant. The line that minimizes this is the same as the least squares regression line because the constants in front don't change the minimizer. This argument works just as well for multiple regression as simple regression, even if we can't visualize the higher dimensional plots involved. We can still think of springs that are pulling, perpendicular to the $y$-axis, on a hyperplane. In this case there can be torques in various different hyperplanes passing through the center of mass but they're all balanced out, so the hyperplane doesn't get "tilted" in any direction (if it's in equilibrium).
+
+## Principal components analysis
+
+Although PCA is often considered a more advanced topic than (simple) regression, its justification in our physical analogy is actually simpler. All we need to do is drop the **vertical rule** that was required for regression. In this case, the springs are allowed to rotate their angle of departure from the points, and their position of attachment to the line (or hyperplane) can slide to accommodate this change in angle. This results in an equilibrium where the springs are stretched as little possible. The total potential energy reaches a lower value because the springs are no longer constrained in which direction they can pull.
+
+```{r include=FALSE}
+gmc <- gm2007 %>% mutate(gdp = 30 * log10(gdpPercap))
+pca <- prcomp(~ gdp + lifeExp, gmc)
+slp <- with(pca, rotation[2,1] / rotation[1,1])
+int <- with(pca, center[2] - slp*center[1])
+
+xbar <- mean(gmc$gdp)
+ybar <- mean(gmc$lifeExp)
+sxx <- with(gmc, mean((gdp - xbar)^2))
+syy <- with(gmc, mean((lifeExp - ybar)^2))
+sxy <- with(gmc, mean((gdp - xbar) * (lifeExp - ybar)))
+b1 <- (syy - sxx + sqrt( (syy - sxx)^2 + 4*sxy^2 ) ) / (2*sxy)
+b0 <- ybar - b1 * xbar
+
+gmc <- gmc %>% mutate(
+  #gdpPercap = log(gdpPercap) - mean(log(gdpPercap)),
+  #lifeExp = lifeExp - mean(lifeExp),
+  pca_xhat = gdp + (b1/(b1^2+1)) * (lifeExp - b0 - b1 * gdp),
+  pca_yhat = int + slp * pca_xhat,
+  #pca_xhat = (lifeExp - int) / slp,
+  pca_diameter = .4,
+  pca_tension = (lifeExp - pca_yhat)^2 + (gdp - pca_xhat)^2) # change this
+```
+
+```{r echo=FALSE}
+pca_plot <- ggplot(gmc, aes(x = gdp, y = lifeExp)) +
+  geom_point(size = 2) +
+  geom_point(aes(x = xbar, y = ybar), color = "green", size = 3) 
+#+ xlim(c(0, 100)) + ylim(c(0,100))
+pca_plot + 
+  geom_spring(aes(x = gdp,
+                  y = lifeExp,
+                  xend = pca_xhat, #(gdp + pca_xhat)/2,
+                  yend = pca_yhat, #(lifeExp + pca_yhat)/2,
+                  diameter = pca_diameter,
+                  tension = pca_tension/10), color = "darkgray") +
+#  stat_function(fun = function(x) int + x * slp) +
+  geom_abline(intercept = int, slope = slp, size = 1, color = "green") +
+  #geom_point(aes((gdpPercap + pca_xhat)/2, (lifeExp + pca_yhat)/2), color = "red", size = 1) +
+  geom_point(size = 2) + 
+   theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+```
+
+I've plotted the line in a different color to emphasize that it's [**not** the regression line](https://benediktehinger.de/blog/science/scatterplots-regression-lines-and-the-first-principal-component/). Notice that the springs are no longer pulling vertically, instead they connect to the line at the point on the line which is *nearest* (as measured by overall distance, not just distance in the $y$-coordinate alone).
+
+(This is also called [total least squares](https://en.wikipedia.org/wiki/Total_least_squares) or a special case of [Deming regression](https://en.wikipedia.org/wiki/Deming_regression).)
+
+## Model complexity/elasticity: machine learning or AI
+
+We can keep building on this analogy by using it to understand more complex modeling methods with another very simple idea: **elasticity of the model object itself**. Instead of a rigid body like a line (or hyperplane), if we imagine it's made of an elastic material that can be (locally) stretched and deformed then we can get more complex types of regression models.
+
+In this analogy, simpler models like linear regression correspond to more rigid objects like an unbendable metal stick, and more complex models allow flexibility or elasticity when fitting the conditional expectation function like a bendable plastic stick, a rubber band, or even a tensionless string in the most complex case where the model is allowed to fit the points perfectly.
+
+For example, here's the local polynomial regression method (`loess`) used by default in the `ggplot` function `stat_smooth`:
+
+```{r echo=FALSE, preview = TRUE}
+gm2007 <- filter(gapminder, year == 2007, continent == "Asia") %>%
+  mutate(gdp = log10(gdpPercap))
+xbar <- 10^mean(gm2007$gdp)
+ybar <- mean(gm2007$lifeExp)
+smoothing_model <- loess(lifeExp ~ gdp, data = gm2007, span = .4)
+xrange <- range(gm2007$gdp)
+xseq <- seq(from=xrange[1], to=xrange[2], length=80)
+
+smooth_line <- predict(smoothing_model, newdata = data.frame(gdp = xseq), se=FALSE)
+smooth_yhat <- predict(smoothing_model)
+
+gm2007 <- gm2007 %>% mutate(
+  yhat = smooth_yhat,
+  diameter = .02,
+  tension = 5 + (lifeExp - yhat)^2)
+
+simple_plot <- ggplot(gm2007, aes(x = gdpPercap, y = lifeExp)) +
+  geom_point(size = 2) + 
+  geom_point(aes(x = xbar, y = ybar), color = "blue", size = 3) +
+  scale_x_log10() + 
+  ylim(c(40, 85))
+
+smooth_df <- data.frame(x = 10^xseq, y = smooth_line)
+
+smooth_plot <- simple_plot + 
+    geom_spring(aes(x = gdpPercap,
+                  xend = gdpPercap,
+                  y = lifeExp,
+                  yend = yhat,
+                  diameter = diameter,
+                  tension = tension), color = "darkgray") +
+  geom_line(aes(x, y), data = smooth_df, size = 1, color = "blue") +
+  geom_point(size = 2) 
+smooth_plot
+```
+
+This intuition is not only useful for learning the basic ideas of model complexity and machine learning, it can even be used for cutting-edge research. For example see this [recent paper](https://arxiv.org/abs/1910.06943) on elasticity in neural networks (by my friend Weijie Su and his coauthor!)
+
+## Concluding thoughts
+
+I think there's a lot of *potential* here for statistics education, especially for younger students. It wouldn't be too difficult to create a physical [classroom demonstration](https://en.wikipedia.org/wiki/Bean_machine) using springs or elastics, especially for the PCA case since that wouldn't require any guiding tracks to constraint the force direction to be vertical.
+
+I also need to teach myself some more advanced plotting to `gganimate` these examples. If I succeed I'll update this page.
+
+## References
+
+I was surprised by how difficult it was to find any references for this elementary idea that provides physical intuition for such an important method as least squares regression. If you're aware of any others please contact me because I would be glad to know of them.
+
+(*Update*) Thankfully, after this post was shared widely on Twitter people have helped alert me to more references which are now included in the list below.
+
+- Dwight, T. W. (1937). [The fitting of linear regression lines by the method of least squares](https://pubs.cif-ifc.org/doi/abs/10.5558/tfc13509-4). The Forestry Chronicle, 13(4), 509-519.
+- Levi, M. (2012). [The mathematical mechanic: using physical reasoning to solve problems](https://press.princeton.edu/books/paperback/9780691154565/the-mathematical-mechanic). Princeton University Press.
+- Excerpt of the previous reference on [stackexchange](https://math.stackexchange.com/questions/2369673/proving-linear-regression-by-using-physical-springs-model)
+
+Update: Thanks to everyone who has contacted me with these additional references!
+
+
+- Trey Goesh created this [interactive simulation](https://www.desmos.com/calculator/90vaqtqpx6)
+
+- Kieran Healy linked to this stackexchange answer with an [awesome animation](https://stats.stackexchange.com/a/140579)
+
+- Kameron Decker Harris pointed out this blog post showing [splines as bendy physical sticks](https://www.core77.com/posts/55368/When-Splines-Were-Physical-Objects)
+
+- Chris Schwarz at UIowa brought my attention to these [lectures by the legendary Gil Strang](https://ocw.mit.edu/courses/mathematics/18-085-computational-science-and-engineering-i-fall-2008/video-lectures/lecture-1-four-special-matrices/)
+
+- Michael Friendly created a [bibliography](https://gist.github.com/friendly/b20af682f18900eb3271e0c8dacfb7c6) of some references to physics inspired stats models
+
+- A [lecture by Yann LeCun](https://youtu.be/tVwV14YkbYs) in the NYU deep learning course
+
+- A recent [ICLR paper (with video of a short talk)](https://iclr.cc/virtual/poster_Hkxzx0NtDB.html) by Will Grathwohl and others
+
+- A [paper on deep learning](https://arxiv.org/abs/1503.03585) by Jascha Sohl-Dickstein and others
+
+- John Davis at UIndiana created this [demo showing 3D splines](https://gist.github.com/johnjdavisiv/378863d54889b1b923c89f590ece341e) (just imagine the vertical lines are springs!) and pointed to a [different physics-inspired example](https://fromthebottomoftheheap.net/2016/03/27/soap-film-smoothers/) by Gavin Simpson
+

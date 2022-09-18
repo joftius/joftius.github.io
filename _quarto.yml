@@ -1,0 +1,69 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "{{< fa solid chart-simple size=large >}} joshua loftus"
+  navbar:
+    lowercase: true
+    right:
+      - text: "{{< fa solid house size=large >}} home"
+        file: index.qmd
+      - text: "{{< fa solid book-open size=large >}} research"
+        file: research.qmd
+      - text: "{{< fa solid chalkboard size=large >}} teaching"
+        file: teaching.qmd
+      - text: "{{< fa solid code size=large >}} software"
+        file: software.qmd
+      - text: "{{< fa solid comment size=large >}} blog"
+        file: posts.qmd
+      - text: "{{< fa solid user size=large >}} about"
+        file: about.qmd
+  twitter-card:
+    creator: "@joftius"
+  
+format:
+  html:
+    base_url: http://joshualoftus.com/
+    cookie_consent:
+      style: simple
+      type: express
+      palette: light
+      lang: en
+      cookies_policy: url
+    google_analytics: "UA-114292497-1"
+    citations: false
+    theme: 
+      light: [litera, custom_light.scss]
+      dark: [darkly, custom_dark.scss]
+    css: styles.css
+    
+collections:
+  research:
+    share: [twitter, linkedin]
+    categories: false
+  teaching:
+    share: [twitter, linkedin]
+    categories: false    
+  posts:
+    share: [twitter, linkedin]
+    categories: true
+  ms4ds:
+    categories: false
+  ml4ds:
+    categories: false
+  talks:
+    categories: true
+  physics:
+    share: [twitter, linkedin]
+    categories: true
+  math:
+    share: [twitter, linkedin]
+    categories: true
+  creative_commons: CC BY
+
+editor: source
+execute: 
+  freeze: auto
+
+

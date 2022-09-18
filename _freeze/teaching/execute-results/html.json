@@ -1,0 +1,16 @@
+{
+  "hash": "72a2415862ab762dbcb7c9eeb7a0fd6a",
+  "result": {
+    "markdown": "---\ntitle: \"Teaching\"\ndescription: |\nlisting: teaching\n---\n\n\n",
+    "supporting": [
+      "teaching_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

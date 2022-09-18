@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Joshua Loftus">
+<meta name="dcterms.date" content="2022-02-16">
+<meta name="description" content="Physics intuition for regression and other methods that minimize squared error. We can imagine springs pulling the model toward the data.">
+
+<title> joshua loftus - Least squares as springs</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+<meta name="twitter:title" content=" joshua loftus - Least squares as springs">
+<meta name="twitter:description" content="Physics intuition for regression and other methods that minimize squared error. We can imagine springs pulling the model toward the data.">
+<meta name="twitter:creator" content="@joftius">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title"><i class="fa-solid fa-chart-simple fa-large" aria-hidden="true"></i> joshua loftus</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"><i class="fa-solid fa-house fa-large" aria-hidden="true"></i> home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../research.html"><i class="fa-solid fa-book-open fa-large" aria-hidden="true"></i> research</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../teaching.html"><i class="fa-solid fa-chalkboard fa-large" aria-hidden="true"></i> teaching</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../software.html"><i class="fa-solid fa-code fa-large" aria-hidden="true"></i> software</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts.html"><i class="fa-solid fa-comment fa-large" aria-hidden="true"></i> blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"><i class="fa-solid fa-user fa-large" aria-hidden="true"></i> about</a>
+  </li>  
+</ul>
+              <div class="quarto-toggle-container">
+                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+              </div>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Least squares as springs</h1>
+                  <div>
+        <div class="description">
+          <p>Physics intuition for regression and other methods that minimize squared error. We can imagine springs pulling the model toward the data.</p>
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">statistics</div>
+                <div class="quarto-category">machine learning</div>
+                <div class="quarto-category">physics</div>
+              </div>
+                  </div>
+  </div>
+    
+  <div class="quarto-title-meta-author">
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-heading">Affiliation</div>
+    
+      <div class="quarto-title-meta-contents">
+      <a href="https://joshualoftus.com/">Joshua Loftus</a> 
+    </div>
+      <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              New York University
+            </p>
+        </div>
+      </div>
+
+  <div class="quarto-title-meta">
+
+        
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">February 16, 2022</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>During a recent “Zoom” lecture a student asked me a question about outliers. In the process of answering I realized something that I knew was true but had never seen explained in any sources. This post is my first attempt to develop an <strong>analogy that connects least squares methods, like regression or PCA, to physical intuition about springs or elastics</strong>.</p>
+<section id="the-simplest-version" class="level2">
+<h2 class="anchored" data-anchor-id="the-simplest-version">The simplest version</h2>
+<p>To illustrate I will use data from <a href="https://cran.r-project.org/web/packages/gapminder/index.html">gapminder</a> conveniently provided in an R package by Jenny Bryan. Consider these two variables in the dataset, GDP per capita and life expectancy, plotted here in a standard scatterplot:</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="least-squares-as-springs_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>(To have a less busy plot, one with fewer points, I’ve subsetted the data to the year 2007 and countries in Asia).</p>
+<p>Now we’re going to bring physical intuition into this by imagining these points as physical objects. For example, we can interpret the mean <span class="math inline">\((\bar x, \bar y)\)</span> = 6252.7, 70.7 as the center of mass (if we assume every point has the same mass). This is the larger, blue point in the plot above. It’s not really important to think of mass specifically, just that this point is the center of the physical ensemble.</p>
+<p>We need a few simple rules for our physical system:</p>
+<ul>
+<li>Changing the data is not allowed, i.e.&nbsp;the points are immovable.</li>
+<li>For methods like regression (or PCA), we imagine a rigid object like a line (or hyperplane, in multiple regression) passing through the points, and the points exerting some force that changes the position of this body</li>
+<li>If these methods use the standard least squares loss function then this force can be represented by springs or elastics, all of the same length and strength, attached at one end to the points and on the other end to the line (or hyperplane).</li>
+</ul>
+<p>This line (or hyperplane) may bounce around at first as the springs pull it toward their anchoring points, but eventually it settles into an equilibrium where the forces from all the opposing springs are balanced out. In this equilibrium state we have two immediate consequences:</p>
+<ol type="1">
+<li>The rigid object (line or hyperplane) <em>must pass through the center point</em>. If it did not, there would be a net force acting on the object pulling it toward the center point, hence it would not yet be at equilibrium. In other words, all of the forces that would <em>shift</em> the object are exactly balanced out so it does not shift.</li>
+<li>The same is true about <em>torques</em>, all of the forces that would <em>rotate</em> the object are balanced out.</li>
+</ol>
+<p>For regression we need one more rule: the springs are guided so they only pull in directions aligned with the axis of the outcome variable, i.e.&nbsp;“vertically.” Let’s call this the <strong>vertical rule</strong> for reference later.</p>
+<p>Here is our simple example in picture form:</p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="least-squares-as-springs_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>(To create this plot I have copied the <code>geom_spring</code> example by <a href="https://twitter.com/thomasp85/status/1331338379636649986">Thomas Lin Pedersen</a> from (the new version of!) the <a href="https://ggplot2-book.org/spring1.html">ggplot2 book</a>).</p>
+<p>If you are not immediately convinced that this intuition pays off, consider the issue that motivated me to think of this in the first place: <a href="https://en.wikipedia.org/wiki/Influential_observation">influential outliers</a>, points with high “leverage” in the statistical sense. The definition of statistical leverage is a bit complicated. But we can get the right intuition about it from a physical sense rather than those formal definitions. See the point in the bottom left of the plot above? Since it is pulling closer to the end of the line it has more leverage in the actual <em>physical</em> sense. This is the explanation I prefer to give students who aren’t taking a mathematical statistics course.</p>
+<p>(In case you’re wondering, that point is Afghanistan, a nation where the United States remains at war for almost two decades now…)</p>
+<p>Let’s see what happens when we move this one point so its leverage is being used to rotate the line clockwise instead of counter-clockwise. The old regression line, before this change, is shown as a faded line below for comparison.</p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula 'y ~ x'
+`geom_smooth()` using formula 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="least-squares-as-springs_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Notice the following changes: the center of mass has shifted a little, the point we moved is now a greater distance from the line so its force is larger, and the line has rotated noticeably due to the influence of this one point, even though our dataset has over 30 points, because that point has a lot of leverage.</p>
+<section id="hookes-law" class="level3">
+<h3 class="anchored" data-anchor-id="hookes-law">Hooke’s law</h3>
+<p>Is this intuition correct? Can we really think of least squares solutions (e.g.&nbsp;regression lines) as the equilibrium of a system of springs? Yes, or elastic rubber bands, or any material with linear elasticity, i.e.&nbsp;that follows <a href="https://en.wikipedia.org/wiki/Hooke's_law">Hooke’s law</a>. Let’s consider how to apply this to regression, where for each point <span class="math inline">\((x_i, y_i)\)</span> in the data, the spring attaches to the regression line at the point <span class="math inline">\((x_i, \hat y_i)\)</span>. So the spring is stretched to a length of <span class="math inline">\(|r_i| = |y_i - \hat y_i|\)</span>, and Hooke’s law says each spring is pulling on the line with a force proportional to this distance.</p>
+<p>When the system of the line and springs has stopped moving and settled into an equilibrium, this equilibrium position minimizes the <em>energy</em> of the system, which in this case is just the <a href="https://en.wikipedia.org/wiki/Potential_energy#Potential_energy_for_a_linear_spring">potential energy</a>. The potential energy stored in a spring that is stretched a certain distance is the integral of the force over that distance, and since the force scales with the distance this means the energy scales with the squared distance. Hence, the equilibrium of this physical system <strong>minimizes the total potential energy</strong>:</p>
+<p><span class="math display">\[
+\sum_{i=1}^n \frac{1}{2}k |r_i|^2 = \frac{1}{2}k \sum_{i=1}^n  (y_i - \hat y_i)^2
+\]</span> where <span class="math inline">\(k &gt; 0\)</span> is the spring “stiffness” constant. The line that minimizes this is the same as the least squares regression line because the constants in front don’t change the minimizer. This argument works just as well for multiple regression as simple regression, even if we can’t visualize the higher dimensional plots involved. We can still think of springs that are pulling, perpendicular to the <span class="math inline">\(y\)</span>-axis, on a hyperplane. In this case there can be torques in various different hyperplanes passing through the center of mass but they’re all balanced out, so the hyperplane doesn’t get “tilted” in any direction (if it’s in equilibrium).</p>
+</section>
+</section>
+<section id="principal-components-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="principal-components-analysis">Principal components analysis</h2>
+<p>Although PCA is often considered a more advanced topic than (simple) regression, its justification in our physical analogy is actually simpler. All we need to do is drop the <strong>vertical rule</strong> that was required for regression. In this case, the springs are allowed to rotate their angle of departure from the points, and their position of attachment to the line (or hyperplane) can slide to accommodate this change in angle. This results in an equilibrium where the springs are stretched as little possible. The total potential energy reaches a lower value because the springs are no longer constrained in which direction they can pull.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="least-squares-as-springs_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>I’ve plotted the line in a different color to emphasize that it’s <a href="https://benediktehinger.de/blog/science/scatterplots-regression-lines-and-the-first-principal-component/"><strong>not</strong> the regression line</a>. Notice that the springs are no longer pulling vertically, instead they connect to the line at the point on the line which is <em>nearest</em> (as measured by overall distance, not just distance in the <span class="math inline">\(y\)</span>-coordinate alone).</p>
+<p>(This is also called <a href="https://en.wikipedia.org/wiki/Total_least_squares">total least squares</a> or a special case of <a href="https://en.wikipedia.org/wiki/Deming_regression">Deming regression</a>.)</p>
+</section>
+<section id="model-complexityelasticity-machine-learning-or-ai" class="level2">
+<h2 class="anchored" data-anchor-id="model-complexityelasticity-machine-learning-or-ai">Model complexity/elasticity: machine learning or AI</h2>
+<p>We can keep building on this analogy by using it to understand more complex modeling methods with another very simple idea: <strong>elasticity of the model object itself</strong>. Instead of a rigid body like a line (or hyperplane), if we imagine it’s made of an elastic material that can be (locally) stretched and deformed then we can get more complex types of regression models.</p>
+<p>In this analogy, simpler models like linear regression correspond to more rigid objects like an unbendable metal stick, and more complex models allow flexibility or elasticity when fitting the conditional expectation function like a bendable plastic stick, a rubber band, or even a tensionless string in the most complex case where the model is allowed to fit the points perfectly.</p>
+<p>For example, here’s the local polynomial regression method (<code>loess</code>) used by default in the <code>ggplot</code> function <code>stat_smooth</code>:</p>
+<div class="cell" data-preview="true">
+<div class="cell-output-display">
+<p><img src="least-squares-as-springs_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>This intuition is not only useful for learning the basic ideas of model complexity and machine learning, it can even be used for cutting-edge research. For example see this <a href="https://arxiv.org/abs/1910.06943">recent paper</a> on elasticity in neural networks (by my friend Weijie Su and his coauthor!)</p>
+</section>
+<section id="concluding-thoughts" class="level2">
+<h2 class="anchored" data-anchor-id="concluding-thoughts">Concluding thoughts</h2>
+<p>I think there’s a lot of <em>potential</em> here for statistics education, especially for younger students. It wouldn’t be too difficult to create a physical <a href="https://en.wikipedia.org/wiki/Bean_machine">classroom demonstration</a> using springs or elastics, especially for the PCA case since that wouldn’t require any guiding tracks to constraint the force direction to be vertical.</p>
+<p>I also need to teach myself some more advanced plotting to <code>gganimate</code> these examples. If I succeed I’ll update this page.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>I was surprised by how difficult it was to find any references for this elementary idea that provides physical intuition for such an important method as least squares regression. If you’re aware of any others please contact me because I would be glad to know of them.</p>
+<p>(<em>Update</em>) Thankfully, after this post was shared widely on Twitter people have helped alert me to more references which are now included in the list below.</p>
+<ul>
+<li>Dwight, T. W. (1937). <a href="https://pubs.cif-ifc.org/doi/abs/10.5558/tfc13509-4">The fitting of linear regression lines by the method of least squares</a>. The Forestry Chronicle, 13(4), 509-519.</li>
+<li>Levi, M. (2012). <a href="https://press.princeton.edu/books/paperback/9780691154565/the-mathematical-mechanic">The mathematical mechanic: using physical reasoning to solve problems</a>. Princeton University Press.</li>
+<li>Excerpt of the previous reference on <a href="https://math.stackexchange.com/questions/2369673/proving-linear-regression-by-using-physical-springs-model">stackexchange</a></li>
+</ul>
+<p>Update: Thanks to everyone who has contacted me with these additional references!</p>
+<ul>
+<li><p>Trey Goesh created this <a href="https://www.desmos.com/calculator/90vaqtqpx6">interactive simulation</a></p></li>
+<li><p>Kieran Healy linked to this stackexchange answer with an <a href="https://stats.stackexchange.com/a/140579">awesome animation</a></p></li>
+<li><p>Kameron Decker Harris pointed out this blog post showing <a href="https://www.core77.com/posts/55368/When-Splines-Were-Physical-Objects">splines as bendy physical sticks</a></p></li>
+<li><p>Chris Schwarz at UIowa brought my attention to these <a href="https://ocw.mit.edu/courses/mathematics/18-085-computational-science-and-engineering-i-fall-2008/video-lectures/lecture-1-four-special-matrices/">lectures by the legendary Gil Strang</a></p></li>
+<li><p>Michael Friendly created a <a href="https://gist.github.com/friendly/b20af682f18900eb3271e0c8dacfb7c6">bibliography</a> of some references to physics inspired stats models</p></li>
+<li><p>A <a href="https://youtu.be/tVwV14YkbYs">lecture by Yann LeCun</a> in the NYU deep learning course</p></li>
+<li><p>A recent <a href="https://iclr.cc/virtual/poster_Hkxzx0NtDB.html">ICLR paper (with video of a short talk)</a> by Will Grathwohl and others</p></li>
+<li><p>A <a href="https://arxiv.org/abs/1503.03585">paper on deep learning</a> by Jascha Sohl-Dickstein and others</p></li>
+<li><p>John Davis at UIndiana created this <a href="https://gist.github.com/johnjdavisiv/378863d54889b1b923c89f590ece341e">demo showing 3D splines</a> (just imagine the vertical lines are springs!) and pointed to a <a href="https://fromthebottomoftheheap.net/2016/03/27/soap-film-smoothers/">different physics-inspired example</a> by Gavin Simpson</p></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } 
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

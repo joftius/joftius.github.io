@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Joshua Loftus">
+<meta name="dcterms.date" content="2018-02-26">
+<meta name="description" content="Model selection can invalidate inference, such as significance tests, but statisticians have recently made progress developing methods to adjust for this bias. This post motivates a conditional approach with a simple screening rule example and introduces an R package that can compute adjusted significance tests.">
+
+<title> joshua loftus - A conditional approach to inference after model selection</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+<meta name="twitter:title" content=" joshua loftus - A conditional approach to inference after model selection">
+<meta name="twitter:description" content="Model selection can invalidate inference, such as significance tests, but statisticians have recently made progress developing methods to adjust for this bias. This post motivates a conditional approach with a simple screening rule example and introduces an R package that can compute adjusted significance tests.">
+<meta name="twitter:creator" content="@joftius">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title"><i class="fa-solid fa-chart-simple fa-large" aria-hidden="true"></i> joshua loftus</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"><i class="fa-solid fa-house fa-large" aria-hidden="true"></i> home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../research.html"><i class="fa-solid fa-book-open fa-large" aria-hidden="true"></i> research</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../teaching.html"><i class="fa-solid fa-chalkboard fa-large" aria-hidden="true"></i> teaching</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../software.html"><i class="fa-solid fa-code fa-large" aria-hidden="true"></i> software</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts.html"><i class="fa-solid fa-comment fa-large" aria-hidden="true"></i> blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"><i class="fa-solid fa-user fa-large" aria-hidden="true"></i> about</a>
+  </li>  
+</ul>
+              <div class="quarto-toggle-container">
+                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+              </div>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">A conditional approach to inference after model selection</h1>
+                  <div>
+        <div class="description">
+          <p>Model selection can invalidate inference, such as significance tests, but statisticians have recently made progress developing methods to adjust for this bias. This post motivates a conditional approach with a simple screening rule example and introduces an R package that can compute adjusted significance tests.</p>
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">statistics</div>
+                <div class="quarto-category">reproducibility</div>
+                <div class="quarto-category">selective inference</div>
+                <div class="quarto-category">R</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Joshua Loftus </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">February 26, 2018</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="overly-honest-research-methods" class="level2">
+<h2 class="anchored" data-anchor-id="overly-honest-research-methods">Overly honest research methods?</h2>
+<p>A high profile case of a scientist retracting multiple papers due to <a href="https://xkcd.com/882/">p-hacking</a> is recently gaining new attention due to a <a href="https://www.buzzfeed.com/stephaniemlee/brian-wansink-cornell-p-hacking">BuzzFeed article</a>. Hopefully this will raise awareness and convince some that “keep hammering away at your data until you find want you were expecting” is a poor way to do science. But it’s possible to get things wrong, for the same reason, no matter how well-intentioned we may be. Even if we aren’t specifically seeking significant <span class="math inline">\(p\)</span>-values, we can end up with biased results due to model selection. To see why, check out this earlier post on <a href="../model-selection-bias-invalidates-significance-tests/">model selection bias</a>. In this post I will describe a method to protect ourselves from this bias and compute <em>adjusted</em> <span class="math inline">\(p\)</span>-values that are valid even though we’ve done model selection.</p>
+</section>
+<section id="model-selection-with-forward-stepwise" class="level2">
+<h2 class="anchored" data-anchor-id="model-selection-with-forward-stepwise">Model selection with forward stepwise</h2>
+<p>We’ll pick up on the same example from a previous post:</p>
+<blockquote class="blockquote">
+<p>[…] consider the <code>candy_rankings</code> data from the <a href="https://cran.r-project.org/web/packages/fivethirtyeight/index.html">fivethirtyeight</a> package. The <strong>outcome variable</strong> is how often a given candy won in popularity matchups against other candies, and the <strong>predictor variables</strong> are various properties like whether or not the candy has chocolate, whether or not it’s fruit flavored, how sugary it is relative to other candies, and so on. There are 85 candies and 11 predictor variables in the dataset.</p>
+</blockquote>
+<p>This time we’ll use the actual response variable, and run forward stepwise with AIC to pick a subset of the predictors that are highly predictive of the outcome (win percent). The resulting model, along with the biased <span class="math inline">\(p\)</span>-values that popular software computes by default, is given below.</p>
+<div class="cell" data-hash="a-conditional-approach-to-inference-after-model-selection_cache/html/unnamed-chunk-1_895362c683e45b6d39c568d5a4281169">
+<div class="cell-output cell-output-stdout">
+<pre><code>                     Estimate Std. Error t value  Pr(&gt;|t|)
+chocolateTRUE            19.1        3.6     5.3 0.0000009
+fruityTRUE                8.9        3.6     2.5 0.0147319
+peanutyalmondyTRUE        9.5        3.4     2.8 0.0073720
+crispedricewaferTRUE      8.4        4.5     1.9 0.0652527
+hardTRUE                 -5.7        3.3    -1.7 0.0887116
+sugarpercent              8.0        4.1     1.9 0.0569311</code></pre>
+</div>
+</div>
+<p>These <span class="math inline">\(p\)</span>-values are probably too small. The model selection method chose variables that seemed to be predictive of the outcome. The way <span class="math inline">\(p\)</span>-values are computed is to consider how extreme the test statistic <span class="math inline">\(T\)</span> is under the null hypothesis: <span class="math inline">\(P(T &gt; |t|)\)</span>. But the model selection procedure picks variables that tend to have large observed values of <span class="math inline">\(|t|\)</span>, whether or not the null hypothesis for any one of them is true. How can we correct this? By the end of this post we’ll have adjusted <span class="math inline">\(p\)</span>-values for this example, but first we need to understand how that adjustment works.</p>
+</section>
+<section id="adjusted-inference-by-conditionional-probability" class="level2">
+<h2 class="anchored" data-anchor-id="adjusted-inference-by-conditionional-probability">Adjusted inference by conditionional probability</h2>
+<p>One approach, often referred to as <a href="http://www.pnas.org/content/112/25/7629.short">selective inference</a>, is to use <em>conditional</em> probabilities when computing <span class="math inline">\(p\)</span>-values. Consider a random variable <span class="math inline">\(M\)</span> representing which model is chosen by the model selection method, and let <span class="math inline">\(m\)</span> be the observed value of <span class="math inline">\(M\)</span> after running the algorithm (e.g.&nbsp;forward stepwise) on our data and getting a specific model. To compute conditionally adjusted <span class="math inline">\(p\)</span>-values, we use <span class="math display">\[
+P(T &gt; |t| \mid M = m)
+\]</span> This conditional probability law usually has a simple form. For example, if the test statistic has a <span class="math inline">\(t\)</span>-distribution, then the conditional law is usually a truncated <span class="math inline">\(t\)</span>. The specifics depend on the kind of model selection algorithm being used, and working them out is an area of ongoing research in statistics. During my PhD, I worked on a few cases (<a href="https://arxiv.org/abs/1511.01478">groups of variables</a>, <a href="https://arxiv.org/abs/1511.08866">cross-validation</a>) as part of my dissertation. To understand how/why the conditional law works, let’s consider an example that’s simpler than forward stepwise.</p>
+</section>
+<section id="marginal-screening-example" class="level2">
+<h2 class="anchored" data-anchor-id="marginal-screening-example">Marginal screening example</h2>
+<p>Suppose that instead of regression, we are solving a many-means problem where we want to select the largest effects. (Regression is similar to this when the design matrix is orthogonal). That is, we have many effects <span class="math inline">\(z_i\)</span> for <span class="math inline">\(i = 1, \ldots, p\)</span> and the selection rule we use is to choose <span class="math inline">\(z_i\)</span> if <span class="math inline">\(z_i &gt; 1\)</span>. Then we want to do a one-sided test to see if those <span class="math inline">\(z_i\)</span> are significantly large. We can think of this procedure as first screening away the majority of the data which we think is just noise, and then testing what made it through the screening procedure. I’ll generate data under the global null hypothesis where every effect is actually zero, and then plot some results.</p>
+<div class="cell" data-preview="true">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="a-conditional-approach-to-inference-after-model-selection_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>This plot shows three things:</p>
+<ul>
+<li>A <strong>histogram</strong> of the selected effects.</li>
+<li>The <strong>solid line</strong> shows the <strong>standard</strong> normal distribution. The upper tail areas of this distribution would be used for standard, unadjusted <span class="math inline">\(p\)</span>-values.</li>
+<li>The <strong>dashed line</strong> shows the truncated, <strong>conditional</strong> distribution <span class="math inline">\(Z | Z &gt; 1\)</span> for a standard normal <span class="math inline">\(Z\)</span>.</li>
+</ul>
+<p>If we used the tail areas of the standard normal to compute <span class="math inline">\(p\)</span>-values, these would be very small, even though the data was all generated under a global null hypothesis. This shows that the selection effect can invalidate inference, leading to a high type 1 error rate. But it’s pretty clear from the plot that the conditional distribution fits the data very well: if “significant” means extreme according to <em>this</em> distribution, then type 1 error rate would be small, it would match whatever nominal threshold <span class="math inline">\(\alpha\)</span> we decided.</p>
+</section>
+<section id="the-selectiveinference-r-package" class="level2">
+<h2 class="anchored" data-anchor-id="the-selectiveinference-r-package">The selectiveInference R package</h2>
+<p>Let’s return to our first example about forward stepwise.</p>
+<p>The details for computing <span class="math inline">\(p\)</span>-values with conditional probability when model selection is more complicated–like using forward stepwise with AIC, or the LASSO with cross-validation, etc–are harder than the marginal screening case. But fortunately, there is an R package for it: the <code>selectiveInference</code> package available on <a href="https://cran.r-project.org/web/packages/selectiveInference/index.html">CRAN</a>! This package is still under development, and its authors include Ryan Tibshirani, Rob Tibshirani, Jonathan Taylor, Stephen Reid and some other guy. The package currently does not support R formulas, so first we need to create a <code>model.matrix</code>, then we’ll run forward stepwise again with the <code>fs</code> function, then we’ll compute adjusted inference for the fitted model using <code>fsInf</code>. These last two functions are among several others in the <code>selectiveInference</code> package, including ones for doing all of this with the <a href="https://en.wikipedia.org/wiki/Lasso_(statistics)">LASSO</a> instead of forward stepwise.</p>
+<div class="cell" data-hash="a-conditional-approach-to-inference-after-model-selection_cache/html/unnamed-chunk-3_ed4ce8ed998295674f73eb4edfe5c88e">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+fsInf(obj = fit, type = "aic", ntimes = 1)
+
+Standard deviation of noise (specified or estimated) sigma = 10.703
+
+Testing results at step = 6, with alpha = 0.100
+ Var   Coef Z-score P-value LowConfPt UpConfPt LowTailArea UpTailArea
+   1 19.147   5.233   0.171   -14.225   37.970        0.05      0.050
+   4  9.483   2.697   0.559   -43.440   13.021        0.05      0.049
+   2  8.881   2.445   0.472   -35.763   26.424        0.05      0.050
+   6  8.385   1.833   0.515   -61.565   46.348        0.05      0.050
+  10  7.979   1.894   0.355   -44.222   72.414        0.05      0.050
+   7 -5.669  -1.690   0.358   -48.097   30.090        0.05      0.050
+
+Estimated stopping point from AIC rule = 6</code></pre>
+</div>
+</div>
+<p>There’s a lot of output here, but let’s focus on the adjusted <span class="math inline">\(p\)</span>-values. We’ll put them together in a readout with the unadjusted ones:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>                     Estimate    Pr(&gt;|t|) Adj.Pr(&gt;|t|)
+chocolateTRUE           19.15 0.000000898        0.171
+peanutyalmondyTRUE       9.48 0.007372014        0.559
+fruityTRUE               8.88 0.014731896        0.472
+crispedricewaferTRUE     8.39 0.065252715        0.515
+sugarpercent             7.98 0.056931100        0.355
+hardTRUE                -5.67 0.088711566        0.358</code></pre>
+</div>
+</div>
+<p>The adjusted <span class="math inline">\(p\)</span>-values in the right column are all much larger than the unadjusted ones. In general, adjusted <span class="math inline">\(p\)</span>-values will be larger, but by how much depends on a lot of specifics. In this case, and at the usual <span class="math inline">\(\alpha = 0.05\)</span> level, we went from 3 significant effects without adjusting for selection bias to zero. This reflects a fundamental tradeoff: <strong>the more we use the data to search for interesting things, the less surprised we must be about what we find</strong>. Otherwise, we may just be fooling ourselves, and maybe even end up needing to retract lots of papers…</p>
+<p>I hope this post was a useful introduction to the basic idea of using conditional probability to adjust for model selection, and makes more people aware of the <code>selectiveInference</code> package. This project is also on <a href="https://github.com/selective-inference">github</a>. In future posts I will describe more examples, including other approaches to adjusting inference for model selection bias.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } 
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

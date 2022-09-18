@@ -1,0 +1,14 @@
+{
+  "hash": "d7692a80617e12036dd69220b5457731",
+  "result": {
+    "markdown": "---\ntitle: \"Software\"\ndescription: |\nlisting: software\n---\n\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
