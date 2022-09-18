@@ -20,9 +20,14 @@ website:
       - text: "{{< fa solid user size=large >}} about"
         file: about.qmd
   site-url: http://joshualoftus.com
-  open-graph: true
+  open-graph:
+    title: "Joshua Loftus: Statistician and Data Scientist"
+    description: "Professional academic website and personal blog"
   twitter-card:
     creator: "@joftius"
+    title: "Joshua Loftus: Statistician and Data Scientist"
+    description: "Professional academic website and personal blog"
+    card-style: summary
   google-analytics: "UA-114292497-1"
   
 format:
