@@ -11,10 +11,9 @@ about:
   template: trestles
 ---
 
+I'm a first-generation college graduate who went from homeschooling, to community college, and eventually to finishing a PhD in Statistics at Stanford University. I'm grateful for the opportunities and to the teachers who helped me along the way. Diversity, inclusion, and mentoring are part of my identity. In my teaching I want to empower students to use the powerful tools of data science for good.
 
-I'm a professor of statistics and data science, and have also studied mathematics and biostatistics. From my background--as a first-generation college graduate starting in community college--I was very fortunate to finish a PhD in Statistics at Stanford University. I'm grateful for that opportunity and to the teachers who helped me along the way, and I care about diversity, inclusion, and mentoring students from underprivileged backgrounds. In my teaching I want to empower students: to understand deeply, to correctly interpret, and to wisely use the powerful tools of data science for good.
-
-My research focuses on common practices in machine learning and data science pipelines with the goal of correcting biases that have previously been overlooked. Some key applications include finding and repairing the causes of the replication crisis in science and socially harmful applications of machine learning, artificial intelligence, or data-driven systems more broadly. My peer reviewed research has been published in the **Annals of Statistics**, **Biometrika**, **Advances in Neural Information Processing Systems** (NeurIPS), and the **International Conference on Machine Learning** (ICML).
+My research focuses on practices in machine learning and data science pipelines with the goal of correcting biases that are often overlooked. Some key applications include finding and repairing the causes of the replication crisis in science and socially harmful applications of machine learning and artificial intelligence. My peer reviewed research has been published in the **Annals of Statistics**, **Biometrika**, **Advances in Neural Information Processing Systems** (NeurIPS), and the **International Conference on Machine Learning** (ICML).
 
 ## Education
 

@@ -1,13 +1,9 @@
 ---
 title: "Software"
 description: |
-listing: 
-  contents: software
-  type: grid
+  I am an author or contributor to some R packages.
 ---
 
- 
+- [selectiveInference](https://github.com/selective-inference/R-software): Tools for Post-Selection Inference
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-```
+- [unbiasedgoodness](http://joshualoftus.com/unbiasedgoodness/): Goodness-of-Fit Tests After Model Selection
