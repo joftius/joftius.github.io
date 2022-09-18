@@ -30,8 +30,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -45,8 +43,6 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
-<link href="site_libs/quarto-contrib/academicons-1.9.2/all.css" rel="stylesheet">
-<link href="site_libs/quarto-contrib/academicons-1.9.2/size.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -66,43 +62,30 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
+<script type="text/javascript">
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-subtitle','listing-image','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-subtitle","listing-image","listing-description"],
-    };
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-114292497-1', 'auto');
 
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+ga('send', {
+  hitType: 'pageview',
+  'anonymizeIp': true,
+});
+</script>
 
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="styles.css">
+<meta property="og:title" content=" joshua loftus - Teaching">
+<meta property="og:description" content="oh my god">
+<meta property="og:site-name" content="{{< fa solid chart-simple size=large >}} joshua loftus">
 <meta name="twitter:title" content=" joshua loftus - Teaching">
-<meta name="twitter:image" content="http://joshualoftus.com/talks/2021-04-18-conference-on-machine-learning-and-inequality/preview.png">
+<meta name="twitter:description" content="oh my god">
 <meta name="twitter:creator" content="@joftius">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 </head>
 
 <body class="nav-fixed fullcontent">
@@ -172,365 +155,11 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<p>oh my god</p>
 
 
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="statistics,reproducibility" data-listing-date-sort="1574035200000" data-listing-file-modified-sort="1663499146636" data-listing-reading-time-sort="2.98">
-<div class="thumbnail">
-<p><a href="./posts/2020-12-21-concise-defense-of-statistical-significance/concise-defense-of-statistical-significance.html"> <img src="./posts/2020-12-21-concise-defense-of-statistical-significance/zscores.png" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/2020-12-21-concise-defense-of-statistical-significance/concise-defense-of-statistical-significance.html">
-<h3 class="no-anchor listing-title">
-A concise defense of statistical significance
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Recent arguments against the use of p-values and significance testing are mostly weak. The weak ones are actually arguments against making decisions or mistakes in general, which is impossible.</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/2020-12-21-concise-defense-of-statistical-significance/concise-defense-of-statistical-significance.html">
-<div class="listing-date">
-Nov 18, 2019
-</div>
-<div class="listing-author">
-Joshua Loftus
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="statistics,reproducibility,selective inference,R" data-listing-date-sort="1519603200000" data-listing-file-modified-sort="1663499231791" data-listing-reading-time-sort="6.41">
-<div class="thumbnail">
-<p><a href="./posts/2020-12-22-a-conditional-approach-to-inference-after-model-selection/a-conditional-approach-to-inference-after-model-selection.html"> <img src="./posts/2020-12-22-a-conditional-approach-to-inference-after-model-selection/a-conditional-approach-to-inference-after-model-selection_files/figure-html/unnamed-chunk-2-1.png" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/2020-12-22-a-conditional-approach-to-inference-after-model-selection/a-conditional-approach-to-inference-after-model-selection.html">
-<h3 class="no-anchor listing-title">
-A conditional approach to inference after model selection
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Model selection can invalidate inference, such as significance tests, but statisticians have recently made progress developing methods to adjust for this bias. This post motivates a conditional approach with a simple screening rule example and introduces an R package that can compute adjusted significance tests.</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/2020-12-22-a-conditional-approach-to-inference-after-model-selection/a-conditional-approach-to-inference-after-model-selection.html">
-<div class="listing-date">
-Feb 26, 2018
-</div>
-<div class="listing-author">
-Joshua Loftus
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-listing-date-sort="1645056000000" data-listing-file-modified-sort="1663446073553" data-listing-reading-time-sort="0.905">
-<div class="thumbnail">
-<p><a href="./research/fairness-and-causality-in-machine-learning/fairness-and-causality-in-machine-learning.html"> <img src="http://joshualoftus.com/talks/2021-04-18-conference-on-machine-learning-and-inequality/preview.png" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./research/fairness-and-causality-in-machine-learning/fairness-and-causality-in-machine-learning.html">
-<h3 class="no-anchor listing-title">
-Fairness and causality in machine learning
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Counterfactual fairness formulates fair machine learning within a causal inference perspective, motivated by the intuition that defining or verifying fairness is a similar challenge to determining causality.</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./research/fairness-and-causality-in-machine-learning/fairness-and-causality-in-machine-learning.html">
-<div class="listing-date">
-Feb 17, 2022
-</div>
-<div class="listing-author">
-Joshua Loftus
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-listing-date-sort="1645056000000" data-listing-file-modified-sort="1663446163985" data-listing-reading-time-sort="0.895">
-<div class="thumbnail">
-<p><a href="./research/inference-after-model-selection/inference-after-model-selection.html"> <img src="https://joshualoftus.com/posts/2020-12-22-a-conditional-approach-to-inference-after-model-selection/a-conditional-approach-to-inference-after-model-selection_files/figure-html5/unnamed-chunk-2-1.png" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./research/inference-after-model-selection/inference-after-model-selection.html">
-<h3 class="no-anchor listing-title">
-Inference after model selection
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>This work involves challenging mathematical and computational aspects of conducting inference after model selection procedures with complicated underlying geometry. This enables significance testing, for example, after using some of the most popular model selection procedures such as the lasso with regularization chosen by cross-validation, or forward stepwise with number of steps chosen by AIC or BIC. Often the resulting significance tests are slightly modified versions of the classical tests in regression analysis.</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./research/inference-after-model-selection/inference-after-model-selection.html">
-<div class="listing-date">
-Feb 17, 2022
-</div>
-<div class="listing-author">
-Joshua Loftus
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="statistics,machine learning,physics" data-listing-date-sort="1644969600000" data-listing-file-modified-sort="1663499004787" data-listing-reading-time-sort="16.845">
-<div class="thumbnail">
-<p><a href="./posts/2020-11-23-least-squares-as-springs/least-squares-as-springs.html"> <img src="./posts/2020-11-23-least-squares-as-springs/least-squares-as-springs_files/figure-html/unnamed-chunk-6-1.png" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/2020-11-23-least-squares-as-springs/least-squares-as-springs.html">
-<h3 class="no-anchor listing-title">
-Least squares as springs
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Physics intuition for regression and other methods that minimize squared error. We can imagine springs pulling the model toward the data.</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/2020-11-23-least-squares-as-springs/least-squares-as-springs.html">
-<div class="listing-date">
-Feb 16, 2022
-</div>
-<div class="listing-author">
-Joshua Loftus
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="statistics,reproducibility" data-listing-date-sort="1518480000000" data-listing-file-modified-sort="1663437080234" data-listing-reading-time-sort="5.995">
-<div class="thumbnail">
-<a href="./posts/2020-12-22-model-selection-bias-invalidates-significance-tests/model-selection-bias-invalidates-significance-tests.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="./posts/2020-12-22-model-selection-bias-invalidates-significance-tests/model-selection-bias-invalidates-significance-tests.html"></a></p>
-</div>
-<div class="body">
-<a href="./posts/2020-12-22-model-selection-bias-invalidates-significance-tests/model-selection-bias-invalidates-significance-tests.html">
-<h3 class="no-anchor listing-title">
-Model selection bias invalidates significance tests
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>People often do regression model selection, either by hand or using algorithms like forward stepwise or the lasso. Sometimes they also report significance tests for the variables in the chosen model. But there’s a problem: the reason for <em>p</em>-value significance may just be something called model selection bias.</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/2020-12-22-model-selection-bias-invalidates-significance-tests/model-selection-bias-invalidates-significance-tests.html">
-<div class="listing-date">
-Feb 13, 2018
-</div>
-<div class="listing-author">
-Joshua Loftus
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-listing-date-sort="1608508800000" data-listing-file-modified-sort="1663437080358" data-listing-reading-time-sort="2.435">
-<div class="thumbnail">
-<p><a href="./posts/welcome/welcome.html"> <img src="./posts/welcome/nyumap.jpg" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/welcome/welcome.html">
-<h3 class="no-anchor listing-title">
-Relocating and rebuilding
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Some retrospective on an eventful 2020, announcing a move from New York to London, a couple book recommendations, and a new design for this website.</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/welcome/welcome.html">
-<div class="listing-date">
-Dec 21, 2020
-</div>
-<div class="listing-author">
-Joshua Loftus
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-listing-file-modified-sort="1663450638673" data-listing-reading-time-sort="2.085">
-<div class="thumbnail">
-<a href="./research.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="./research.html"></a></p>
-</div>
-<div class="body">
-<a href="./research.html">
-<h3 class="no-anchor listing-title">
-Research
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-Page for recent talks/slides. More information can be found on my Google Scholar profile page.
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./research.html"> </a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="8" data-listing-date-sort="1645056000000" data-listing-file-modified-sort="1663446488236" data-listing-reading-time-sort="0.34">
-<div class="thumbnail">
-<a href="./research/philosophy-talks-links/philosophy-talks-links.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="./research/philosophy-talks-links/philosophy-talks-links.html"></a></p>
-</div>
-<div class="body">
-<a href="./research/philosophy-talks-links/philosophy-talks-links.html">
-<h3 class="no-anchor listing-title">
-Research philosophy, slides from talks, other links
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Slides for recent talks, writing for a general audience, various links, and an explanation of the high level goals and motivations of my research.</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./research/philosophy-talks-links/philosophy-talks-links.html">
-<div class="listing-date">
-Feb 17, 2022
-</div>
-<div class="listing-author">
-Joshua Loftus
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="9" data-listing-file-modified-sort="1663450667752" data-listing-reading-time-sort="0.025">
-<div class="thumbnail">
-<a href="./software.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="./software.html"></a></p>
-</div>
-<div class="body">
-<a href="./software.html">
-<h3 class="no-anchor listing-title">
-Software
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
- <img src="./posts/2020-12-21-concise-defense-of-statistical-significance/zscores.png" class="thumnail-image"> 
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./software.html"> </a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="10" data-listing-file-modified-sort="1663450973643" data-listing-reading-time-sort="1.37">
-<div class="thumbnail">
-<p><a href="./about.html"> <img src="./me.jpg" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./about.html">
-<h3 class="no-anchor listing-title">
-joshua loftus
-</h3>
-</a><div class="listing-subtitle"><a href="./about.html">
-</a><a href="https://www.lse.ac.uk/Statistics/People/Dr-Joshua-Loftus"><i class="fa-solid fa-building-columns fa-Large" title="university" aria-hidden="true"></i></a> <a href="https://scholar.google.com/citations?user=SIbr3XUAAAAJ&amp;hl=en"><i class="ai  ai-google-scholar ai-Large"></i></a> <a href="https://github.com/joftius/"><i class="fa-brands fa-github fa-Large" title="github" aria-hidden="true"></i></a> <a href="https://www.linkedin.com/in/joftius/"><i class="fa-brands fa-linkedin fa-Large" title="linkedin" aria-hidden="true"></i></a> <a href="mailto:J.R.Lastname@lse.ac.uk"><i class="fa-solid fa-envelope fa-Large" title="email" aria-hidden="true"></i></a> <a href="https://twitter.com/joftius"><i class="fa-brands fa-twitter fa-Large" title="twitter" aria-hidden="true"></i></a>
-</div>
-<div class="listing-description">
-I’m a professor of statistics and data science, and have also studied mathematics and biostatistics. From my background–as a first-generation college graduate starting in community college–I was very fortunate to finish a PhD in Statistics at Stanford University. I’m grateful for that opportunity and to the teachers who helped me along the way, and I care about diversity, inclusion, and mentoring students from underprivileged backgrounds. In my teaching I want to empower students: to understand deeply, to correctly interpret, and to wisely use the powerful tools of data science for good.
-</div>
-
-</div>
-<div class="metadata">
-<a href="./about.html"> </a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="11" data-listing-file-modified-sort="1663445400513" data-listing-reading-time-sort="0.005">
-<div class="thumbnail">
-<a href="./posts.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="./posts.html"></a></p>
-</div>
-<div class="body">
-<a href="./posts.html">
-<h3 class="no-anchor listing-title">
-neurath’s speedboat
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
- <img src="./posts/2020-11-23-least-squares-as-springs/least-squares-as-springs_files/figure-html/unnamed-chunk-6-1.png" class="thumnail-image"> 
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts.html"> </a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="12" data-listing-file-modified-sort="1663451226142" data-listing-reading-time-sort="0.355">
-<div class="thumbnail">
-<p><a href="./index.html"> <img src="./me.jpg" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./index.html">
-<h3 class="no-anchor listing-title">
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
- <i class="ai  ai-google-scholar ai-Large"></i>    
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./index.html"> </a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

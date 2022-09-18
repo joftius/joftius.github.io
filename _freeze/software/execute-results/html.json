@@ -1,8 +1,10 @@
 {
-  "hash": "d7692a80617e12036dd69220b5457731",
+  "hash": "40e686bbf3facd43036c6a243b58058f",
   "result": {
-    "markdown": "---\ntitle: \"Software\"\ndescription: |\nlisting: software\n---\n\n\n",
-    "supporting": [],
+    "markdown": "---\ntitle: \"Software\"\ndescription: |\nlisting: \n  contents: software\n  type: grid\n---\n\n\n",
+    "supporting": [
+      "software_files"
+    ],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],

@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>{{< fa solid chart-simple size=large >}} joshua loftus</title>
+<link>http://joshualoftus.com/posts.html</link>
+<atom:link href="http://joshualoftus.com/posts.xml" rel="self" type="application/rss+xml"/>
+<description></description>
+<generator>quarto-1.1.251</generator>
+<lastBuildDate>Wed, 16 Feb 2022 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Least squares as springs</title>
+  <dc:creator>Joshua Loftus</dc:creator>
+  <link>http://joshualoftus.com/posts/2020-11-23-least-squares-as-springs/least-squares-as-springs.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>During a recent “Zoom” lecture a student asked me a question about outliers. In the process of answering I realized something that I knew was true but had never seen explained in any sources. This post is my first attempt to develop an <strong>analogy that connects least squares methods, like regression or PCA, to physical intuition about springs or elastics</strong>.</p>
+<section id="the-simplest-version" class="level2">
+<h2 class="anchored" data-anchor-id="the-simplest-version">The simplest version</h2>
+<p>To illustrate I will use data from <a href="https://cran.r-project.org/web/packages/gapminder/index.html">gapminder</a> conveniently provided in an R package by Jenny Bryan. Consider these two variables in the dataset, GDP per capita and life expectancy, plotted here in a standard scatterplot:</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="http://joshualoftus.com/posts/2020-11-23-least-squares-as-springs/least-squares-as-springs_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>(To have a less busy plot, one with fewer points, I’ve subsetted the data to the year 2007 and countries in Asia).</p>
+<p>Now we’re going to bring physical intuition into this by imagining these points as physical objects. For example, we can interpret the mean <img src="https://latex.codecogs.com/png.latex?(%5Cbar%20x,%20%5Cbar%20y)"> = 6252.7, 70.7 as the center of mass (if we assume every point has the same mass). This is the larger, blue point in the plot above. It’s not really important to think of mass specifically, just that this point is the center of the physical ensemble.</p>
+<p>We need a few simple rules for our physical system:</p>
+<ul>
+<li>Changing the data is not allowed, i.e.&nbsp;the points are immovable.</li>
+<li>For methods like regression (or PCA), we imagine a rigid object like a line (or hyperplane, in multiple regression) passing through the points, and the points exerting some force that changes the position of this body</li>
+<li>If these methods use the standard least squares loss function then this force can be represented by springs or elastics, all of the same length and strength, attached at one end to the points and on the other end to the line (or hyperplane).</li>
+</ul>
+<p>This line (or hyperplane) may bounce around at first as the springs pull it toward their anchoring points, but eventually it settles into an equilibrium where the forces from all the opposing springs are balanced out. In this equilibrium state we have two immediate consequences:</p>
+<ol type="1">
+<li>The rigid object (line or hyperplane) <em>must pass through the center point</em>. If it did not, there would be a net force acting on the object pulling it toward the center point, hence it would not yet be at equilibrium. In other words, all of the forces that would <em>shift</em> the object are exactly balanced out so it does not shift.</li>
+<li>The same is true about <em>torques</em>, all of the forces that would <em>rotate</em> the object are balanced out.</li>
+</ol>
+<p>For regression we need one more rule: the springs are guided so they only pull in directions aligned with the axis of the outcome variable, i.e.&nbsp;“vertically.” Let’s call this the <strong>vertical rule</strong> for reference later.</p>
+<p>Here is our simple example in picture form:</p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="http://joshualoftus.com/posts/2020-11-23-least-squares-as-springs/least-squares-as-springs_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>(To create this plot I have copied the <code>geom_spring</code> example by <a href="https://twitter.com/thomasp85/status/1331338379636649986">Thomas Lin Pedersen</a> from (the new version of!) the <a href="https://ggplot2-book.org/spring1.html">ggplot2 book</a>).</p>
+<p>If you are not immediately convinced that this intuition pays off, consider the issue that motivated me to think of this in the first place: <a href="https://en.wikipedia.org/wiki/Influential_observation">influential outliers</a>, points with high “leverage” in the statistical sense. The definition of statistical leverage is a bit complicated. But we can get the right intuition about it from a physical sense rather than those formal definitions. See the point in the bottom left of the plot above? Since it is pulling closer to the end of the line it has more leverage in the actual <em>physical</em> sense. This is the explanation I prefer to give students who aren’t taking a mathematical statistics course.</p>
+<p>(In case you’re wondering, that point is Afghanistan, a nation where the United States remains at war for almost two decades now…)</p>
+<p>Let’s see what happens when we move this one point so its leverage is being used to rotate the line clockwise instead of counter-clockwise. The old regression line, before this change, is shown as a faded line below for comparison.</p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula 'y ~ x'
+`geom_smooth()` using formula 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="http://joshualoftus.com/posts/2020-11-23-least-squares-as-springs/least-squares-as-springs_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Notice the following changes: the center of mass has shifted a little, the point we moved is now a greater distance from the line so its force is larger, and the line has rotated noticeably due to the influence of this one point, even though our dataset has over 30 points, because that point has a lot of leverage.</p>
+<section id="hookes-law" class="level3">
+<h3 class="anchored" data-anchor-id="hookes-law">Hooke’s law</h3>
+<p>Is this intuition correct? Can we really think of least squares solutions (e.g.&nbsp;regression lines) as the equilibrium of a system of springs? Yes, or elastic rubber bands, or any material with linear elasticity, i.e.&nbsp;that follows <a href="https://en.wikipedia.org/wiki/Hooke's_law">Hooke’s law</a>. Let’s consider how to apply this to regression, where for each point <img src="https://latex.codecogs.com/png.latex?(x_i,%20y_i)"> in the data, the spring attaches to the regression line at the point <img src="https://latex.codecogs.com/png.latex?(x_i,%20%5Chat%20y_i)">. So the spring is stretched to a length of <img src="https://latex.codecogs.com/png.latex?%7Cr_i%7C%20=%20%7Cy_i%20-%20%5Chat%20y_i%7C">, and Hooke’s law says each spring is pulling on the line with a force proportional to this distance.</p>
+<p>When the system of the line and springs has stopped moving and settled into an equilibrium, this equilibrium position minimizes the <em>energy</em> of the system, which in this case is just the <a href="https://en.wikipedia.org/wiki/Potential_energy#Potential_energy_for_a_linear_spring">potential energy</a>. The potential energy stored in a spring that is stretched a certain distance is the integral of the force over that distance, and since the force scales with the distance this means the energy scales with the squared distance. Hence, the equilibrium of this physical system <strong>minimizes the total potential energy</strong>:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Csum_%7Bi=1%7D%5En%20%5Cfrac%7B1%7D%7B2%7Dk%20%7Cr_i%7C%5E2%20=%20%5Cfrac%7B1%7D%7B2%7Dk%20%5Csum_%7Bi=1%7D%5En%20%20(y_i%20-%20%5Chat%20y_i)%5E2%0A"> where <img src="https://latex.codecogs.com/png.latex?k%20%3E%200"> is the spring “stiffness” constant. The line that minimizes this is the same as the least squares regression line because the constants in front don’t change the minimizer. This argument works just as well for multiple regression as simple regression, even if we can’t visualize the higher dimensional plots involved. We can still think of springs that are pulling, perpendicular to the <img src="https://latex.codecogs.com/png.latex?y">-axis, on a hyperplane. In this case there can be torques in various different hyperplanes passing through the center of mass but they’re all balanced out, so the hyperplane doesn’t get “tilted” in any direction (if it’s in equilibrium).</p>
+</section>
+</section>
+<section id="principal-components-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="principal-components-analysis">Principal components analysis</h2>
+<p>Although PCA is often considered a more advanced topic than (simple) regression, its justification in our physical analogy is actually simpler. All we need to do is drop the <strong>vertical rule</strong> that was required for regression. In this case, the springs are allowed to rotate their angle of departure from the points, and their position of attachment to the line (or hyperplane) can slide to accommodate this change in angle. This results in an equilibrium where the springs are stretched as little possible. The total potential energy reaches a lower value because the springs are no longer constrained in which direction they can pull.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="http://joshualoftus.com/posts/2020-11-23-least-squares-as-springs/least-squares-as-springs_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>I’ve plotted the line in a different color to emphasize that it’s <a href="https://benediktehinger.de/blog/science/scatterplots-regression-lines-and-the-first-principal-component/"><strong>not</strong> the regression line</a>. Notice that the springs are no longer pulling vertically, instead they connect to the line at the point on the line which is <em>nearest</em> (as measured by overall distance, not just distance in the <img src="https://latex.codecogs.com/png.latex?y">-coordinate alone).</p>
+<p>(This is also called <a href="https://en.wikipedia.org/wiki/Total_least_squares">total least squares</a> or a special case of <a href="https://en.wikipedia.org/wiki/Deming_regression">Deming regression</a>.)</p>
+</section>
+<section id="model-complexityelasticity-machine-learning-or-ai" class="level2">
+<h2 class="anchored" data-anchor-id="model-complexityelasticity-machine-learning-or-ai">Model complexity/elasticity: machine learning or AI</h2>
+<p>We can keep building on this analogy by using it to understand more complex modeling methods with another very simple idea: <strong>elasticity of the model object itself</strong>. Instead of a rigid body like a line (or hyperplane), if we imagine it’s made of an elastic material that can be (locally) stretched and deformed then we can get more complex types of regression models.</p>
+<p>In this analogy, simpler models like linear regression correspond to more rigid objects like an unbendable metal stick, and more complex models allow flexibility or elasticity when fitting the conditional expectation function like a bendable plastic stick, a rubber band, or even a tensionless string in the most complex case where the model is allowed to fit the points perfectly.</p>
+<p>For example, here’s the local polynomial regression method (<code>loess</code>) used by default in the <code>ggplot</code> function <code>stat_smooth</code>:</p>
+<div class="cell" data-preview="true">
+<div class="cell-output-display">
+<p><img src="http://joshualoftus.com/posts/2020-11-23-least-squares-as-springs/least-squares-as-springs_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>This intuition is not only useful for learning the basic ideas of model complexity and machine learning, it can even be used for cutting-edge research. For example see this <a href="https://arxiv.org/abs/1910.06943">recent paper</a> on elasticity in neural networks (by my friend Weijie Su and his coauthor!)</p>
+</section>
+<section id="concluding-thoughts" class="level2">
+<h2 class="anchored" data-anchor-id="concluding-thoughts">Concluding thoughts</h2>
+<p>I think there’s a lot of <em>potential</em> here for statistics education, especially for younger students. It wouldn’t be too difficult to create a physical <a href="https://en.wikipedia.org/wiki/Bean_machine">classroom demonstration</a> using springs or elastics, especially for the PCA case since that wouldn’t require any guiding tracks to constraint the force direction to be vertical.</p>
+<p>I also need to teach myself some more advanced plotting to <code>gganimate</code> these examples. If I succeed I’ll update this page.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>I was surprised by how difficult it was to find any references for this elementary idea that provides physical intuition for such an important method as least squares regression. If you’re aware of any others please contact me because I would be glad to know of them.</p>
+<p>(<em>Update</em>) Thankfully, after this post was shared widely on Twitter people have helped alert me to more references which are now included in the list below.</p>
+<ul>
+<li>Dwight, T. W. (1937). <a href="https://pubs.cif-ifc.org/doi/abs/10.5558/tfc13509-4">The fitting of linear regression lines by the method of least squares</a>. The Forestry Chronicle, 13(4), 509-519.</li>
+<li>Levi, M. (2012). <a href="https://press.princeton.edu/books/paperback/9780691154565/the-mathematical-mechanic">The mathematical mechanic: using physical reasoning to solve problems</a>. Princeton University Press.</li>
+<li>Excerpt of the previous reference on <a href="https://math.stackexchange.com/questions/2369673/proving-linear-regression-by-using-physical-springs-model">stackexchange</a></li>
+</ul>
+<p>Update: Thanks to everyone who has contacted me with these additional references!</p>
+<ul>
+<li><p>Trey Goesh created this <a href="https://www.desmos.com/calculator/90vaqtqpx6">interactive simulation</a></p></li>
+<li><p>Kieran Healy linked to this stackexchange answer with an <a href="https://stats.stackexchange.com/a/140579">awesome animation</a></p></li>
+<li><p>Kameron Decker Harris pointed out this blog post showing <a href="https://www.core77.com/posts/55368/When-Splines-Were-Physical-Objects">splines as bendy physical sticks</a></p></li>
+<li><p>Chris Schwarz at UIowa brought my attention to these <a href="https://ocw.mit.edu/courses/mathematics/18-085-computational-science-and-engineering-i-fall-2008/video-lectures/lecture-1-four-special-matrices/">lectures by the legendary Gil Strang</a></p></li>
+<li><p>Michael Friendly created a <a href="https://gist.github.com/friendly/b20af682f18900eb3271e0c8dacfb7c6">bibliography</a> of some references to physics inspired stats models</p></li>
+<li><p>A <a href="https://youtu.be/tVwV14YkbYs">lecture by Yann LeCun</a> in the NYU deep learning course</p></li>
+<li><p>A recent <a href="https://iclr.cc/virtual/poster_Hkxzx0NtDB.html">ICLR paper (with video of a short talk)</a> by Will Grathwohl and others</p></li>
+<li><p>A <a href="https://arxiv.org/abs/1503.03585">paper on deep learning</a> by Jascha Sohl-Dickstein and others</p></li>
+<li><p>John Davis at UIndiana created this <a href="https://gist.github.com/johnjdavisiv/378863d54889b1b923c89f590ece341e">demo showing 3D splines</a> (just imagine the vertical lines are springs!) and pointed to a <a href="https://fromthebottomoftheheap.net/2016/03/27/soap-film-smoothers/">different physics-inspired example</a> by Gavin Simpson</p></li>
+</ul>
+
+
+</section>
+
+ ]]></description>
+  <category>statistics</category>
+  <category>machine learning</category>
+  <category>physics</category>
+  <guid>http://joshualoftus.com/posts/2020-11-23-least-squares-as-springs/least-squares-as-springs.html</guid>
+  <pubDate>Wed, 16 Feb 2022 00:00:00 GMT</pubDate>
+  <media:content url="http://joshualoftus.com/posts/2020-11-23-least-squares-as-springs/least-squares-as-springs_files/figure-html/unnamed-chunk-6-1.png" medium="image" type="image/png" height="103" width="144"/>
+</item>
+<item>
+  <title>Relocating and rebuilding</title>
+  <dc:creator>Joshua Loftus</dc:creator>
+  <link>http://joshualoftus.com/posts/welcome/welcome.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>I’m rebuilding this site using <a href="https://rstudio.github.io/distill">distill</a>. It might take some time but links to old posts and lecture notes will eventually work again. If something is missing feel free to contact me about it.</p>
+<p>I’m also relocating to start a position in the Statistics Department at the London School of Economics. I’ll be teaching an undergraduate course on machine learning for statistics majors, and will post some of the materials in the teaching section here.</p>
+<p>A lot of things happened in 2020 and changed my thinking in certain ways. Imagining counterfactual responses and trajectories of the coronavirus pandemic is illuminating. From the beginning, and even now after almost a year, many countries have failed almost completely at learning from the experiences of others. There are deep structural, institutional, and behavioral obstacles to coordinated intentional action, which become worse the longer capitalism has dominated a given society. Thinking of economies as a distributed artificial intelligence, capitalism is a kind of overfitting- maximizing the wealth and power of one small class of people at the expense of every other possible fitness metric. We’ve seen myriad negative consequences of that this year in a kind of speed-run preview of what will likely become much worse over the course of climate change.</p>
+<p>I read a few books this year that influenced my thinking a lot.</p>
+<p><a href="https://lareviewofbooks.org/feature/capitalism-or-freedom-a-symposium-on-martin-hagglunds-this-life-secular-faith-and-spiritual-freedom/">This Life</a> by Martin Hägglund resonated with vague but deeply held feelings I’ve had as long as I can remember, and gives a coherent way to think explicitly about them. My own short version: the fact of inevitable death reminds us that time is precious, but if we look around it seems most of us are “wasting” a lot of our time or “spending” it in ways we would rather not, which is a great tragedy and maybe the most important moral problem facing humanity. Hägglund argues convincingly to define democratic socialism as nothing less than a revolution in values which is required for humanity to be meaningfully free.</p>
+<p><a href="https://secretofoursuccess.fas.harvard.edu/">The Secret of Our Success</a> by Joseph Henrich was my first in-depth exposure to academic research about (cumulative) cultural evolution. The book is focused on the particular ways that humans are different from other animals. I’m obsessed with cumulative cultural evolution now, even if I did disagree with the book in some points (mainly where it seems to take evolutionary psychology seriously for some reason). I’m somewhat convinced now that “<a href="https://en.wikipedia.org/wiki/Imitation#Over-imitation">over-imitation</a>” is our One Weird Trick for building civilization, a useful lens through which to approach learning (and, therefore, anything that can be learned), and (despite <a href="https://royalsocietypublishing.org/doi/10.1098/rspb.2010.1399">this paper</a>) closely related to another useful concept called “causal opacity.”</p>
+<p>Leaving New York was <a href="https://twitter.com/joftius/status/1339605169584140289">not easy</a>. I’m gonna <a href="https://twitter.com/joftius/status/1340089448143466498">miss it</a>. There are so many places I need to visit again when I get chance. With vaccines rolling out now, hopefully it won’t be long until we’re all visiting each other much more often again.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="http://joshualoftus.com/posts/welcome/nyumap.jpg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Map showing the area around Washington Square Park</figcaption><p></p>
+</figure>
+</div>
+
+
+
+ ]]></description>
+  <guid>http://joshualoftus.com/posts/welcome/welcome.html</guid>
+  <pubDate>Mon, 21 Dec 2020 00:00:00 GMT</pubDate>
+  <media:content url="http://joshualoftus.com/posts/welcome/nyumap.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>A concise defense of statistical significance</title>
+  <dc:creator>Joshua Loftus</dc:creator>
+  <link>http://joshualoftus.com/posts/2020-12-21-concise-defense-of-statistical-significance/concise-defense-of-statistical-significance.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>A <a href="https://www.nature.com/articles/d41586-019-00857-9">letter</a>, signed by over 800 scientists and published in Nature called for an end to using p-values to decide whether data refutes or supports a scientific hypothesis. The letter has received <a href="https://www.newyorker.com/magazine/2019/09/09/what-statistics-can-and-cant-tell-us-about-ourselves">widespread</a> <a href="https://www.miamiherald.com/news/article237281119.html">coverage</a> and reignited an old debate.</p>
+<section id="weaker-arguments" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="weaker-arguments">Weaker arguments</h2>
+<p>Most of the objections to p-values or the p &lt; 0.05 threshold in these articles can be summarized into two categories:</p>
+<ul>
+<li>Objections that would apply to any method resulting in a yes/no decision</li>
+<li>Objections that would apply to any method with yes/no decisions that might be wrong</li>
+</ul>
+<aside>
+<p>A histogram of z-scores showing apparent publication bias from Erik van Zwet and Eric Cator’s “significance filter” <a href="https://arxiv.org/abs/2009.09440">paper</a></p>
+<div class="cell" data-preview="true">
+<div class="cell-output-display">
+<p><img src="http://joshualoftus.com/posts/2020-12-21-concise-defense-of-statistical-significance/zscores.png" class="img-fluid" width="520"></p>
+</div>
+</div>
+</aside>
+<p>Banning p-values or “p &lt; 0.05” thresholds wouldn’t address these objections. We will still have to make decisions, we can’t just report a Bayes factor (or a p-value) and refuse to decide whether a drug trial should continue or not. So our decisions will still sometimes be wrong, and in both directions.</p>
+</section>
+<section id="stronger-arguments" class="level2">
+<h2 class="anchored" data-anchor-id="stronger-arguments">Stronger arguments</h2>
+<p>The last kind of objection is more sensible–though less often the focal point of this debate–and I would summarize it as:</p>
+<ul>
+<li>Statistical significance is not sufficient for practical significance, we need to know something about the effect size.</li>
+</ul>
+<p>I more or less agree with this, but it is not an objection to using p-values or p &lt; 0.05, it’s an objection to <em>misusing</em> them or <em>using them in isolation</em>.</p>
+<p>And any method can be misused! A scientist could do many tests and only report the significant results, or they could compute many effect size estimates or Bayes factors and only report the largest ones.</p>
+</section>
+<section id="real-roots-of-the-problem" class="level2">
+<h2 class="anchored" data-anchor-id="real-roots-of-the-problem">Real roots of the problem</h2>
+<p>I think there are two underlying problems that the p-value debate is mostly a distraction from: the <a href="https://www.significancemagazine.com/2-uncategorised/593-cargo-cult-statistics-and-scientific-crisis">rote</a>, uncritical application of any kind of statistical method (because, as Jack Schwartz <a href="https://link.springer.com/chapter/10.1007/978-0-8176-4775-9_3">put it</a>, “… the simple-mindedness … to dress scientific brilliancies and scientific absurdities alike in the impressive uniform of formulae and theorems. Unfortunately however, an absurdity in uniform is far more persuasive than an absurdity unclad.”), and the incentive structure of scientific publication.</p>
+<p>From <a href="https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124">Why most published research findings are false</a> (Ioannidis):</p>
+<ul>
+<li>Corollary 4: The greater the flexibility in designs, definitions, outcomes, and analytical modes in a scientific field, the less likely the research findings are to be true.</li>
+<li>Corollary 5: The greater the financial and other interests and prejudices in a scientific field, the less likely the research findings are to be true.</li>
+<li>Corollary 6: The hotter a scientific field (with more scientific teams involved), the less likely the research findings are to be true.</li>
+</ul>
+</section>
+<section id="the-burden-of-the-burden-of-proof" class="level2">
+<h2 class="anchored" data-anchor-id="the-burden-of-the-burden-of-proof">The burden of the burden of proof</h2>
+<p>Lastly, it’s unfortunate but amusing that the Herald article mentioned many people misunderstand p-values, and the New Yorker article had this correction: “An earlier version of this article incorrectly defined p-value.”</p>
+<p>I sympathize with researchers who have done good work but can’t get it published because the result isn’t “significant.” This is a problem with publication standards, not statistical methods. It should be normal to publish negative or unimpressive results, otherwise the literature has little to teach us about what <em>doesn’t</em> work.</p>
+<p>It’s also a resource issue. Collecting data is costly. There are many barriers to research other than arbitrary publication standards involving p-values, including many other arbitrary publication standards. While discontent has been focused on p-values, we may find ourselves suddenly facing <em>de facto</em> expectations of applying (often unnecessary) “artificial intelligence” to massive datasets in order to be published.</p>
+<p>No particular statistical methodology is the cause or solution of these issues. (More and better statistics education is necessary!)</p>
+
+
+</section>
+
+ ]]></description>
+  <category>statistics</category>
+  <category>reproducibility</category>
+  <guid>http://joshualoftus.com/posts/2020-12-21-concise-defense-of-statistical-significance/concise-defense-of-statistical-significance.html</guid>
+  <pubDate>Mon, 18 Nov 2019 00:00:00 GMT</pubDate>
+  <media:content url="http://joshualoftus.com/posts/2020-12-21-concise-defense-of-statistical-significance/zscores.png" medium="image" type="image/png" height="89" width="144"/>
+</item>
+<item>
+  <title>A conditional approach to inference after model selection</title>
+  <dc:creator>Joshua Loftus</dc:creator>
+  <link>http://joshualoftus.com/posts/2020-12-22-a-conditional-approach-to-inference-after-model-selection/a-conditional-approach-to-inference-after-model-selection.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="overly-honest-research-methods" class="level2">
+<h2 class="anchored" data-anchor-id="overly-honest-research-methods">Overly honest research methods?</h2>
+<p>A high profile case of a scientist retracting multiple papers due to <a href="https://xkcd.com/882/">p-hacking</a> is recently gaining new attention due to a <a href="https://www.buzzfeed.com/stephaniemlee/brian-wansink-cornell-p-hacking">BuzzFeed article</a>. Hopefully this will raise awareness and convince some that “keep hammering away at your data until you find want you were expecting” is a poor way to do science. But it’s possible to get things wrong, for the same reason, no matter how well-intentioned we may be. Even if we aren’t specifically seeking significant <img src="https://latex.codecogs.com/png.latex?p">-values, we can end up with biased results due to model selection. To see why, check out this earlier post on <a href="../model-selection-bias-invalidates-significance-tests/">model selection bias</a>. In this post I will describe a method to protect ourselves from this bias and compute <em>adjusted</em> <img src="https://latex.codecogs.com/png.latex?p">-values that are valid even though we’ve done model selection.</p>
+</section>
+<section id="model-selection-with-forward-stepwise" class="level2">
+<h2 class="anchored" data-anchor-id="model-selection-with-forward-stepwise">Model selection with forward stepwise</h2>
+<p>We’ll pick up on the same example from a previous post:</p>
+<blockquote class="blockquote">
+<p>[…] consider the <code>candy_rankings</code> data from the <a href="https://cran.r-project.org/web/packages/fivethirtyeight/index.html">fivethirtyeight</a> package. The <strong>outcome variable</strong> is how often a given candy won in popularity matchups against other candies, and the <strong>predictor variables</strong> are various properties like whether or not the candy has chocolate, whether or not it’s fruit flavored, how sugary it is relative to other candies, and so on. There are 85 candies and 11 predictor variables in the dataset.</p>
+</blockquote>
+<p>This time we’ll use the actual response variable, and run forward stepwise with AIC to pick a subset of the predictors that are highly predictive of the outcome (win percent). The resulting model, along with the biased <img src="https://latex.codecogs.com/png.latex?p">-values that popular software computes by default, is given below.</p>
+<div class="cell" data-hash="a-conditional-approach-to-inference-after-model-selection_cache/html/unnamed-chunk-1_895362c683e45b6d39c568d5a4281169">
+<div class="cell-output cell-output-stdout">
+<pre><code>                     Estimate Std. Error t value  Pr(&gt;|t|)
+chocolateTRUE            19.1        3.6     5.3 0.0000009
+fruityTRUE                8.9        3.6     2.5 0.0147319
+peanutyalmondyTRUE        9.5        3.4     2.8 0.0073720
+crispedricewaferTRUE      8.4        4.5     1.9 0.0652527
+hardTRUE                 -5.7        3.3    -1.7 0.0887116
+sugarpercent              8.0        4.1     1.9 0.0569311</code></pre>
+</div>
+</div>
+<p>These <img src="https://latex.codecogs.com/png.latex?p">-values are probably too small. The model selection method chose variables that seemed to be predictive of the outcome. The way <img src="https://latex.codecogs.com/png.latex?p">-values are computed is to consider how extreme the test statistic <img src="https://latex.codecogs.com/png.latex?T"> is under the null hypothesis: <img src="https://latex.codecogs.com/png.latex?P(T%20%3E%20%7Ct%7C)">. But the model selection procedure picks variables that tend to have large observed values of <img src="https://latex.codecogs.com/png.latex?%7Ct%7C">, whether or not the null hypothesis for any one of them is true. How can we correct this? By the end of this post we’ll have adjusted <img src="https://latex.codecogs.com/png.latex?p">-values for this example, but first we need to understand how that adjustment works.</p>
+</section>
+<section id="adjusted-inference-by-conditionional-probability" class="level2">
+<h2 class="anchored" data-anchor-id="adjusted-inference-by-conditionional-probability">Adjusted inference by conditionional probability</h2>
+<p>One approach, often referred to as <a href="http://www.pnas.org/content/112/25/7629.short">selective inference</a>, is to use <em>conditional</em> probabilities when computing <img src="https://latex.codecogs.com/png.latex?p">-values. Consider a random variable <img src="https://latex.codecogs.com/png.latex?M"> representing which model is chosen by the model selection method, and let <img src="https://latex.codecogs.com/png.latex?m"> be the observed value of <img src="https://latex.codecogs.com/png.latex?M"> after running the algorithm (e.g.&nbsp;forward stepwise) on our data and getting a specific model. To compute conditionally adjusted <img src="https://latex.codecogs.com/png.latex?p">-values, we use <img src="https://latex.codecogs.com/png.latex?%0AP(T%20%3E%20%7Ct%7C%20%5Cmid%20M%20=%20m)%0A"> This conditional probability law usually has a simple form. For example, if the test statistic has a <img src="https://latex.codecogs.com/png.latex?t">-distribution, then the conditional law is usually a truncated <img src="https://latex.codecogs.com/png.latex?t">. The specifics depend on the kind of model selection algorithm being used, and working them out is an area of ongoing research in statistics. During my PhD, I worked on a few cases (<a href="https://arxiv.org/abs/1511.01478">groups of variables</a>, <a href="https://arxiv.org/abs/1511.08866">cross-validation</a>) as part of my dissertation. To understand how/why the conditional law works, let’s consider an example that’s simpler than forward stepwise.</p>
+</section>
+<section id="marginal-screening-example" class="level2">
+<h2 class="anchored" data-anchor-id="marginal-screening-example">Marginal screening example</h2>
+<p>Suppose that instead of regression, we are solving a many-means problem where we want to select the largest effects. (Regression is similar to this when the design matrix is orthogonal). That is, we have many effects <img src="https://latex.codecogs.com/png.latex?z_i"> for <img src="https://latex.codecogs.com/png.latex?i%20=%201,%20%5Cldots,%20p"> and the selection rule we use is to choose <img src="https://latex.codecogs.com/png.latex?z_i"> if <img src="https://latex.codecogs.com/png.latex?z_i%20%3E%201">. Then we want to do a one-sided test to see if those <img src="https://latex.codecogs.com/png.latex?z_i"> are significantly large. We can think of this procedure as first screening away the majority of the data which we think is just noise, and then testing what made it through the screening procedure. I’ll generate data under the global null hypothesis where every effect is actually zero, and then plot some results.</p>
+<div class="cell" data-preview="true">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="http://joshualoftus.com/posts/2020-12-22-a-conditional-approach-to-inference-after-model-selection/a-conditional-approach-to-inference-after-model-selection_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>This plot shows three things:</p>
+<ul>
+<li>A <strong>histogram</strong> of the selected effects.</li>
+<li>The <strong>solid line</strong> shows the <strong>standard</strong> normal distribution. The upper tail areas of this distribution would be used for standard, unadjusted <img src="https://latex.codecogs.com/png.latex?p">-values.</li>
+<li>The <strong>dashed line</strong> shows the truncated, <strong>conditional</strong> distribution <img src="https://latex.codecogs.com/png.latex?Z%20%7C%20Z%20%3E%201"> for a standard normal <img src="https://latex.codecogs.com/png.latex?Z">.</li>
+</ul>
+<p>If we used the tail areas of the standard normal to compute <img src="https://latex.codecogs.com/png.latex?p">-values, these would be very small, even though the data was all generated under a global null hypothesis. This shows that the selection effect can invalidate inference, leading to a high type 1 error rate. But it’s pretty clear from the plot that the conditional distribution fits the data very well: if “significant” means extreme according to <em>this</em> distribution, then type 1 error rate would be small, it would match whatever nominal threshold <img src="https://latex.codecogs.com/png.latex?%5Calpha"> we decided.</p>
+</section>
+<section id="the-selectiveinference-r-package" class="level2">
+<h2 class="anchored" data-anchor-id="the-selectiveinference-r-package">The selectiveInference R package</h2>
+<p>Let’s return to our first example about forward stepwise.</p>
+<p>The details for computing <img src="https://latex.codecogs.com/png.latex?p">-values with conditional probability when model selection is more complicated–like using forward stepwise with AIC, or the LASSO with cross-validation, etc–are harder than the marginal screening case. But fortunately, there is an R package for it: the <code>selectiveInference</code> package available on <a href="https://cran.r-project.org/web/packages/selectiveInference/index.html">CRAN</a>! This package is still under development, and its authors include Ryan Tibshirani, Rob Tibshirani, Jonathan Taylor, Stephen Reid and some other guy. The package currently does not support R formulas, so first we need to create a <code>model.matrix</code>, then we’ll run forward stepwise again with the <code>fs</code> function, then we’ll compute adjusted inference for the fitted model using <code>fsInf</code>. These last two functions are among several others in the <code>selectiveInference</code> package, including ones for doing all of this with the <a href="https://en.wikipedia.org/wiki/Lasso_(statistics)">LASSO</a> instead of forward stepwise.</p>
+<div class="cell" data-hash="a-conditional-approach-to-inference-after-model-selection_cache/html/unnamed-chunk-3_ed4ce8ed998295674f73eb4edfe5c88e">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+fsInf(obj = fit, type = "aic", ntimes = 1)
+
+Standard deviation of noise (specified or estimated) sigma = 10.703
+
+Testing results at step = 6, with alpha = 0.100
+ Var   Coef Z-score P-value LowConfPt UpConfPt LowTailArea UpTailArea
+   1 19.147   5.233   0.171   -14.225   37.970        0.05      0.050
+   4  9.483   2.697   0.559   -43.440   13.021        0.05      0.049
+   2  8.881   2.445   0.472   -35.763   26.424        0.05      0.050
+   6  8.385   1.833   0.515   -61.565   46.348        0.05      0.050
+  10  7.979   1.894   0.355   -44.222   72.414        0.05      0.050
+   7 -5.669  -1.690   0.358   -48.097   30.090        0.05      0.050
+
+Estimated stopping point from AIC rule = 6</code></pre>
+</div>
+</div>
+<p>There’s a lot of output here, but let’s focus on the adjusted <img src="https://latex.codecogs.com/png.latex?p">-values. We’ll put them together in a readout with the unadjusted ones:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>                     Estimate    Pr(&gt;|t|) Adj.Pr(&gt;|t|)
+chocolateTRUE           19.15 0.000000898        0.171
+peanutyalmondyTRUE       9.48 0.007372014        0.559
+fruityTRUE               8.88 0.014731896        0.472
+crispedricewaferTRUE     8.39 0.065252715        0.515
+sugarpercent             7.98 0.056931100        0.355
+hardTRUE                -5.67 0.088711566        0.358</code></pre>
+</div>
+</div>
+<p>The adjusted <img src="https://latex.codecogs.com/png.latex?p">-values in the right column are all much larger than the unadjusted ones. In general, adjusted <img src="https://latex.codecogs.com/png.latex?p">-values will be larger, but by how much depends on a lot of specifics. In this case, and at the usual <img src="https://latex.codecogs.com/png.latex?%5Calpha%20=%200.05"> level, we went from 3 significant effects without adjusting for selection bias to zero. This reflects a fundamental tradeoff: <strong>the more we use the data to search for interesting things, the less surprised we must be about what we find</strong>. Otherwise, we may just be fooling ourselves, and maybe even end up needing to retract lots of papers…</p>
+<p>I hope this post was a useful introduction to the basic idea of using conditional probability to adjust for model selection, and makes more people aware of the <code>selectiveInference</code> package. This project is also on <a href="https://github.com/selective-inference">github</a>. In future posts I will describe more examples, including other approaches to adjusting inference for model selection bias.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>statistics</category>
+  <category>reproducibility</category>
+  <category>selective inference</category>
+  <category>R</category>
+  <guid>http://joshualoftus.com/posts/2020-12-22-a-conditional-approach-to-inference-after-model-selection/a-conditional-approach-to-inference-after-model-selection.html</guid>
+  <pubDate>Mon, 26 Feb 2018 00:00:00 GMT</pubDate>
+  <media:content url="http://joshualoftus.com/posts/2020-12-22-a-conditional-approach-to-inference-after-model-selection/a-conditional-approach-to-inference-after-model-selection_files/figure-html/unnamed-chunk-2-1.png" medium="image" type="image/png" height="103" width="144"/>
+</item>
+<item>
+  <title>Model selection bias invalidates significance tests</title>
+  <dc:creator>Joshua Loftus</dc:creator>
+  <link>http://joshualoftus.com/posts/2020-12-22-model-selection-bias-invalidates-significance-tests/model-selection-bias-invalidates-significance-tests.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="significance-tests-and-the-reproducibility-crisis" class="level2">
+<h2 class="anchored" data-anchor-id="significance-tests-and-the-reproducibility-crisis">Significance tests and the reproducibility crisis</h2>
+<p>Significance testing may be one of the most popular statistical tools in science. Researchers and journals often treat significance–having a <img src="https://latex.codecogs.com/png.latex?p">-value <img src="https://latex.codecogs.com/png.latex?%3C%200.05">–as indication that a finding is true and perhaps publishable. But the tests used to compute many of the <img src="https://latex.codecogs.com/png.latex?p">-values people still rely on today were developed over a century ago, when “computer” was still a job title. Now that we have digital computers and it’s standard practice to collect and analyze “big data,” the mathematical assumptions underlying many classical significance tests are being pushed beyond their limits.</p>
+<p>The journal Nature surveyed 1,576 scientists, asking them whether there is a <a href="https://www.nature.com/news/1-500-scientists-lift-the-lid-on-reproducibility-1.19970">reproducibility crisis</a>, and found about 90% agreed. Across a range of disciplines, over 40% of respondents had tried and failed to reproduce at least one of <em>their own experiments</em>. What’s going on?</p>
+<p>Andrew Gelman suggested an analogy to describe how data analysis often proceeds in practice: the <a href="https://www.americanscientist.org/article/the-statistical-crisis-in-science">garden of forking paths</a>. Researchers have to make many choices, and each choice represents a turn down a new fork in the path. Out of the many possible paths, how many end in significant, publishable findings, and how many in dead ends? Nobody wants to just give up when they reach a dead end, so maybe they retrace some of their steps and try a different path.</p>
+<p>Model selection might be the most labyrinthine part of this garden.</p>
+</section>
+<section id="what-is-model-selection-bias" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-model-selection-bias">What is model selection bias?</h2>
+<p>To illustrate with an example, we’ll consider the <code>candy_rankings</code> data from the <a href="https://cran.r-project.org/web/packages/fivethirtyeight/index.html">fivethirtyeight</a> package. The <strong>outcome variable</strong> is how often a given candy won in popularity matchups against other candies, and the <strong>predictor variables</strong> are various properties like whether or not the candy has chocolate, whether or not it’s fruit flavored, how sugary it is relative to other candies, and so on. There are 85 candies and 11 predictor variables in the dataset.</p>
+<p>You can read the original article about this data <a href="http://fivethirtyeight.com/features/the-ultimate-halloween-candy-power-ranking/">here</a>. In the article, they find that chocolate seems to be the most important variable for increasing the win percentage for a candy. We’ll approach the problem a little differently, and use <strong>model selection</strong> to pick a subset of the 11 predictor variables. Then we’ll report significance tests for the selected variables to show they really are important. This is a fairly common sequence of steps for analyzing data in linear regression.</p>
+<blockquote class="blockquote">
+<p>Details for the curious: this particular method is a “greedy” algorithm that adds one predictor variable at a time into the model starting with the variable that has the highest correlation with the outcome, and stopping after choosing the number of variables in a data-driven way. These details are not important for the overall message of this post. Any model selection method can cause selection bias.</p>
+</blockquote>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>             Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)     -0.19       0.19    -1.0    0.309
+caramelTRUE     -0.54       0.26    -2.1    0.042
+sugarpercent     0.79       0.35     2.3    0.026</code></pre>
+</div>
+</div>
+<p>As you can see, the model selection algorithm chose a nice interpretable model with only a few variables, and the small <img src="https://latex.codecogs.com/png.latex?p">-values for significance tests tell us they are truly important and our model is good…</p>
+<p>Except <strong>none of this is true!</strong> The reason I didn’t show the code for loading the dataset earlier is that <em>I created the outcome variable</em> with <code>Y = rnorm(n)</code> (this function in <code>R</code> generates <img src="https://latex.codecogs.com/png.latex?n"> random numbers following the normal distribution). Instead of using the actual outcome variable from the data, I generated a random normal variable, <em>totally independent</em> of the predictors. And yet, we found a model with predictor variables that are significant.</p>
+<section id="a-small-simulation-study" class="level3">
+<h3 class="anchored" data-anchor-id="a-small-simulation-study">A small simulation study</h3>
+<p>Let’s think about this to get some intuition. If we have one predictor variable <img src="https://latex.codecogs.com/png.latex?X_1"> and we generate <img src="https://latex.codecogs.com/png.latex?Y"> from <code>rnorm(n)</code>, then the correlation (in absolute value) between <img src="https://latex.codecogs.com/png.latex?X_1"> and <img src="https://latex.codecogs.com/png.latex?Y"> will probably be small. Let’s do this many times and look at the distribution of (absolute) observed correlations:</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="http://joshualoftus.com/posts/2020-12-22-model-selection-bias-invalidates-significance-tests/model-selection-bias-invalidates-significance-tests_files/figure-html/one_correlation-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>These correlations are pretty small. The bulk of the distribution is less than 0.1. We probably wouldn’t mistake them for signal. But now, what if we have more predictor variables, and we select the <em>best</em> (absolute) correlation each time?</p>
+<div class="cell" data-preview="true">
+<div class="cell-output-display">
+<p><img src="http://joshualoftus.com/posts/2020-12-22-model-selection-bias-invalidates-significance-tests/model-selection-bias-invalidates-significance-tests_files/figure-html/many_correlations-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>When we have 11 predictor variables and we select the one with the largest correlation, the resulting distribution of correlations is larger. The bulk is now centered around 0.2. We might mistake these larger correlations for signal, when in fact they only reflect the fact that we searched through the garden of forking paths and chose the most impressive path out of 11. Can you imagine how much worse this problem would be if instead of 11 variables we had 100 to choose from, or 1000?</p>
+</section>
+<section id="returning-to-the-broader-topic-of-model-selection" class="level3">
+<h3 class="anchored" data-anchor-id="returning-to-the-broader-topic-of-model-selection">Returning to the broader topic of model selection</h3>
+<p>Model selection works by choosing variables that seem to be the best at predicting the outcome. The more variables we have to choose from, the more likely it is we find one that predicts <img src="https://latex.codecogs.com/png.latex?Y"> very well, even just by pure randomness, as the plots above show. In general, this model selection bias gets larger as the size of our “search space” increases – meaning not only number of variables, but also the complexity of the fitted relationships (e.g.&nbsp;non-linear). And in general, significance tests for the coefficients in the selected model will be biased toward smaller <img src="https://latex.codecogs.com/png.latex?p">-values, potentially causing us to commit more Type 1 errors.</p>
+<p>This is part of the reason why scientists are sometimes unable to reproduce their own experiments. When they got a significant result (<img src="https://latex.codecogs.com/png.latex?p%20%3C%200.05">) the first time, it may have been due to model selection bias. When they try to reproduce the result, the noise just goes in a different direction, and their original result disappears.</p>
+</section>
+</section>
+<section id="selection-bias-can-make-noise-look-like-signal" class="level2">
+<h2 class="anchored" data-anchor-id="selection-bias-can-make-noise-look-like-signal">Selection bias can make noise look like signal</h2>
+<p>I hope you are convinced of this take home message. I began with a story about the candy dataset, instead of a simulation, because when people are analyzing their own data they never believe it might just be noise. The variables have names and meanings. When we see regression model output our first instinct may be to start interpreting the coefficients, becoming more confident about those that match our preconceptions and rationalizing about those that do not. But as we just saw, model selection makes it possible, and maybe even likely, to get nice looking significance test results even if the outcome variable is just pure noise.</p>
+<p>In the candy example the outcome variable was noise, but that’s not essential. We could have had a real outcome variable but our predictor variables are all noise. Or we could have a mixture of real signals and noise. As long as there’s many variables, searching among them for the best makes the significant test results biased toward small <img src="https://latex.codecogs.com/png.latex?p">-values.</p>
+<p>In future posts, I’ll describe three approaches to fixing this problem, including one that I’ve worked on in my own <a href="https://joshualoftus.com/research.html">research</a>.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>statistics</category>
+  <category>reproducibility</category>
+  <guid>http://joshualoftus.com/posts/2020-12-22-model-selection-bias-invalidates-significance-tests/model-selection-bias-invalidates-significance-tests.html</guid>
+  <pubDate>Tue, 13 Feb 2018 00:00:00 GMT</pubDate>
+</item>
+</channel>
+</rss>

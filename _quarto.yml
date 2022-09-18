@@ -19,19 +19,20 @@ website:
         file: posts.qmd
       - text: "{{< fa solid user size=large >}} about"
         file: about.qmd
+  site-url: http://joshualoftus.com
+  open-graph: true
   twitter-card:
     creator: "@joftius"
+  google-analytics: "UA-114292497-1"
   
 format:
   html:
-    base_url: http://joshualoftus.com/
     cookie_consent:
       style: simple
       type: express
       palette: light
       lang: en
       cookies_policy: url
-    google_analytics: "UA-114292497-1"
     citations: false
     theme: 
       light: [litera, custom_light.scss]

@@ -1,7 +1,7 @@
 {
-  "hash": "72a2415862ab762dbcb7c9eeb7a0fd6a",
+  "hash": "8fab0e1c05d3b12784ffb78ae85cb4f1",
   "result": {
-    "markdown": "---\ntitle: \"Teaching\"\ndescription: |\nlisting: teaching\n---\n\n\n",
+    "markdown": "---\ntitle: \"Teaching\"\ndescription: |\nlisting: \n  contents: teaching\n  type: grid\n---\n\n\n",
     "supporting": [
       "teaching_files"
     ],
