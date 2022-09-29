@@ -1,0 +1,25 @@
+---
+title: "Bernoulli-IMS World Congress talk and notes"
+description: |
+  Slides for my own talk on causal foundations for fair and responsible machine learning, and a blog post with additional comments on the conference.
+author:
+  - name: Joshua Loftus
+    url: https://joshualoftus.com/
+date: 06-21-2021
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Bernoulli-IMS World Congress 2020
+
+This conference was originally scheduled for last year but postponed due to the COVID pandemic. Slides are linked below for my talk in the session on recent advances in statistics, and I will update this post with notes and comments about the rest of the conference or in response to questions during the live session.
+
+## Links
+
+[Slides](slides/causal.html) for my own talk

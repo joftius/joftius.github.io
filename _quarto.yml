@@ -1,6 +1,11 @@
 project:
   type: website
   output-dir: docs
+  render: 
+    - "*.qmd"
+    - "!talks/"
+  resources: 
+    - "talks/"
 
 website:
   title: "{{< fa solid chart-simple size=large >}} joshua loftus"

@@ -1,0 +1,33 @@
+---
+title: "Workshop on race and racism in science"
+description: |
+  Slides for my talk on racial bias in machine learning, AI, and data science, along with additional comments and links to other resources.
+author:
+  - name: Joshua Loftus
+    url: https://joshualoftus.com/
+date: 05-06-2021
+output:
+  distill::distill_article:
+    self_contained: false
+preview: techundoing.jpg
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Responsible research
+
+This talk is part of a [workshop at NYU](https://as.nyu.edu/cns/events/EventDescriptions/WorkshopRace.html) organized in parallel with the usual kind of graduate training on ethics in research. Its organization began in response to the 2020 wave of protests which were part of the global Black Lives Matter social movement, and it is:
+
+> sponsored by the NYU Department of Psychology, the Department of Biology, and the Center for Neural Science.
+
+It's an honor and great responsibility to me to participate in such a necessary and worthwhile effort.
+
+## Links
+
+[Slides](slides/AIbias.html) for my own talk
+
+[Workshop page](https://as.nyu.edu/cns/events/EventDescriptions/WorkshopRace.html)
+

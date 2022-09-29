@@ -1,0 +1,161 @@
+---
+title: "Discussion of Panigrahi et al"
+subtitle: ""
+author: "Joshua Loftus (LSE Statistics)"
+#institute: "LSE"
+#date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: ["default", "xaringan-themer.css", "../../../theme.css", "ninjutsu"]
+#    seal: false    
+    lib_dir: libs
+    nature:
+      titleSlideClass: ["bottom", "left"]
+      countdown: 59000
+      highlightStyle: github
+      highlightLines: true
+      highlightSpans: true
+      countIncrementalSlides: false
+header-includes: 
+  - \usepackage{tikz}
+  - \usepackage{color}
+---
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(fig.retina = 3, warning = FALSE, message = FALSE)
+options(knitr.table.format = "html")
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_duo_accent(
+  primary_color = "#2d708e",
+  secondary_color = "#230433",
+  link_color = "#55c667",
+  text_bold_color = '#f68f46',
+#  title_slide_text_color = "#444444",
+  title_slide_background_color = "#ffffff", #"#042333",
+  title_slide_background_image = "../../files/theme/LSE/sign_reflection.jpg",
+  title_slide_background_size = "cover",
+  ) #or contain
+```
+
+```{r xaringanextra, include=FALSE, warning=FALSE}
+library(xaringanExtra)
+#xaringanExtra::use_animate_all("slide_left")
+xaringanExtra::use_tile_view()
+xaringanExtra::use_panelset()
+xaringanExtra::style_panelset_tabs(font_family = "inherit")
+```
+
+```{r tidyverse, include=FALSE, warning=FALSE}
+library(tidyverse)
+library(knitr)
+theme_set(theme_minimal(base_size = 22))
+set.seed(1)
+library(broom)
+library(modelr)
+```
+
+<style type="text/css">
+.remark-slide-content {
+    font-size: 1.2rem;
+    padding: 1em 4em 1em 4em;
+}
+</style>
+
+### Conflict of interest
+
+--
+
+I really like this work!
+
+- Compelling applications of geometry 
+
+Proof (for skeptical students?) it's worth "leveling up" on multivariate calculus, etc
+
+Would love to see more diagrams (even heuristic ones)
+
+- Interesting bridge/blending of frequentist and Bayesian motivations and methods
+
+Philosophers of science are gonna have a great time trying to figure out what we're doing here (job creation?)
+
+---
+
+#### An extreme(?) thought experiment
+
+- Population of scientists analyzing their datasets
+
+- With probability $1-p$, undetected formatting error $\to$ data read incorrectly $\to$ selected model is nonsense
+
+Would each scientist want to know if this has occurred in their analysis?
+
+Obviously! BUT...
+
+--
+
+Mathematical assumptions of the inference method may still (approximately) hold (depending on the kind of reading error) $\to$ inference may still be valid
+
+What's the problem? **Wrong parameters/hypotheses**
+
+---
+
+#### A less extreme(?) thought experiment
+
+- With probability $1-p$, the group lasso selects a model which is **importantly wrong** (Box's term)
+
+- Maybe the inference is still valid, but for parameters that are not of true scientific interest
+
+Would each scientist want to know if this has occurred in their analysis?
+
+Obviously! BUT...
+
+--
+
+It's essentially impossible for any method to guarantee. Model selection is hard!
+
+Model diagnostics, stability selection, **adjustment factor**?
+
+---
+
+### Content warning: null hypothesis significance testing
+
+Some in the audience might be thinking, like me: "*There's a hypothesis test on the other side of them there intervals*"
+
+- What is the null?
+
+- What is the (powered) alternative?
+
+--
+
+Are these harder to interpret for *overlapping group lasso* or other special cases?
+
+---
+
+### Content warning: informative(?) priors
+
+Many wise statisticians would not object to (informative) priors, of course, understanding balance of dependence on *both* assumptions and data
+
+- Paper shows concentration of "the" posterior if $n \to \infty$ and $p$ is **fixed**
+
+--
+
+But we often rely on model selection in high-dimensions with $p > n$
+
+Does the proposed methodology "work" in that case?
+
+---
+
+### Question recap
+
+**Selection probability**: can the adjustment factor be used for inference *about the selection*?
+
+**Null hypothesis**: is there anything meaningful about an interval containing zero?
+
+**Prior dependence**: how strong is the dependence on priors?
+
+**Cost of validity/statistical efficiency**: computational efficiency?
+
+

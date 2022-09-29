@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Fair algorithms and causal models</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Joshua Loftus (LSE Statistics)" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/ninjutsu.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <script src="libs/d3/d3.min.js"></script>
+    <script src="libs/dagre/dagre-d3.min.js"></script>
+    <link href="libs/mermaid/dist/mermaid.css" rel="stylesheet" />
+    <script src="libs/mermaid/dist/mermaid.slim.min.js"></script>
+    <link href="libs/DiagrammeR-styles/styles.css" rel="stylesheet" />
+    <script src="libs/chromatography/chromatography.js"></script>
+    <script src="libs/DiagrammeR-binding/DiagrammeR.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: bottom, left, title-slide
+
+# Fair algorithms and causal models
+### Joshua Loftus (LSE Statistics)
+
+---
+
+
+
+
+
+
+
+
+
+
+
+&lt;style type="text/css"&gt;
+.remark-slide-content {
+    font-size: 1.2rem;
+    padding: 1em 4em 1em 4em;
+}
+&lt;/style&gt;
+
+### High level intro
+
+Motivating examples, guiding philosophies
+
+### A formalism for causal fairness
+
+In prediction and ranking tasks, with intersectionality, interference, ...
+
+### Concluding thoughts
+
+---
+
+&lt;iframe src="https://en.wikipedia.org/wiki/Simpson%27s_paradox#UC_Berkeley_gender_bias" scrolling= "no" height="600" width="760" &gt;&lt;/iframe&gt;
+
+---
+
+### Berkeley graduate admissions example
+
+&gt; The bias in the aggregated data stems **not from any pattern of discrimination on the part of admissions committees**, which seem quite fair on the whole, but apparently from **prior screening at earlier levels** of the educational system. Women are shunted by their **socialization and education** toward fields of graduate study that are generally more crowded, less productive of completed degrees, and less well funded, and that frequently offer poorer professional employment prospects.
+
+From the final paragraph of Bickel et al (1975)
+
+#### What information / covariates should we condition on?
+
+---
+
+### Directed Acyclic Graph (DAG) models
+
+![](berkeley.png)
+
+- Assumption: paths show conditional dependence
+- Assumption: intervention to change one variable also affects all variables on paths away from it
+
+---
+
+## Two interpretations
+
+### Interventions
+
+**Can we change the DAG**, for example via socialization or education (emphasizing more women role models in STEM curricula, say?)
+
+### Counterfactual fairness
+
+I was admitted to grad school. **If I had been different**, had a different gender for example, maybe I would have had different socialization, applied to a different department, and not been admitted. **Is that fair**?
+
+---
+
+## How do we get a DAG?
+
+Simple examples are easy to understand
+
+Too simple? Don't correspond to the real world?
+
+### How do we know if it's "true"?
+
+My opinion: we could use a healthy dose of (philosophical)
+
+&gt; [Pragmatism](https://en.wikipedia.org/wiki/Pragmatism) is a philosophical tradition that considers words and thought as *tools and instruments for prediction, problem solving, and action*, and rejects the idea that the function of thought is to describe, represent, or mirror reality.
+
+---
+
+### Statistical wisdom: models as (thinking) tools
+
+.pull-left[
+![](https://upload.wikimedia.org/wikipedia/commons/a/a2/GeorgeEPBox.jpg)
+[George Box](https://en.wikipedia.org/wiki/George_E._P._Box)
+]
+
+.pull-right[
+
+&gt; [All models are wrong](All_models_are_wrong) but some are useful
+
+therefore,
+
+&gt; ... the scientist must be alert to what is **importantly wrong**
+
+&gt; ... **cannot obtain a "correct" one** by excessive elaboration
+
+]
+
+
+---
+
+### (Infamous?) policing example
+
+"Algorithm does not *explicitly* use race" -- in an unfair world, **other things can correlate with race**, e.g. prior convictions
+
+.pull-left[
+<div id="htmlwidget-f843a680a1fcd62a0dd1" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f843a680a1fcd62a0dd1">{"x":{"diagram":"\ngraph LR\n  R-->M\n  S-->M\n  S-->P\n  M-->P\n  P-->C\n"},"evals":[],"jsHooks":[]}</script>
+]
+
+.pull-right[
+Race `\(R\)`, structural racism `\(S\)`, arrested for marijuana `\(M\)`, prior conviction `\(P\)`, risk score `\(C\)`
+
+If `\(C\)` is computed using only `\(P\)` (and not `\(R\)` *directly*), is that "fair"?
+]
+
+---
+
+## Defining fairness causally
+
+Kusner, Loftus, Russell, Silva. *Counterfactual fairness* ([NeurIPS 2017](https://papers.nips.cc/paper/2017/hash/a486cd07e4ac3d270571622f4f316ec5-Abstract.html)):
+
+Given a DAG, the predictor `\(\hat Y\)` is **counterfactually fair** if
+
+`$$P(\hat Y_a | x, a) = P(\hat Y_{a'} |x, a)$$`
+
+
+
+#### Proposition (sufficient, not necessary)
+Any predictor `\(\hat Y\)` which is a function of only non-descendents of `\(A\)` in the DAG is counterfactually fair
+
+#### Causal pathways
+
+Fairness: block certain DAG paths in prediction (which?)
+
+
+---
+class: split-four
+
+### Every DAG is (importantly?) wrong
+
+.column[
+&amp;nbsp; 
+
+<div id="htmlwidget-ba32e0541469b5ed4906" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ba32e0541469b5ed4906">{"x":{"diagram":"\ngraph TB\n  Race-->Outcome\n"},"evals":[],"jsHooks":[]}</script>
+]
+.column[
+&amp;nbsp; 
+
+<div id="htmlwidget-484ed42468d86de4a421" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-484ed42468d86de4a421">{"x":{"diagram":"\ngraph TB\n  Racism-->Outcome\n"},"evals":[],"jsHooks":[]}</script>
+]
+
+.column[
+&amp;nbsp; 
+
+
+<div id="htmlwidget-697d58abce2053a24549" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-697d58abce2053a24549">{"x":{"diagram":"\ngraph TB\n  A-->X\n  X-->Y\n  A-->Y\n"},"evals":[],"jsHooks":[]}</script>
+]
+.column[
+&amp;nbsp; 
+
+<div id="htmlwidget-29a56e939b13f92b7856" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-29a56e939b13f92b7856">{"x":{"diagram":"\ngraph TB\n  A-->X\n  A-->R\n  X-->Y\n  R-->Y\n  A-->Y\n"},"evals":[],"jsHooks":[]}</script>
+]
+
+
+Transparency: we can say specifically what we disagree on (sometimes denote sensitive attribute `\(A\)`)
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+[Kusner et al (2017)](https://papers.nips.cc/paper/2017/hash/a486cd07e4ac3d270571622f4f316ec5-Abstract.html),
+[Kilbertus et al (2017)](https://papers.nips.cc/paper/2017/hash/f5f8590cd58a54e94377e6ae2eded4d9-Abstract.html),
+[Nabi and Shpitser (2018)](https://ojs.aaai.org/index.php/AAAI/article/view/11553),
+[Zhang and Bareinboim (2018)](https://aaai.org/ocs/index.php/AAAI/AAAI18/paper/view/16949/0),
+[Chiappa (2019)](https://ojs.aaai.org//index.php/AAAI/article/view/4777), and a growing list of others
+
+---
+
+### The Fundamental Contradiction of Fairness
+
+Various works showing impossibility of simultaneously satisfying several of the different fairness definitions at once: Kleinberg et al (2016), Chouldechova (2016) 
+
+#### (Simplified) impossibility theorem
+
+&gt; Unless the world is already fair, the only solutions satisfying both equal treatment (or opportunity) and equal outcomes (demographic parity) are trivial ones (e.g. jail everyone)
+
+Many versions can be proven with different sets of assumptions but basically the same conclusion: some fairness definitions are contradictory
+
+---
+
+### Problem: competing DAGs / pathways
+
+When Worlds Collide: Integrating Different Counterfactual Assumptions in Fairness (Russell et al, *NeurIPS 2017*)
+
+- Approximate counterfactual fairness (relax equality constraint)
+- Approximately satisfy fairness across both (all) models
+- Limitation: the more contradictory are the competing models, the more trivial the predictions (constant)
+- Causal framing of fundamental contradiction
+
+#### Resolving the contradiction
+I think this is a good *path*. It's now about understanding the causes of unfairness well enough to reach consensus.
+
+---
+
+## [Intersectional](https://en.wikipedia.org/wiki/Intersectionality) fairness
+
+Yang, Stoyanovich, Loftus. *Causal Intersectionality and Fair Ranking* ([FORC 2021](https://drops.dagstuhl.de/opus/portals/lipics/index.php?semnr=16187))
+
+- Multiple sensitive attributes, e.g. race and gender
+
+- Variety of relationships with other mediating variables
+
+- Some of these mediators may be resolving/non-resolving for different sensitive attributes
+
+Lots of scholarship, not much using formal mathematical models. See [Bright et al (2016)](https://www.journals.uchicago.edu/doi/abs/10.1086/684173), 
+[O'Connor et al (2019)](https://www.tandfonline.com/doi/abs/10.1080/02691728.2018.1555870), and a few other references in our paper
+
+
+---
+
+## "Moving company" example
+
+.pull-left[
+Race, gender, weightlifting test, application score
+<div id="htmlwidget-457827ab1876f7c57926" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-457827ab1876f7c57926">{"x":{"diagram":"\ngraph TB\n  R-->X\n  G-->X\n  R-->Y\n  X-->Y\n  G-->Y\n"},"evals":[],"jsHooks":[]}</script>
+]
+.pull-right[
+Weightlifting considered a **resolving variable** (company argues it is a necessary qualification)
+
+&lt;img src="../moving.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+(See paper for results)
+]
+
+
+---
+
+### Untangling intersectional relationships
+
+Causal mediation with **multiple mediators** and **multiple causes** is a hard problem, limiting realistic application until better methods/data are available
+
+#### Opportunity for statistical research
+
+![](../fig2.png)
+
+---
+
+## Interventions under [interference](https://en.wikipedia.org/wiki/Spillover_(experiment%29)
+
+Kusner, Russell, Loftus, Silva. Making Decisions that Reduce Discriminatory Impacts ([ICML 2019](http://proceedings.mlr.press/v97/kusner19a.html))
+
+- Designing an optimal policy / intervention / allocation 
+
+- Relaxing common assumption that intervention on individual/unit `\(i\)` does not effect other individuals/units
+
+(in fairness/justice applications that will often be **importantly wrong**)
+
+- Constraint: bound **counterfactual privilege**, preventing "rich get richer" effect
+
+
+
+---
+
+### Optimal fair policies under interference
+
+.pull-left[
+Intervention `\(\mathbf Z\)` trying to increase `\(\mathbf Y\)`
+
+Privilege constraint, for `\(\tau \geq 0\)`
+$$
+\mathbb{E}[\mathbf{\hat Y}({\color{red}a},\mathbf{Z})] - \mathbb{E}[\mathbf{\hat Y}({\color{blue}a'},\mathbf{Z})] \leq \tau
+$$
+]
+.pull-right[
+![](../interference.png)
+]
+
+Optimization problem (with budget constraint `\(b\)`)
+
+`$$\mathbf{Z} = \arg \max \sum_i \mathbb{E}\left[\mathbf{\hat Y}^{(i)}(a^{(i)}, \mathbf Z) | \mathbf A^{(i)}, \mathbf X^{(i)}  \right]$$`
+
+`$$\quad s.t. \quad \sum_i \mathbf{Z}^{(i)} \leq b$$`
+---
+
+### Allocating resources to (NYC) schools
+
+.pull-left[
+Without constraint
+![](../unfairschools.png)
+]
+.pull-right[
+With constraint
+![](../fairschools.png)
+]
+
+(See paper for discussion of results)
+
+---
+
+### DAGs can be useful tools
+
+[Imbens (2019)](https://siepr.stanford.edu/sites/default/files/publications/19-022.pdf) on DAGs, reviewing The Book of Why:
+
+&gt;  TBOW and the DAG approach fully deserve the attention of all researchers and users of causal inference as one of its leading methodologies.
+
+But they have limitations:
+
+&gt; In economics the endogeneity often arises from agents actively making choices regarding the causal variable on the basis of anticipated effects of those choices
+
+Perhaps mathematicians can help...
+
+- Expand this formal framework (new definitions, notation)
+- Make it (more) rigorous
+
+---
+
+[Why focus on causality?](https://twitter.com/whitesphd/status/1308094245669081089)
+
+![](truck.jpg)
+
+---
+
+### "Bet" on causality
+
+Claim: **causality** points us in good directions for research
+
+- Choosing which covariates to condition on in fair prediction/decisions
+
+- Changing focus from prediction to action, interventions, policy design, etc
+
+- Making models/assumptions transparent
+
+Remember pragmatism, Box's rule, and what's **important** and what's **useful**? (to who? for what?)
+
+How can we [change the objective function](https://en.wikipedia.org/wiki/Twelve_leverage_points) before it's [too late](https://en.wikipedia.org/wiki/Instrumental_convergence#Paperclip_maximizer)?
+
+---
+class: split-four
+
+.column[
+![](matt.png)
+Matt Kusner (UCL)
+&amp;nbsp; 
+
+&amp;nbsp; 
+
+![](julia.png)
+Julia Stoyanovich
+]
+
+.column[
+![](chris.png)
+Chris Russell (AWS/ELLIS)
+
+&amp;nbsp; 
+
+![](ke.jpg)
+Ke Yang
+]
+
+.column[
+![](ricardo.png)
+
+Ricardo Silva (UCL)
+
+&amp;nbsp;  
+
+![](lucius.png)
+Lucius Bynum
+]
+
+.column[
+## Turing group
+
+&amp;nbsp; 
+
+&amp;nbsp; 
+
+&amp;nbsp; 
+
+### NYU
+![](margarita.jpeg)
+Margarita Boyarskaya
+
+]
+
+---
+
+
+### Thank you for listening!
+
+Reading for a fairly general audience: The long road to fairer algorithms ([Nature, 2020](https://www.nature.com/articles/d41586-020-00274-3))
+
+[joshualoftus.com](joshualoftus.com) links to papers, descriptions of other research, etc
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"highlightSpans": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+(function(time) {
+  var d2 = function(number) {
+    return ('0' + number).slice(-2); // left-pad 0 to minutes/seconds
+  },
+
+  time_format = function(total) {
+    var secs = Math.abs(total) / 1000;
+    var h = Math.floor(secs / 3600);
+    var m = Math.floor(secs % 3600 / 60);
+    var s = Math.round(secs % 60);
+    var res = d2(m) + ':' + d2(s);
+    if (h > 0) res = h + ':' + res;
+    return res;  // [hh:]mm:ss
+  },
+
+  slide_number_div = function(i) {
+    return document.getElementsByClassName('remark-slide-number').item(i);
+  },
+
+  current_page_number = function(i) {
+    return slide_number_div(i).firstChild.textContent;  // text "i / N"
+  };
+
+  var timer = document.createElement('span'); timer.id = 'slide-time-left';
+  var time_left = time, k = slideshow.getCurrentSlideIndex(),
+      last_page_number = current_page_number(k);
+
+  setInterval(function() {
+    time_left = time_left - 1000;
+    timer.innerHTML = ' ' + time_format(time_left);
+    if (time_left < 0) timer.style.color = 'red';
+  }, 1000);
+
+  slide_number_div(k).appendChild(timer);
+
+  slideshow.on('showSlide', function(slide) {
+    var i = slide.getSlideIndex(), n = current_page_number(i);
+    // reset timer when a new slide is shown and the page number is changed
+    if (last_page_number !== n) {
+      time_left = time; last_page_number = n;
+      timer.innerHTML = ' ' + time_format(time); timer.style.color = null;
+    }
+    slide_number_div(i).appendChild(timer);
+  });
+})(59000);
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

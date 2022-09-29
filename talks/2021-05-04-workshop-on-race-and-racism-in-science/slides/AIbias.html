@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Racial bias in AI</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/ninjutsu.css" rel="stylesheet" />
+    <link href="libs/tile-view/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view/tile-view.js"></script>
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <script src="libs/d3/d3.min.js"></script>
+    <script src="libs/dagre/dagre-d3.min.js"></script>
+    <link href="libs/mermaid/dist/mermaid.css" rel="stylesheet" />
+    <script src="libs/mermaid/dist/mermaid.slim.min.js"></script>
+    <link href="libs/DiagrammeR-styles/styles.css" rel="stylesheet" />
+    <script src="libs/chromatography/chromatography.js"></script>
+    <script src="libs/DiagrammeR-binding/DiagrammeR.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="../../../theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: top, left, title-slide
+
+# Racial bias in AI
+### 
+
+---
+
+
+class: inverse
+
+
+
+
+
+
+
+
+
+&lt;style type="text/css"&gt;
+.remark-slide-content {
+    font-size: 1.2rem;
+    padding: 1em 4em 1em 4em;
+}
+&lt;/style&gt;
+
+## Outline
+
+#### Demystifying AI
+
+What is it? What's *really* new about it?
+
+#### Biases and racist algorithms
+
+Examples in healthcare, policing, commerce
+
+Fairness, biased data/models/systems, responsibility
+
+#### Actions
+
+Tech "solutions," inclusion, democratization, power
+
+---
+class: inverse
+
+# What is AI?
+
+
+
+.center[
+(this might be the most controversial part of the talk)
+
+## AI `\(\approx\)` machine learning `\(\approx\)` **regression**
+
+]
+
+- Function fit using an algorithm on data
+
+- Maybe too complex for complete human understanding
+
+- Performance evaluated by output on new / "fresh" data
+
+(some special cases don't fit this exactly)
+
+---
+
+## ML / AI are "data hungry"
+
+Predictions from lots of similar observations/examples. From [Stanford](http://cs231n.stanford.edu/):
+
+![](../imagetraining.png)
+
+---
+
+![](https://miro.medium.com/max/1826/1*9cdCxwJO-mgpN7t5tfZODQ.png)
+
+"Examples" don't have to be images, this generalizes to anything that can be measured and transformed into data
+
+---
+
+## Historical
+
+### Early computer era (~50 years ago)
+
+Regression (prediction recipe) -- decision trees -- low dimensional smoothing
+
+### Internet era (~20 years ago)
+
+Machine learning -- "black box" (more complex) algorithms
+
+### Big data, 3rd wave of AI (~10 years ago)
+
+Network architecture (depth) -- datafication of images, etc
+
+
+---
+
+## What's new/different about AI?
+
+.pull-left[
+![](../moderntimes.jpg)
+[Modern Times (1936)](https://en.wikipedia.org/wiki/Modern_Times_(film%29)
+]
+.pull-right[
+![](../amazonpacking.jpg)
+[Amazon "fulfillment" center](https://revealnews.org/article/how-amazon-hid-its-safety-crisis/)
+]
+
+---
+
+## First, what's the same?
+
+.pull-left[
+AI is continuous with, and inherits from:
+
+- Technology
+
+(especially IT)
+
+- Social/economic systems
+
+- [History](https://data-ppf.github.io/)
+]
+.pull-right[
+![](../meltdown.jpg)
+]
+
+It comes with politics, unequal costs and benefits
+
+---
+
+### Learn from history!
+
+[David Gresham's talk](https://as.nyu.edu/cns/events/EventDescriptions/WorkshopRace/SessionOne.html) covered a lot of history already, but a few points specific to statistics / data / IT:
+
+- Some founders of statistics were [eugenicists](https://nautil.us/issue/92/frontiers/how-eugenics-shaped-statistics)
+
+- US Census Bureau [assisted with internment](https://exhibits.lib.berkeley.edu/spotlight/census/feature/japanese-americans-in-world-war-ii-and-the-census) of Japanese Americans during WW2
+
+- [Before 1974](https://en.wikipedia.org/wiki/Equal_Credit_Opportunity_Act), [credit scores](https://www.forbes.com/advisor/credit-cards/from-inherent-racial-bias-to-incorrect-data-the-problems-with-current-credit-scoring-models/) could be explicitly racist
+
+---
+
+### Academics to the rescue! 
+
+[FATML](https://www.fatml.org) workshop, 2014-2018, [FAccT conference](https://facctconference.org/) 2018-
+
+.pull-left[
+![](../weapons.jpg)
+[2016](https://en.wikipedia.org/wiki/Weapons_of_Math_Destruction)
+]
+.pull-right[
+Examples: admissions, credit, employment, insurance, healthcare
+
+New dangers: scale, opacity, proxies/wrong data, faux objectivity
+]
+
+---
+
+### Dangers of opacity, for example
+
+[Reuters](https://www.reuters.com/article/us-amazon-com-jobs-automation-insight-idUSKCN1MK08G), in 2018:
+
+![Amazon scraps secret AI recruiting tool that showed bias against women](../amazonhiring.png)
+
+&gt; Amazon’s system **taught itself** that male candidates were preferable. It penalized resumes that included the word “women’s,” as in “women’s chess club captain.” And it downgraded graduates of two all-women’s colleges, according to people familiar with the matter.
+
+
+---
+
+Naive "progress" or "solutionist" views are (still) very widespread...
+
+![](../domingos.png)
+
+&gt; What do you do if decisions that used to be made by humans, with all their biases, start being made by algorithms that are *mathematically incapable of bias*? If you’re rational, you should celebrate.
+
+---
+class: center, middle
+
+(I'm not sure it's worth [taking this argument seriously](https://statmodeling.stat.columbia.edu/2020/12/29/retired-computer-science-professor-argues-that-decisions-are-being-made-by-algorithms-that-are-mathematically-incapable-of-bias-what-does-this-mean/), so only read this if the previous slide sounds reasonable
+
+
+We might ask: was AI really not already political? Is there any way to interpret the statement that algorithms are "mathematically incapable of bias" to make it meaningfully true regarding the examples that people are trying to "debias"?)
+
+
+---
+
+
+### Classic methods (context/comparison)
+
+#### Decision trees (e.g. vaccine eligibility in the UK)
+
+- If `Age &gt;= 40` then `yes`, otherwise `continue`
+- If `HighRisk == TRUE` then `yes`, otherwise `continue`
+- If `Job == CareWorker` then `yes`, otherwise `no`
+
+#### Regression
+
+- Predictor variables in the dataset: `\(x_1, x_2, \ldots, x_p\)`
+- Coefficients/**parameters**, unknown: `\(\beta_1, \beta_2, \ldots, \beta_p\)`
+- Outcome variable, also in data: `\(y\)`
+- Algorithm inputs the data, outputs: estimated parameters, predictions of `\(y\)` using "recipe" or "weighted" combination
+
+$$
+\beta_1 x_1 + \beta_2 x_2 + \cdots + \beta_p x_p
+$$
+
+
+
+---
+
+### Present day methods
+
+.pull-left[
+![](https://joshualoftus.com/ml4ds/07-nonlinear/slides/gtrendDL.png)
+]
+.pull-right[
+From [Computer Age Statistical Inference](https://web.stanford.edu/~hastie/CASI/):
+![](https://joshualoftus.com/ml4ds/07-nonlinear/slides/CASI18.3.png)
+]
+
+Non-linear, deep (multiple) composition of functions
+
+
+---
+
+## Consistent trends
+
+- **Larger datasets, faster computation, more parameters**
+
+1801: [Gauss's](https://sites.math.rutgers.edu/~cherlin/History/Papers1999/weiss.html) first use of regression, ~5 parameters
+
+2000s: models with ~thousands of parameters (e.g. [lasso](https://pubmed.ncbi.nlm.nih.gov/?term=lasso+regression))
+
+2012: image model [AlexNet](https://en.wikipedia.org/wiki/AlexNet) uses ~61 million parameters
+
+2020: language model [GPT-3](https://en.wikipedia.org/wiki/GPT-3) uses ~175 billion parameters
+
+
+- Focus on improving prediction accuracy, sacrifice explainability to (non-expert) human audiences
+
+- More categories of things analyzed as data
+
+- More kinds of tasks "automated" (possibly: outsourced)
+
+---
+
+### Programming (and engineering reliability)
+
+Code: human readable `\(\to\)` machine executable `\(\to\)` output
+
+#### Deterministic programming
+
+.pull-left[
+
+```r
+print("hello world")
+```
+
+```
+## [1] "hello world"
+```
+
+]
+.pull-right[
+
+```r
+round(1 / (0:3), 3)
+```
+
+```
+## [1]   Inf 1.000 0.500 0.333
+```
+]
+
+Programmers know what to expect (but see: debugging)
+
+#### Stochastic programming
+
+Algorithms use random number generators
+
+Inputs may include data
+
+---
+
+### Models, understanding and auditing
+
+#### Classic
+
+Human readable models like trees, regression
+
+#### ML / AI
+
+How to "read" a model with millions of parameters?
+
+Is it fair? Legal?
+
+We can check the **output** for [disparate impact](https://en.wikipedia.org/wiki/Disparate_impact)
+
+More difficult to understand how the model [treats](https://en.wikipedia.org/wiki/Disparate_treatment) people
+
+---
+
+### Auditing opaque models: accuracy
+
+From the [Gender shades](http://gendershades.org/) project (Buolamwini and Gebru)
+
+![](../gendershades.png)
+---
+class: center, middle
+
+![](../gendershades2.png)
+
+
+---
+class: inverse, center, middle
+
+# Biases and racist algorithms
+
+---
+
+
+# More motivating examples
+
+- Health: Obermeyer et al
+- Policing: Lum and Isaacs, ProPublica
+- Consumption: Amazon
+- Labor: Ghost work
+
+With attention to these issues:
+
+- Sampling bias, feedback
+- Optimizing for the wrong thing
+- Opacity, dimensionality, structural racism, causation
+- Responsibility 
+
+
+---
+
+### AI and healthcare patient data
+
+.pull-left[
+
+![](../obermeyer.PNG)
+
+]
+.pull-right[
+
+[Obermeyer et al (2019)](https://science.sciencemag.org/content/366/6464/447.editor-summary)
+
+- Algorithm assigns risk scores by **predicting healthcare costs** from patient records
+- Underestimates risk of health conditions for black patients compared to white patients
+- **Adjusting algorithm** to close the gap results in ~2.5x black patients receiving more care
+
+]
+
+---
+
+### Race and genomics in healthcare
+
+We've heard about biased samples in health research
+
+Different risk: a similar problem underlying [racist applications](https://www.nature.com/articles/d41586-018-06784-5) of behavioral genomics
+
+.pull-left[
+<div id="htmlwidget-f843a680a1fcd62a0dd1" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f843a680a1fcd62a0dd1">{"x":{"diagram":"\ngraph LR\n  R-->Y\n  S-->Y\n  R-->G\n"},"evals":[],"jsHooks":[]}</script>
+]
+.pull-right[
+Race `\(R\)`, structural racism `\(S\)`, health outcome `\(Y\)`, polygenic score `\(G\)`
+
+Higher dimensional `\(G\)` + more complex models = predicting `\(Y\)` without knowing why
+]
+
+
+
+---
+
+### Healthcare recap
+
+- **Optimizing for the wrong thing**: price signals aggregate a lot of social information, possibly including lack of access, poverty, etc. Also an **opacity** issue because we generally don't know all these influences on observed demand/spending
+
+- **Sampling bias**: differential access to healthcare
+
+- **Dimensionality and causation**: we have far more (high-dimensional) genomic data now than socio-economic/environment data
+
+---
+
+### Policing: pre-trial detention risk scores
+
+.pull-left[
+![](../compas_logit.png)
+]
+.pull-right[
+![](../propublicalogo.png)
+
+![](../propublica.png)
+
+![](../propublica2.png)
+
+![](../propublica3.png)
+]
+
+---
+
+The [hope](https://www.kqed.org/education/507247/can-algorithms-help-wind-down-mass-incarceration): could more accurate risk assessments reduce incarceration, and maybe even reduce racial bias?
+
+The reality: **proprietary**, opaque algorithms
+
+![](../prop25.png)
+
+- Multibillion-dollar bail industry spent $10 million opposing
+
+- Did voters understand what these algorithms would do?
+
+---
+
+"Algorithm does not *explicitly* use race" -- in an unfair system **other things can correlate with race**, e.g. prior convictions
+
+.pull-left[
+<div id="htmlwidget-ba32e0541469b5ed4906" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ba32e0541469b5ed4906">{"x":{"diagram":"\ngraph LR\n  R-->M\n  S-->M\n  S-->P\n  M-->P\n  P-->C\n"},"evals":[],"jsHooks":[]}</script>
+]
+.pull-right[
+Race `\(R\)`, structural racism `\(S\)`, arrested for marijuana `\(M\)`, prior conviction `\(P\)`, COMPAS risk score `\(C\)`
+
+If `\(C\)` is computed using only `\(P\)`, is that "fair"?
+
+Next slide from [Lum and Isaac (2016)](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/j.1740-9713.2016.00960.x)
+]
+
+
+
+---
+
+.pull-left[
+![](../lumisaac1.jpg)
+]
+
+.pull-right[
+![](../lumisaac2.jpg)
+]
+
+---
+
+## Predictive policing recap
+
+- **Sampling bias, feedback**: training data from an unfair world, predictions leading to continued unfairness
+
+- **Optimizing for the wrong thing**: algorithms learn from previous *arrests*, there is no (unbiased) data on all criminal activity
+
+- **Structural racism and causation**: even if the algorithm does not explicitly use race, it uses variables that may be correlated with race *because* of a history of structural racism
+
+---
+
+### Commerce: Amazon same-day delivery
+
+
+![](../atlanta.png)
+- **Responsibility**: who should remedy this disparity?
+
+---
+
+### AI in the economy
+
+[Ghost work](https://www.theverge.com/2019/5/13/18563284/mary-gray-ghost-work-microwork-labor-silicon-valley-automation-employment-interview), [dark kitchens](https://www.ft.com/content/a66619b0-77e4-11e9-be7d-6d846537acab), [faster delivery](https://chuangcn.org/2020/11/delivery-renwu-translation/)
+
+
+![](https://chuangcn.org/wp-content/uploads/2020/11/waimai2.png)
+- **Responsibility**: who's taking the risks, who's getting rich?
+
+---
+
+### AI, globalization, and labor
+
+[FT](https://www.ft.com/content/c6909812-9ce4-11e9-9c06-a4640c9feebb): Congo, child labour and your electric car
+
+[Guardian](https://www.theguardian.com/global-development/2019/dec/16/apple-and-google-named-in-us-lawsuit-over-congolese-child-cobalt-mining-deaths): Apple and Google named in US lawsuit over Congolese child cobalt mining deaths
+
+[Anatomy of AI](https://anatomyof.ai/): 
+&gt; Amnesty has documented children as young as 7 working in the mines. In contrast, Amazon CEO Jeff Bezos, at the top of our fractal pyramid, made an average of $275 million a day during the first five months of 2018, according to the Bloomberg Billionaires Index. A child working in a mine in the Congo would need **more than 700,000 years of non-stop work to earn the same amount as a single day of Bezos’ income**.
+
+
+---
+class: inverse
+
+# Changing the world
+
+There are real opportunities to make *fast/cheap* progress by changing algorithms
+
+But we should not neglect more important actions
+
+- Inclusion
+- Regulations
+- Democratizing data
+- Educating and organizing
+
+---
+
+### Inclusion
+
+[Black in AI](https://blackinai.github.io/#/about) founded in 2017
+
+![](../blackinai.png)
+
+Obstacles: opposition, e.g. Google [firing AI ethics researchers](https://www.theverge.com/2021/2/19/22292011/google-second-ethical-ai-researcher-fired), toxic community/[workplaces](https://www.theguardian.com/technology/2019/nov/13/facebook-discrimination-black-workers-letter)
+
+
+---
+
+### Regulation
+
+Members of the (US) [public](https://www.pewresearch.org/fact-tank/2020/10/27/how-americans-see-u-s-tech-companies-as-government-scrutiny-increases/) and [tech workers](https://www.cnet.com/news/even-silicon-valley-workers-want-more-regulation-of-the-tech-industry/) want more regulation. Obstacles: political/legal arms races, capture
+
+![](https://www.pewresearch.org/wp-content/uploads/2020/07/ft_2020.07.22_techcompanies_02.png)
+
+---
+
+### Democratizing data and AI
+
+
+[Salomé Viljoen](https://phenomenalworld.org/analysis/data-as-property):
+
+&gt; Several proto-democratic data governance projects show us how the democratic governance over information flows may be realized. [...] Labor activists are developing worker data collectives to counter growing workplace surveillance by employers, track and monitor forms of workplace oppression, and document OSHA violations and wage theft. Finally, old models of public data collection and management like that of the US Census and its statistical agencies, which adhere to strong purpose limitations and confidentiality rules, may be expanded into more general bodies for the governance of data. 
+
+---
+
+### Conclusion: educating and organizing
+
+.pull-left[
+![](https://upload.wikimedia.org/wikipedia/commons/a/a2/GeorgeEPBox.jpg)
+[George Box](https://en.wikipedia.org/wiki/George_E._P._Box)
+]
+
+.pull-right[
+
+&gt; [All models are wrong](All_models_are_wrong) but some are useful
+
+therefore,
+
+&gt; ... the scientist must be alert to what is **importantly wrong**
+
+&gt; ... **cannot obtain a "correct" one** by excessive elaboration
+
+]
+
+---
+
+What's **important** and what's **useful**?
+
+- to who?
+- for what?
+
+How can we [change the objective function](https://en.wikipedia.org/wiki/Twelve_leverage_points) before it's [too late](https://en.wikipedia.org/wiki/Instrumental_convergence#Paperclip_maximizer)?
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"highlightSpans": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+(function(time) {
+  var d2 = function(number) {
+    return ('0' + number).slice(-2); // left-pad 0 to minutes/seconds
+  },
+
+  time_format = function(total) {
+    var secs = Math.abs(total) / 1000;
+    var h = Math.floor(secs / 3600);
+    var m = Math.floor(secs % 3600 / 60);
+    var s = Math.round(secs % 60);
+    var res = d2(m) + ':' + d2(s);
+    if (h > 0) res = h + ':' + res;
+    return res;  // [hh:]mm:ss
+  },
+
+  slide_number_div = function(i) {
+    return document.getElementsByClassName('remark-slide-number').item(i);
+  },
+
+  current_page_number = function(i) {
+    return slide_number_div(i).firstChild.textContent;  // text "i / N"
+  };
+
+  var timer = document.createElement('span'); timer.id = 'slide-time-left';
+  var time_left = time, k = slideshow.getCurrentSlideIndex(),
+      last_page_number = current_page_number(k);
+
+  setInterval(function() {
+    time_left = time_left - 1000;
+    timer.innerHTML = ' ' + time_format(time_left);
+    if (time_left < 0) timer.style.color = 'red';
+  }, 1000);
+
+  slide_number_div(k).appendChild(timer);
+
+  slideshow.on('showSlide', function(slide) {
+    var i = slide.getSlideIndex(), n = current_page_number(i);
+    // reset timer when a new slide is shown and the page number is changed
+    if (last_page_number !== n) {
+      time_left = time; last_page_number = n;
+      timer.innerHTML = ' ' + time_format(time); timer.style.color = null;
+    }
+    slide_number_div(i).appendChild(timer);
+  });
+})(59000);
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

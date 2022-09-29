@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Causality and the normative dimensions of machine learning</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Joshua Loftus (LSE Statistics)" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/ninjutsu.css" rel="stylesheet" />
+    <link href="libs/tile-view/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view/tile-view.js"></script>
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <script src="libs/d3/d3.min.js"></script>
+    <script src="libs/dagre/dagre-d3.min.js"></script>
+    <link href="libs/mermaid/dist/mermaid.css" rel="stylesheet" />
+    <script src="libs/mermaid/dist/mermaid.slim.min.js"></script>
+    <link href="libs/DiagrammeR-styles/styles.css" rel="stylesheet" />
+    <script src="libs/chromatography/chromatography.js"></script>
+    <script src="libs/DiagrammeR-binding/DiagrammeR.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="../../../theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: bottom, left, title-slide
+
+# Causality and the normative dimensions of machine learning
+### Joshua Loftus (LSE Statistics)
+
+---
+
+
+class: inverse
+
+
+
+
+
+
+
+
+
+&lt;style type="text/css"&gt;
+.remark-slide-content {
+    font-size: 1.2rem;
+    padding: 1em 4em 1em 4em;
+}
+&lt;/style&gt;
+
+### High level intro
+
+Causality, what is it good for?
+
+### Causal fairness
+
+In prediction and ranking tasks, and with **intersectionality**
+
+### Designing interventions
+
+Optimal fair policies, causal **interference**
+
+### Concluding thoughts
+
+---
+
+Tech solutionism, using ML/AI in [every situation](https://twitter.com/whitesphd/status/1308094245669081089)
+
+![](truck.jpg)
+
+---
+
+#### Imagination
+
+Albert Einstein:
+
+&gt; Imagination is more important than knowledge. For knowledge is limited, whereas imagination [...] stimulat[es] progress, giving birth to evolution.
+
+Stephen Jay Gould: 
+&gt; I am, somehow, less interested in [...] Einstein’s brain than [that] people of equal talent have lived and died in cotton fields and sweatshops.
+
+David Graeber: 
+
+&gt; the ultimate, hidden truth of the world is that it is something that we make, and could just as easily make differently
+
+---
+class: inverse
+
+#### Science fiction
+
+[Anxiety Is the Dizziness of Freedom](https://onezero.medium.com/anxiety-is-the-dizziness-of-freedom-b5ab45cae2a5), story by [Ted Chiang](https://www.buzzfeednews.com/article/tedchiang/the-real-danger-to-civilization-isnt-ai-its-runaway)
+
+![](https://miro.medium.com/max/6261/1*x__Az7mQU0ALHQIe4MrP8Q.jpeg)
+(Art: [Jinhwa Jang](https://www.jinhwajangart.com/))
+
+---
+
+Fictional technology, like the "universe splitter" [app](http://cheapuniverses.com/) combined with a messenger
+
+&gt; prism created two newly divergent timelines, one in which the red LED lit up and one in which the blue one did, and it allowed communication between the two
+
+Experiments with both potential outcomes observed?! No...
+
+&gt; Every branch was of paramount importance to its inhabitants; no one was willing to act as a guinea pig for anyone else.
+
+&gt; What prisms did offer was a way to study the mechanisms of historical change. Researchers began comparing news headlines across branches, looking for discrepancies and then investigating their causes.
+
+
+---
+
+## Why is causality important?
+
+.pull-left[
+![](https://www.marxists.org/archive/marx/works/cw/volume05/thesis11.gif)
+ML models have hitherto only predicted the world in various ways; [the point is to change it](https://en.wikipedia.org/wiki/Theses_on_Feuerbach)
+
+]
+.pull-right[
+![](https://oxford.universitypressscholarship.com/view/covers/9780195155273.jpg)
+
+([Evolutionary](https://en.wikipedia.org/wiki/Causal_reasoning#Causal_reasoning_in_non-human_animals) explanation?)
+]
+
+---
+
+### Berkeley graduate admissions example
+
+&gt; The bias in the aggregated data stems **not from any pattern of discrimination on the part of admissions committees**, which seem quite fair on the whole, but apparently from **prior screening at earlier levels** of the educational system. Women are shunted by their **socialization and education** toward fields of graduate study that are generally more crowded, less productive of completed degrees, and less well funded, and that frequently offer poorer professional employment prospects.
+
+From the final paragraph of Bickel et al (1975)
+
+---
+
+### Directed Acyclic Graph (DAG) models
+
+![](berkeley.png)
+
+- Assumption: directed paths show conditional dependence
+- Assumption: intervention to change one variable also affects all variables on paths away from it
+
+---
+
+## Two interpretations
+
+### Interventions
+
+Can we change socialization/education, for example including more women role models in STEM curricula?
+
+### Counterfactual fairness
+
+I was admitted to grad school. *If I had been a different gender*, maybe I would have applied to a different department and not been admitted... *Is that fair*?
+
+
+
+---
+class: inverse
+
+# Bet on causality
+
+My claim: **fairness**, combined with a **focus on causality**, orients us toward discovering and mitigating the **root causes**
+
+In particular, it will:
+
+- expose flaws in the *status quo* application of fairness concepts like **merit** / just deserts
+
+- show how to better operationalize those concepts
+
+- bridge the "merit" and consequentialist approaches
+
+---
+
+
+### Interventions, counterfactuals, thought experiments
+
+- Pearl's [ladder of causation](https://en.wikipedia.org/wiki/Causal_model#Ladder_of_causation) level 2
+
+Intervention, action, manipulation, policy change
+
+*What will (or is more likely to) happen if...*
+
+- But we can also go to level 3
+
+Counterfactuals, potential histories(?)
+
+*What would have (been more likely to have) happened if...*
+
+- Thought experiments
+
+Models as thinking tools, *over-simplified models as diagnostics for more realistic ones*
+
+---
+
+### Statistical wisdom: models as (thinking) tools
+
+.pull-left[
+![](https://upload.wikimedia.org/wikipedia/commons/a/a2/GeorgeEPBox.jpg)
+[George Box](https://en.wikipedia.org/wiki/George_E._P._Box)
+]
+
+.pull-right[
+
+&gt; [All models are wrong](All_models_are_wrong) but some are useful
+
+therefore,
+
+&gt; ... the scientist must be alert to what is **importantly wrong**
+
+&gt; ... **cannot obtain a "correct" one** by excessive elaboration
+
+]
+
+
+---
+
+[Imbens (2019)](https://siepr.stanford.edu/sites/default/files/publications/19-022.pdf) on DAGs, reviewing The Book of Why:
+
+&gt;  TBOW and the DAG approach fully deserve the attention of all researchers and users of causal inference as one of its leading methodologies.
+
+DAGs conveniently express some things but not others
+
+&gt; In economics the endogeneity often arises from agents actively making choices regarding the causal variable on the basis of anticipated effects of those choices
+
+DAGs and Potential Outcomes are both useful
+
+&gt; identification results are also easier to derive in the PO framework
+
+- What's **importantly wrong** about a given DAG?
+
+---
+class: split-four
+
+### Every(?) DAG is importantly wrong
+
+.column[
+&amp;nbsp; 
+
+<div id="htmlwidget-f843a680a1fcd62a0dd1" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f843a680a1fcd62a0dd1">{"x":{"diagram":"\ngraph TB\n  Race-->Outcome\n"},"evals":[],"jsHooks":[]}</script>
+]
+.column[
+&amp;nbsp; 
+
+<div id="htmlwidget-ba32e0541469b5ed4906" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ba32e0541469b5ed4906">{"x":{"diagram":"\ngraph TB\n  Racism-->Outcome\n"},"evals":[],"jsHooks":[]}</script>
+]
+
+.column[
+&amp;nbsp; 
+
+
+<div id="htmlwidget-484ed42468d86de4a421" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-484ed42468d86de4a421">{"x":{"diagram":"\ngraph TB\n  A-->X\n  X-->Y\n  A-->Y\n"},"evals":[],"jsHooks":[]}</script>
+]
+.column[
+&amp;nbsp; 
+
+<div id="htmlwidget-697d58abce2053a24549" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-697d58abce2053a24549">{"x":{"diagram":"\ngraph TB\n  A-->X\n  A-->R\n  X-->Y\n  R-->Y\n  A-->Y\n"},"evals":[],"jsHooks":[]}</script>
+]
+
+
+Transparency: we can say specifically what we disagree on
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+[Kusner et al (2017)](https://papers.nips.cc/paper/2017/hash/a486cd07e4ac3d270571622f4f316ec5-Abstract.html),
+[Kilbertus et al (2017)](https://papers.nips.cc/paper/2017/hash/f5f8590cd58a54e94377e6ae2eded4d9-Abstract.html),
+[Nabi and Shpitser (2018)](https://ojs.aaai.org/index.php/AAAI/article/view/11553),
+[Zhang and Bareinboim (2018)](https://aaai.org/ocs/index.php/AAAI/AAAI18/paper/view/16949/0),
+[Chiappa (2019)](https://ojs.aaai.org//index.php/AAAI/article/view/4777), and a growing list of others
+
+---
+
+## Formalism vs interpretation
+
+As an analogy, consider the **axioms of probability**, and various **interpretations**
+
+- Frequentist
+- Bayesian
+- Subjectivist 
+- Logical
+- Epistemic
+- etc
+
+"... some are useful" -- **useful to who, and for what**?
+
+Pragmatism: judge by practical effects, iterate, progress(?)
+
+---
+class: inverse
+
+## Making (DAG) models less wrong
+
+### [Intersectional](https://en.wikipedia.org/wiki/Intersectionality) fairness
+
+- Multiple sensitive attributes, e.g. race and gender
+
+- Variety of relationships with other mediating variables
+
+- Some of these mediators may be resolving/non-resolving for different sensitive attributes
+
+Lots of scholarship, not much using formal mathematical models. But see [Bright et al (2016)](https://www.journals.uchicago.edu/doi/abs/10.1086/684173), 
+[O'Connor et al (2019)](https://www.tandfonline.com/doi/abs/10.1080/02691728.2018.1555870), and a few other references in our paper
+
+Yang, Stoyanovich, Loftus, [Causal Intersectionality and Fair Ranking](https://arxiv.org/abs/2006.08688) ([FORC 2021](https://responsiblecomputing.org/forc-2021-accepted-papers/), to appear)
+
+---
+
+## "Moving company" example
+
+.pull-left[
+Race, gender, weightlifting test, application score
+<div id="htmlwidget-29a56e939b13f92b7856" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-29a56e939b13f92b7856">{"x":{"diagram":"\ngraph TB\n  R-->X\n  G-->X\n  R-->Y\n  X-->Y\n  G-->Y\n"},"evals":[],"jsHooks":[]}</script>
+]
+.pull-right[
+Weightlifting considered a resolving variable (company argues it is a necessary qualification)
+]
+
+---
+
+![](../fig2.png)
+
+&lt;img src="../moving.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Untangling intersectional relationships
+
+Causal models are a useful formal language
+
+Empirically, causal mediation with **multiple mediators** and **multiple causes** is a very hard problem, limiting realistic application until better methods/data are available
+
+(I don't think the difficulty is an artifact of our approach, it reflects that fairness/justice/equity are fundamentally hard problems)
+
+---
+class: inverse
+
+## Making (DAG) models less wrong
+
+### Interventions under [interference](https://en.wikipedia.org/wiki/Spillover_(experiment%29)
+
+- Designing an optimal policy / intervention / allocation 
+
+- Relaxing common assumption that intervention on individual/unit `\(i\)` does not effect other individuals/units
+
+(in fairness/justice applications that will usually be **importantly wrong**)
+
+- Constraint: bound **counterfactual privilege**, preventing "rich get richer" effect
+
+Kusner, Russell, Loftus, Silva, [Making Decisions that Reduce Discriminatory Impacts](http://proceedings.mlr.press/v97/kusner19a.html) (ICML 2019)
+
+---
+
+### Optimal fair policies under interference
+
+.pull-left[
+Intervention `\(\mathbf Z\)` trying to increase `\(\mathbf Y\)`
+
+Privilege constraint, for `\(\tau \geq 0\)`
+$$
+\mathbb{E}[\mathbf{\hat Y}({\color{red}a},\mathbf{Z})] - \mathbb{E}[\mathbf{\hat Y}({\color{blue}a'},\mathbf{Z})] \leq \tau
+$$
+]
+.pull-right[
+![](../interference.png)
+]
+
+Optimization problem (with budget constraint `\(b\)`)
+
+`$$\mathbf{Z} = \arg \max \sum_i \mathbb{E}\left[\mathbf{\hat Y}^{(i)}(a^{(i)}, \mathbf Z) | \mathbf A^{(i)}, \mathbf X^{(i)}  \right]$$`
+
+`$$\quad s.t. \quad \sum_i \mathbf{Z}^{(i)} \leq b$$`
+---
+
+### Allocating resources to (NYC) schools
+
+.pull-left[
+Without constraint
+![](../unfairschools.png)
+]
+.pull-right[
+With constraint
+![](../fairschools.png)
+]
+
+---
+class: inverse
+
+## Future work
+
+
+What about discriminatory impacts that already exist?
+- Measuring existing inequality
+- Intervening earlier in the ML pipeline
+
+When are social categories oversimplified?
+- Race as a multi-dimensional construct
+- Race as a cause vs. race as an outcome
+- Social categories as constructs created over time
+
+Can we modify the status quo?
+- Interventions on graphs
+- Measuring inequality before and after intervention
+- Breaking cycles of disadvantage
+
+---
+
+## Closing thoughts
+
+Merit, just desert, qualification, utility...
+
+The things we really care about are usually not measured
+
+And probably cannot be--or at least not for long--due to [Goodhart-Campbell laws](https://twitter.com/CT_Bergstrom/status/1329175501882019841)
+
+Causal models can point us in directions of building consensus and converging toward truth/justice
+
+---
+class: split-four
+
+.column[
+![](matt.png)
+Matt Kusner (UCL)
+&amp;nbsp; 
+
+&amp;nbsp; 
+
+![](julia.png)
+Julia Stoyanovich
+]
+
+.column[
+![](chris.png)
+Chris Russell (AWS/ELLIS)
+
+&amp;nbsp; 
+
+![](ke.jpg)
+Ke Yang
+]
+
+.column[
+![](ricardo.png)
+
+Ricardo Silva (UCL)
+
+&amp;nbsp;  
+
+![](lucius.png)
+Lucius Bynum
+]
+
+.column[
+## Turing group
+
+&amp;nbsp; 
+
+&amp;nbsp; 
+
+&amp;nbsp; 
+
+### NYU
+![](margarita.jpeg)
+Margarita Boyarskaya
+
+]
+
+---
+
+
+### Questions?
+
+Thank you for listening!
+
+Reading for a fairly general audience: [The long road to fairer algorithms](https://www.nature.com/articles/d41586-020-00274-3) (Nature, 2020)
+
+[joshualoftus.com](joshualoftus.com)
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"highlightSpans": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+(function(time) {
+  var d2 = function(number) {
+    return ('0' + number).slice(-2); // left-pad 0 to minutes/seconds
+  },
+
+  time_format = function(total) {
+    var secs = Math.abs(total) / 1000;
+    var h = Math.floor(secs / 3600);
+    var m = Math.floor(secs % 3600 / 60);
+    var s = Math.round(secs % 60);
+    var res = d2(m) + ':' + d2(s);
+    if (h > 0) res = h + ':' + res;
+    return res;  // [hh:]mm:ss
+  },
+
+  slide_number_div = function(i) {
+    return document.getElementsByClassName('remark-slide-number').item(i);
+  },
+
+  current_page_number = function(i) {
+    return slide_number_div(i).firstChild.textContent;  // text "i / N"
+  };
+
+  var timer = document.createElement('span'); timer.id = 'slide-time-left';
+  var time_left = time, k = slideshow.getCurrentSlideIndex(),
+      last_page_number = current_page_number(k);
+
+  setInterval(function() {
+    time_left = time_left - 1000;
+    timer.innerHTML = ' ' + time_format(time_left);
+    if (time_left < 0) timer.style.color = 'red';
+  }, 1000);
+
+  slide_number_div(k).appendChild(timer);
+
+  slideshow.on('showSlide', function(slide) {
+    var i = slide.getSlideIndex(), n = current_page_number(i);
+    // reset timer when a new slide is shown and the page number is changed
+    if (last_page_number !== n) {
+      time_left = time; last_page_number = n;
+      timer.innerHTML = ' ' + time_format(time); timer.style.color = null;
+    }
+    slide_number_div(i).appendChild(timer);
+  });
+})(59000);
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
