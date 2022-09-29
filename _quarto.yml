@@ -6,6 +6,7 @@ project:
     - "!talks/"
   resources: 
     - "talks/"
+    - "files/"
 
 website:
   title: "{{< fa solid chart-simple size=large >}} joshua loftus"
