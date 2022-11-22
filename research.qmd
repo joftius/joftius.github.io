@@ -18,17 +18,19 @@ Some of this work was covered in the [New Scientist](https://www.newscientist.co
 
 ### Publications
 
--   L. E. J. Bynum, J. R. Loftus, J. Stoyanovich, **Disaggregated Interventions to Reduce Inequality**. Equity and Access in Algorithms, Mechanisms, and Optimization, 2021. \[[link](https://eaamo.org/accepted/)\]
+-   L. E. J. Bynum, J. R. Loftus, J. Stoyanovich, **Counterfactuals for the Future**. Proceedings of the Thirty-Seventh AAAI Conference on Artificial Intelligence, (*AAAI* 2023, to appear). \[[link](https://aaai.org/Conferences/AAAI-23/)\]
 
--   K. Yang, J. R. Loftus, J. Stoyanovich, **Causal intersectionality and fair ranking**. Foundations of Responsible Computing, 2021. \[[link](https://drops.dagstuhl.de/opus/frontdoor.php?source_opus=13875)\]
+-   L. E. J. Bynum, J. R. Loftus, J. Stoyanovich, **Disaggregated Interventions to Reduce Inequality**. Equity and Access in Algorithms, Mechanisms, and Optimization, (*EAAMO* 2021). \[[link](https://dl.acm.org/doi/abs/10.1145/3465416.3483286)\]
 
--   M. J. Kusner, C. Russell, J. R. Loftus, R. Silva. **Making Decisions that Reduce Discriminatory Impact**. International Conference on Machine Learning, 2019. \[[link](http://proceedings.mlr.press/v97/kusner19a/kusner19a.pdf)\]
+-   K. Yang, J. R. Loftus, J. Stoyanovich, **Causal intersectionality and fair ranking**. Foundations of Responsible Computing, (*FORC* 2021). \[[link](https://drops.dagstuhl.de/opus/frontdoor.php?source_opus=13875)\]
 
--   M. J. Kusner, J. R. Loftus, C. Russell, R. Silva. **Counterfactual fairness**. Advances in Neural Information Processing Systems, 2017. \[[link](http://papers.nips.cc/paper/6995-counterfactual-fairness)\]
+-   M. J. Kusner, C. Russell, J. R. Loftus, R. Silva. **Making Decisions that Reduce Discriminatory Impact**. International Conference on Machine Learning, (*ICML* 2019). \[[link](http://proceedings.mlr.press/v97/kusner19a/kusner19a.pdf)\]
 
--   C. Russell, M. J. Kusner, J. R. Loftus, R. Silva. **When worlds collide: integrating different counterfactual assumptions in fairness**. Advances in Neural Information Processing Systems, 2017. \[[link](http://papers.nips.cc/paper/7220-when-worlds-collide-integrating-different-counterfactual-assumptions-in-fairness)\]
+-   M. J. Kusner, J. R. Loftus, C. Russell, R. Silva. **Counterfactual fairness**. Advances in Neural Information Processing Systems, (*NeurIPS* 2017). \[[link](http://papers.nips.cc/paper/6995-counterfactual-fairness)\]
 
--   J. R. Loftus, C. Russell, M. J. Kusner, R. Silva. **Causal reasoning for algorithmic fairness**. Preprint.
+-   C. Russell, M. J. Kusner, J. R. Loftus, R. Silva. **When worlds collide: integrating different counterfactual assumptions in fairness**. Advances in Neural Information Processing Systems, (*NeurIPS* 2017). \[[link](http://papers.nips.cc/paper/7220-when-worlds-collide-integrating-different-counterfactual-assumptions-in-fairness)\]
+
+-   J. R. Loftus, C. Russell, M. J. Kusner, R. Silva. **Causal reasoning for algorithmic fairness**. *Preprint*.
 
 # Post-selection inference
 
@@ -40,18 +42,17 @@ I'm a co-author of the [selectiveInference](https://cran.r-project.org/web/packa
 
 ### Publications
 
--   X. Tian, J. R. Loftus, J. E. Taylor. **Selective inference with unknown variance via the square-root LASSO**. Biometrika, 2018. \[[link](https://academic.oup.com/biomet/article/105/4/755/5105991)\]
+-   X. Tian, J. R. Loftus, J. E. Taylor. **Selective inference with unknown variance via the square-root LASSO**. *Biometrika*, 2018. \[[link](https://academic.oup.com/biomet/article/105/4/755/5105991)\]
 
--   J. E. Taylor, J. R. Loftus, and R. J. Tibshirani. **Inference in adaptive regression via the Kac-Rice formula**. Annals of Statistics, 2016. \[[link](http://projecteuclid.org/euclid.aos/1458245734)\]
+-   J. E. Taylor, J. R. Loftus, and R. J. Tibshirani. **Inference in adaptive regression via the Kac-Rice formula**. *Annals of Statistics*, 2016. \[[link](http://projecteuclid.org/euclid.aos/1458245734)\]
 
--   J. R. Loftus. **Selective inference after cross-validation**. Preprint.
+-   J. R. Loftus. **Selective inference after cross-validation**. *Preprint*.
 
--   J. R. Loftus and J. E. Taylor. **Selective inference in regression models with groups of variables**. Preprint.
+-   J. R. Loftus and J. E. Taylor. **Selective inference in regression models with groups of variables**. *Preprint*.
 
--   J. R. Loftus, J. E. Taylor. **A significance test for forward stepwise model selection**. Preprint.
+-   J. R. Loftus, J. E. Taylor. **A significance test for forward stepwise model selection**. *Preprint*.
 
 # Collaborations
 
--   Xu, J., et al. **Landscape of monoallelic DNA accessibility in mouse embryonic stem cells and neural progenitor cells**. Nature genetics. Chang lab. \[[link](https://www.nature.com/articles/ng.3769)\]
+-   Xu, J., et al. **Landscape of monoallelic DNA accessibility in mouse embryonic stem cells and neural progenitor cells**. *Nature Genetics*, 2017. \[[link](https://doi.org/10.1038/ng.3769)\]
 
--   E. T. Richardson, et. al. **Modeling cash incentives vs. oral preexposure prophylaxis in high-risk African women: the Cash-PreP Study**. Poster, AIDS Conference.
