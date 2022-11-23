@@ -48,7 +48,9 @@ I'm a co-author of the [selectiveInference](https://cran.r-project.org/web/packa
 
 -   J. R. Loftus, J. E. Taylor. **A significance test for forward stepwise model selection**. *Preprint*.
 
-# Collaborations
+# Other publications
 
--   Xu, J., et al. **Landscape of monoallelic DNA accessibility in mouse embryonic stem cells and neural progenitor cells**. *Nature Genetics*, 2017. \[[link](https://doi.org/10.1038/ng.3769)\]
+- Bynum, et al., **An Interactive Introduction to Causal Inference**, *VISxAI*: IEEE Workshop on Visualization for AI Explainability, 2022. \[[link](https://lbynum.github.io/interactive-causal-inference/)\]
+
+- Xu, J., et al. **Landscape of monoallelic DNA accessibility in mouse embryonic stem cells and neural progenitor cells**. *Nature Genetics*, 2017. \[[link](https://doi.org/10.1038/ng.3769)\]
 
