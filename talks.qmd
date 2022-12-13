@@ -5,8 +5,9 @@ description: |
 ---
 
 | Recent talks                                                                                                                                                                         |
-|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Psychometric Society keynote](./talks/2022-07-13-international-meeting-of-the-psychometric-society-keynote/slides/causal.html)                                                      |
+|------------------------------------------------------------------------|
+| [International Conference on Statistics and Data Science](./talks/fairness/slides/ICSDS2022.html)                                                                                    |
+| [Psychometric Society keynote](./talks/fairness/slides/IMPS2022.html)                                                                                                                |
 | [Discussion of Sani, Malinsky, and Shpitser](https://drive.google.com/file/d/1s829R-mS4ndGtWQyWxffR-xKv4W32avd/view) \[[video](https://youtu.be/itnR1xVS4YI)\]                       |
 | [Discussion of Panigrahi, MacDonald, and Kessler](./talks/misc_slides/Panigrahi_discussion.html) \[[video](https://drive.google.com/file/d/12s6xznkdTOBqXqPsZAmL338bf-jXopnX/view)\] |
 | [Workshop on Race and Racism in Science](./talks/2021-05-04-workshop-on-race-and-racism-in-science/slides/AIbias.html)                                                               |
