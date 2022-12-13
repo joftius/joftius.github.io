@@ -5,7 +5,7 @@ description: |
 ---
 
 | Recent talks                                                                                                                                                                         |
-|------------------------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [International Conference on Statistics and Data Science](./talks/fairness/slides/ICSDS2022.html)                                                                                    |
 | [Psychometric Society keynote](./talks/fairness/slides/IMPS2022.html)                                                                                                                |
 | [Discussion of Sani, Malinsky, and Shpitser](https://drive.google.com/file/d/1s829R-mS4ndGtWQyWxffR-xKv4W32avd/view) \[[video](https://youtu.be/itnR1xVS4YI)\]                       |
