@@ -1,9 +1,10 @@
 ---
 title: "Counterfactual fairness"
+subtitle: "Slides: joshualoftus.com/talks.html"
 author: "Joshua Loftus (LSE Statistics)"
 output:
   xaringan::moon_reader:
-    css: ["default", "xaringan-themer.css",  "ninjutsu"]
+    css: ["default", "xaringan-themer.css",  "ninjutsu", "extra.css"]
     seal: true
     lib_dir: libs
     nature:
@@ -114,23 +115,20 @@ Margarita Boyarskaya
 
 ]
 
----
-
-### High level intro
-
-Motivating examples, guiding philosophies
-
-### Causal fairness
-
-In prediction and ranking tasks, with intersectionality, interference, ...
-
-### Concluding thoughts
-
-And totally unfounded speculations
 
 ---
 
-### Serious business...
+### Starting in 2016
+
+**Weapons of Math Destruction** by Cathy O'Neil
+
+[ProPublica](https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm):
+
+![](../compas.png)
+
+---
+
+### Serious business
 
 .pull-left[
 "New products and services, including those that incorporate or utilize **artificial intelligence and machine learning**, can raise new or exacerbate existing *ethical, technological, legal*, and other challenges, which **may negatively affect our brands** and demand for our products and services and **adversely affect our revenues** and operating results"
@@ -144,17 +142,34 @@ Source: [WIRED](https://www.wired.com/story/google-microsoft-warn-ai-may-do-dumb
 
 ---
 
-### Not a new problem for psychometrics!
+### Back in 2016
 
-![](../civilrights.jpg)
+I thought: seems like this is about causality? ("effect" of one variable, "controlling for" others)
 
-See [50 Years of Test (Un)fairness: Lessons for Machine Learning](https://dl.acm.org/doi/10.1145/3287560.3287600) (Hutchinson and Mitchell, 2019) 
+Holland: **no causation without manipulation**
+
+
+Well, what *can* we manipulate?
 
 ---
 
-### Simpson's paradox
+.small[
+**Are Emily and Greg More Employable than Lakisha and Jamal?** (Bertrand and Mullainathan, 2003)
 
-<iframe src="https://en.wikipedia.org/wiki/Simpson%27s_paradox#UC_Berkeley_gender_bias" scrolling= "no" height="490" width="760" ></iframe>
+Whitened Resumes: Race and Self-Presentation in the Labor Market (Kang et al, 2016)
+
+*Systemic Discrimination Among Large U.S. Employers* (Kline et al, 2022)
+]
+
+![](https://hbswk.hbs.edu/PublishingImages/whitened-resumes.png)
+
+---
+
+Randomize (or blind) the **perception** of a sensitive variable (e.g. race) at one (late?) time point
+
+![](darkness.png)
+
+
 
 
 ---
@@ -176,25 +191,6 @@ From the final paragraph of Bickel et al (1975)
 - Assumption: paths show conditional dependence
 - Assumption: intervention to change one variable also affects all variables on paths away from it
 
----
-
-## Two interpretations
-
-### Interventions
-
-**Can we change the DAG**, for example via socialization or education (emphasizing more women role models in STEM curricula, say?)
-
-### Counterfactual fairness
-
-I was admitted to grad school. **If I had been different**, had a different gender for example, maybe I would have had different socialization, applied to a different department, and not been admitted. **Is that fair**?
-
----
-
-## Recidivism prediction
-
-![](../compas.png)
-
-Source: [ProPublica](https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm), 2016.
 
 ---
 
@@ -222,49 +218,20 @@ Race $R$, structural racism $S$, arrested for marijuana $M$, prior conviction $P
 If $C$ is computed using only $P$ (and not $R$ *directly*), is that "fair"?
 ]
 
-
-
 ---
 
-## How do we get a DAG?
+### Fairness focused on one (later?) stage
 
-Simple examples are easy to understand
+- *perception* of race/gender
+- balance *among applicants*
 
-Too simple? Don't correspond to the real world?
+#### does not fix unfairness that occurred earlier
 
-### How do we know if it's "true"?
+**Counterfactuals** help us think about this. **Depth** of the counterfactual story (starting earlier in time and/or length of causal pathway) corresponds to more/less fairness
 
---
+VanderWeele and Robinson, 2015:
 
-My opinion: we could use a healthy dose of (philosophical)
-
-> [Pragmatism](https://en.wikipedia.org/wiki/Pragmatism) is a philosophical tradition that considers words and thought as *tools and instruments for prediction, problem solving, and action*, and rejects the idea that the function of thought is to describe, represent, or mirror reality.
-
----
-
-#### Statistical wisdom: models as (thinking) tools
-
-.pull-left[
-![](https://upload.wikimedia.org/wikipedia/commons/a/a2/GeorgeEPBox.jpg)
-[George Box](https://en.wikipedia.org/wiki/George_E._P._Box)
-]
-
-.pull-right[
-
-> [All models are wrong](All_models_are_wrong) but some are useful
-
-therefore,
-
-> ... the scientist must be alert to what is **importantly wrong**
-
-> ... **cannot obtain a "correct" one** by excessive elaboration
-
-]
-
----
-class: inverse, center, middle
-
-## My research focus: **causal fairness**
+> ... we tried to [...] provide a causal interpretation of the race coefficient in regression models that would be palatable to someone who was opposed to discussing causal effects for non-manipulable variables.
 
 ---
 
@@ -303,20 +270,37 @@ Any predictor $\hat Y$ which is a function of only non-descendents of $A$ in the
 - [Chiappa (2019)](https://ojs.aaai.org//index.php/AAAI/article/view/4777)
 - ...
 
-
 ]
+
 
 ---
 
-### The Fundamental Contradiction of Fairness
+### At some point we must decide
 
-See, e.g.: Kleinberg et al (2016), Chouldechova (2016) 
+#### Which version of fairness to achieve?
 
-#### (Simplified) impossibility theorem
+**(Simplified) impossibility theorem** see, e.g.: Kleinberg et al (2016), Chouldechova (2016) 
 
 > Unless the world is already fair, the only solutions satisfying both equal treatment (or opportunity) and equal outcomes (demographic parity) are trivial ones (e.g. jail everyone)
 
-Many versions can be proven with different sets of assumptions but basically the same conclusion: some fairness definitions are contradictory
+
+---
+
+### At some point we must decide
+
+#### Which causal model reveals our beliefs?
+
+[George Box](https://en.wikipedia.org/wiki/George_E._P._Box):
+
+
+> [All models are wrong](All_models_are_wrong) but some are useful
+
+therefore,
+
+> ... the scientist must be alert to what is **importantly wrong**
+
+> ... **cannot obtain a "correct" one** by excessive elaboration
+
 
 ---
 class: split-four
@@ -389,16 +373,16 @@ graph TB
 &nbsp;
 
 
-Transparency: we can say specifically what we disagree on
+**Transparency**: we can say specifically what we disagree on
 
-Interpretation: meanings of variables, edges (mechanisms)
+**Interpretation**: meanings of variables, edges (mechanisms)
 
 
 ---
 
 ### Impossibility: competing DAGs / pathways
 
-When Worlds Collide: Integrating Different Counterfactual Assumptions in Fairness (Russell et al, *NeurIPS 2017*)
+*When Worlds Collide: Integrating Different Counterfactual Assumptions in Fairness* (Russell et al, [NeurIPS 2017](https://papers.nips.cc/paper/2017/hash/1271a7029c9df08643b631b02cf9e116-Abstract.html))
 
 - Approximate counterfactual fairness (relax equality constraint)
 - Approximately satisfy fairness across both (all) models
@@ -412,7 +396,7 @@ I think this is a good *path*. It's now about understanding the causes of unfair
 
 ## [Intersectional](https://en.wikipedia.org/wiki/Intersectionality) fairness
 
-Yang, Stoyanovich, Loftus. *Causal Intersectionality and Fair Ranking* ([FORC 2021](https://drops.dagstuhl.de/opus/portals/lipics/index.php?semnr=16187))
+*Causal Intersectionality and Fair Ranking* (Yang, Stoyanovich, Loftus, [FORC 2021](https://drops.dagstuhl.de/opus/portals/lipics/index.php?semnr=16187))
 
 - Multiple sensitive attributes, e.g. race and gender
 
@@ -457,9 +441,9 @@ knitr::include_graphics("../moving.png")
 
 ### Untangling intersectional relationships
 
-Causal mediation with **multiple mediators** and **multiple causes** is a hard problem, limiting realistic application until better methods/data are available
+*Race as a Bundle of Sticks* (Sen and Wasow, 2016)
 
-#### Opportunity for statistical research
+Causal mediation with **multiple mediators** and **multiple causes** is a hard problem, limiting realistic application until better methods/data are available
 
 ![](../fig2.png)
 
@@ -467,21 +451,19 @@ Causal mediation with **multiple mediators** and **multiple causes** is a hard p
 
 ## Interventions under [interference](https://en.wikipedia.org/wiki/Spillover_(experiment%29)
 
-Kusner, Russell, Loftus, Silva. Making Decisions that Reduce Discriminatory Impacts ([ICML 2019](http://proceedings.mlr.press/v97/kusner19a.html))
+> Various models have only predicted the world in various ways. The point, however, is to change it
+
+*Making Decisions that Reduce Discriminatory Impacts* (Kusner et al [ICML 2019](http://proceedings.mlr.press/v97/kusner19a.html))
 
 - Designing an optimal policy / intervention / allocation 
 
-- Relaxing common assumption that intervention on individual/unit $i$ does not effect other individuals/units
-
-(in fairness/justice applications that will often be **importantly wrong**)
+- Relaxing common assumption that intervention on individual/unit $i$ does not effect other individuals/units (in fairness/justice applications that will often be **importantly wrong**)
 
 - Constraint: bound **counterfactual privilege**, preventing "rich get richer" effect
 
-
-
 ---
 
-### Optimal fair policies under interference
+### Optimal fair policies (under interference)
 
 .pull-left[
 Intervention $\mathbf Z$ trying to increase $\mathbf Y$
@@ -519,28 +501,16 @@ With constraint
 
 ### Exciting advances in causal modeling
 
-Observational data, machine learning, causal reinforcement learning, ...
+Observational data, double machine learning, causal reinforcement learning, ...
 
 ### Applications in ethical data science
 
 Prioritizing normative values: fairness, privacy, interpretability, replicability, "alignment," ...
 
----
-class: inverse, center, middle
 
-## Discussion and speculation
+#### Coming soon
 
----
-
-### DAGs can be useful tools
-
-[Imbens (2019)](https://siepr.stanford.edu/sites/default/files/publications/19-022.pdf) on DAGs, reviewing The Book of Why:
-
->  TBOW and the DAG approach fully deserve the attention of all researchers and users of causal inference as one of its leading methodologies.
-
-But they have limitations:
-
-> In economics the endogeneity often arises from agents actively making choices regarding the causal variable on the basis of anticipated effects of those choices
+*Counterfactuals for the Future* (Bynum et al, AAAI 2023)
 
 
 ---
@@ -550,69 +520,25 @@ But they have limitations:
 Claim: **causality** points us in good directions for research
 
 - Choosing which covariates to condition on in fair prediction/decisions
-
 - Changing focus from prediction to action, interventions, policy design, etc
-
 - Making models/assumptions transparent
 
----
+Deirdre Mulligan at (NeurIPS 2022) causal fairness workshop:
 
-[Why focus on causality?](https://twitter.com/whitesphd/status/1308094245669081089)
-
-![](truck.jpg)
+> the important role [causal models] can play in supporting **collaborative reasoning about contested concepts, facilitating stakeholder participation** in decisions about how to meet policy goals within technical systems
 
 ---
-
-### Actions, decisions, trade-offs
-
-> Various models have only predicted the world in various ways. The point, however, is to change it
-
-Why trade-offs? Constraints of time and other resources...
-
---
-
-#### Constructs and measures
-Validity, reliability, and **malleability**
-
-(e.g. "math ability" measured in 1088 (pre-calculus) vs 1988 (post-computer))
-
-
----
-
-### Key trade-off of the "information age"
-
-```{r, echo=FALSE}
-df2 <- data.frame(
-  world = c("measure", "measure", "act", "act"),
-  choice = c("A", "B", "A", "B"),
-  utility = c(1, 1.1, 1.3, 1.2),
-  sd = c(.07, .1, .3, .25)
-)
-ggplot(df2, aes(x=world, y=utility, fill=choice)) + 
-  geom_bar(stat="identity", color="black", 
-           position=position_dodge()) +
-  geom_errorbar(aes(ymin=utility-sd, ymax=utility+sd), width=.2,
-                 position=position_dodge(.9)) 
-  
-```
-
----
-class: inverse
 
 ### Parting wisdom (hard won, not by me)
 
 Remember pragmatism, Box's rule, and what's **important** and what's **useful**? (to who? for what?)
 
-How can we [change the objective function](https://en.wikipedia.org/wiki/Twelve_leverage_points) before it's [too late](https://en.wikipedia.org/wiki/Instrumental_convergence#Paperclip_maximizer)?
 
---
 
 ### Thank you for listening!
 
 Reading for a fairly general audience: The long road to fairer algorithms ([Nature, 2020](https://www.nature.com/articles/d41586-020-00274-3))
 
-[joshualoftus.com/talks.html](joshualoftus.com/talks.html) slides
-
-[joshualoftus.com](joshualoftus.com) other research, teaching, etc
+[joshualoftus.com](joshualoftus.com) slides and other info
 
 

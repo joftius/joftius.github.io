@@ -16,6 +16,7 @@
     <script src="libs/chromatography/chromatography.js"></script>
     <script src="libs/DiagrammeR-binding/DiagrammeR.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="extra.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
@@ -23,6 +24,9 @@ class: bottom, left, title-slide
 
 .title[
 # Counterfactual fairness
+]
+.subtitle[
+## Slides: joshualoftus.com/talks.html
 ]
 .author[
 ### Joshua Loftus (LSE Statistics)
@@ -98,23 +102,20 @@ Margarita Boyarskaya
 
 ]
 
----
-
-### High level intro
-
-Motivating examples, guiding philosophies
-
-### Causal fairness
-
-In prediction and ranking tasks, with intersectionality, interference, ...
-
-### Concluding thoughts
-
-And totally unfounded speculations
 
 ---
 
-### Serious business...
+### Starting in 2016
+
+**Weapons of Math Destruction** by Cathy O'Neil
+
+[ProPublica](https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm):
+
+![](../compas.png)
+
+---
+
+### Serious business
 
 .pull-left[
 "New products and services, including those that incorporate or utilize **artificial intelligence and machine learning**, can raise new or exacerbate existing *ethical, technological, legal*, and other challenges, which **may negatively affect our brands** and demand for our products and services and **adversely affect our revenues** and operating results"
@@ -128,17 +129,34 @@ Source: [WIRED](https://www.wired.com/story/google-microsoft-warn-ai-may-do-dumb
 
 ---
 
-### Not a new problem for psychometrics!
+### Back in 2016
 
-![](../civilrights.jpg)
+I thought: seems like this is about causality? ("effect" of one variable, "controlling for" others)
 
-See [50 Years of Test (Un)fairness: Lessons for Machine Learning](https://dl.acm.org/doi/10.1145/3287560.3287600) (Hutchinson and Mitchell, 2019) 
+Holland: **no causation without manipulation**
+
+
+Well, what *can* we manipulate?
 
 ---
 
-### Simpson's paradox
+.small[
+**Are Emily and Greg More Employable than Lakisha and Jamal?** (Bertrand and Mullainathan, 2003)
 
-&lt;iframe src="https://en.wikipedia.org/wiki/Simpson%27s_paradox#UC_Berkeley_gender_bias" scrolling= "no" height="490" width="760" &gt;&lt;/iframe&gt;
+Whitened Resumes: Race and Self-Presentation in the Labor Market (Kang et al, 2016)
+
+*Systemic Discrimination Among Large U.S. Employers* (Kline et al, 2022)
+]
+
+![](https://hbswk.hbs.edu/PublishingImages/whitened-resumes.png)
+
+---
+
+Randomize (or blind) the **perception** of a sensitive variable (e.g. race) at one (late?) time point
+
+![](darkness.png)
+
+
 
 
 ---
@@ -160,25 +178,6 @@ From the final paragraph of Bickel et al (1975)
 - Assumption: paths show conditional dependence
 - Assumption: intervention to change one variable also affects all variables on paths away from it
 
----
-
-## Two interpretations
-
-### Interventions
-
-**Can we change the DAG**, for example via socialization or education (emphasizing more women role models in STEM curricula, say?)
-
-### Counterfactual fairness
-
-I was admitted to grad school. **If I had been different**, had a different gender for example, maybe I would have had different socialization, applied to a different department, and not been admitted. **Is that fair**?
-
----
-
-## Recidivism prediction
-
-![](../compas.png)
-
-Source: [ProPublica](https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm), 2016.
 
 ---
 
@@ -187,8 +186,8 @@ Source: [ProPublica](https://www.propublica.org/article/how-we-analyzed-the-comp
 "Algorithm does not *explicitly* use race" -- in an unfair world, **other things can correlate with race**, e.g. prior convictions
 
 .pull-left[
-<div id="htmlwidget-f843a680a1fcd62a0dd1" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f843a680a1fcd62a0dd1">{"x":{"diagram":"\ngraph LR\n  R-->M\n  S-->M\n  S-->P\n  M-->P\n  P-->C\n"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-b22985179f0d812c9115" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b22985179f0d812c9115">{"x":{"diagram":"\ngraph LR\n  R-->M\n  S-->M\n  S-->P\n  M-->P\n  P-->C\n"},"evals":[],"jsHooks":[]}</script>
 ]
 
 .pull-right[
@@ -197,49 +196,20 @@ Race `\(R\)`, structural racism `\(S\)`, arrested for marijuana `\(M\)`, prior c
 If `\(C\)` is computed using only `\(P\)` (and not `\(R\)` *directly*), is that "fair"?
 ]
 
-
-
 ---
 
-## How do we get a DAG?
+### Fairness focused on one (later?) stage
 
-Simple examples are easy to understand
+- *perception* of race/gender
+- balance *among applicants*
 
-Too simple? Don't correspond to the real world?
+#### does not fix unfairness that occurred earlier
 
-### How do we know if it's "true"?
+**Counterfactuals** help us think about this. **Depth** of the counterfactual story (starting earlier in time and/or length of causal pathway) corresponds to more/less fairness
 
---
+VanderWeele and Robinson, 2015:
 
-My opinion: we could use a healthy dose of (philosophical)
-
-&gt; [Pragmatism](https://en.wikipedia.org/wiki/Pragmatism) is a philosophical tradition that considers words and thought as *tools and instruments for prediction, problem solving, and action*, and rejects the idea that the function of thought is to describe, represent, or mirror reality.
-
----
-
-#### Statistical wisdom: models as (thinking) tools
-
-.pull-left[
-![](https://upload.wikimedia.org/wikipedia/commons/a/a2/GeorgeEPBox.jpg)
-[George Box](https://en.wikipedia.org/wiki/George_E._P._Box)
-]
-
-.pull-right[
-
-&gt; [All models are wrong](All_models_are_wrong) but some are useful
-
-therefore,
-
-&gt; ... the scientist must be alert to what is **importantly wrong**
-
-&gt; ... **cannot obtain a "correct" one** by excessive elaboration
-
-]
-
----
-class: inverse, center, middle
-
-## My research focus: **causal fairness**
+&gt; ... we tried to [...] provide a causal interpretation of the race coefficient in regression models that would be palatable to someone who was opposed to discussing causal effects for non-manipulable variables.
 
 ---
 
@@ -278,20 +248,37 @@ Any predictor `\(\hat Y\)` which is a function of only non-descendents of `\(A\)
 - [Chiappa (2019)](https://ojs.aaai.org//index.php/AAAI/article/view/4777)
 - ...
 
-
 ]
+
 
 ---
 
-### The Fundamental Contradiction of Fairness
+### At some point we must decide
 
-See, e.g.: Kleinberg et al (2016), Chouldechova (2016) 
+#### Which version of fairness to achieve?
 
-#### (Simplified) impossibility theorem
+**(Simplified) impossibility theorem** see, e.g.: Kleinberg et al (2016), Chouldechova (2016) 
 
 &gt; Unless the world is already fair, the only solutions satisfying both equal treatment (or opportunity) and equal outcomes (demographic parity) are trivial ones (e.g. jail everyone)
 
-Many versions can be proven with different sets of assumptions but basically the same conclusion: some fairness definitions are contradictory
+
+---
+
+### At some point we must decide
+
+#### Which causal model reveals our beliefs?
+
+[George Box](https://en.wikipedia.org/wiki/George_E._P._Box):
+
+
+&gt; [All models are wrong](All_models_are_wrong) but some are useful
+
+therefore,
+
+&gt; ... the scientist must be alert to what is **importantly wrong**
+
+&gt; ... **cannot obtain a "correct" one** by excessive elaboration
+
 
 ---
 class: split-four
@@ -301,28 +288,28 @@ class: split-four
 .column[
 &amp;nbsp; 
 
-<div id="htmlwidget-ba32e0541469b5ed4906" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ba32e0541469b5ed4906">{"x":{"diagram":"\ngraph TB\n  Race-->Outcome\n"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-cde5c072f26745d6feeb" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-cde5c072f26745d6feeb">{"x":{"diagram":"\ngraph TB\n  Race-->Outcome\n"},"evals":[],"jsHooks":[]}</script>
 ]
 .column[
 &amp;nbsp; 
 
-<div id="htmlwidget-484ed42468d86de4a421" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-484ed42468d86de4a421">{"x":{"diagram":"\ngraph TB\n  Racism-->Outcome\n"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-4567664ad0e30c27d8af" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4567664ad0e30c27d8af">{"x":{"diagram":"\ngraph TB\n  Racism-->Outcome\n"},"evals":[],"jsHooks":[]}</script>
 ]
 
 .column[
 &amp;nbsp; 
 
 
-<div id="htmlwidget-697d58abce2053a24549" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-697d58abce2053a24549">{"x":{"diagram":"\ngraph TB\n  A-->X\n  X-->Y\n  A-->Y\n"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-58166d53661c8cfb95dc" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-58166d53661c8cfb95dc">{"x":{"diagram":"\ngraph TB\n  A-->X\n  X-->Y\n  A-->Y\n"},"evals":[],"jsHooks":[]}</script>
 ]
 .column[
 &amp;nbsp; 
 
-<div id="htmlwidget-29a56e939b13f92b7856" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-29a56e939b13f92b7856">{"x":{"diagram":"\ngraph TB\n  A-->X\n  A-->R\n  X-->Y\n  R-->Y\n  A-->Y\n"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-9b6b2f202c941e659048" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9b6b2f202c941e659048">{"x":{"diagram":"\ngraph TB\n  A-->X\n  A-->R\n  X-->Y\n  R-->Y\n  A-->Y\n"},"evals":[],"jsHooks":[]}</script>
 ]
 
 &amp;nbsp;
@@ -338,16 +325,16 @@ class: split-four
 &amp;nbsp;
 
 
-Transparency: we can say specifically what we disagree on
+**Transparency**: we can say specifically what we disagree on
 
-Interpretation: meanings of variables, edges (mechanisms)
+**Interpretation**: meanings of variables, edges (mechanisms)
 
 
 ---
 
 ### Impossibility: competing DAGs / pathways
 
-When Worlds Collide: Integrating Different Counterfactual Assumptions in Fairness (Russell et al, *NeurIPS 2017*)
+*When Worlds Collide: Integrating Different Counterfactual Assumptions in Fairness* (Russell et al, [NeurIPS 2017](https://papers.nips.cc/paper/2017/hash/1271a7029c9df08643b631b02cf9e116-Abstract.html))
 
 - Approximate counterfactual fairness (relax equality constraint)
 - Approximately satisfy fairness across both (all) models
@@ -361,7 +348,7 @@ I think this is a good *path*. It's now about understanding the causes of unfair
 
 ## [Intersectional](https://en.wikipedia.org/wiki/Intersectionality) fairness
 
-Yang, Stoyanovich, Loftus. *Causal Intersectionality and Fair Ranking* ([FORC 2021](https://drops.dagstuhl.de/opus/portals/lipics/index.php?semnr=16187))
+*Causal Intersectionality and Fair Ranking* (Yang, Stoyanovich, Loftus, [FORC 2021](https://drops.dagstuhl.de/opus/portals/lipics/index.php?semnr=16187))
 
 - Multiple sensitive attributes, e.g. race and gender
 
@@ -379,8 +366,8 @@ Lots of scholarship, not much using formal mathematical models. See [Bright et a
 
 .pull-left[
 Race, gender, weightlifting test, application score
-<div id="htmlwidget-457827ab1876f7c57926" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-457827ab1876f7c57926">{"x":{"diagram":"\ngraph TB\n  R-->X\n  G-->X\n  R-->Y\n  X-->Y\n  G-->Y\n"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-e6565275f1592f6a3fdd" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e6565275f1592f6a3fdd">{"x":{"diagram":"\ngraph TB\n  R-->X\n  G-->X\n  R-->Y\n  X-->Y\n  G-->Y\n"},"evals":[],"jsHooks":[]}</script>
 ]
 .pull-right[
 Weightlifting considered a **resolving variable** (company argues it is a necessary qualification)
@@ -395,9 +382,9 @@ Weightlifting considered a **resolving variable** (company argues it is a necess
 
 ### Untangling intersectional relationships
 
-Causal mediation with **multiple mediators** and **multiple causes** is a hard problem, limiting realistic application until better methods/data are available
+*Race as a Bundle of Sticks* (Sen and Wasow, 2016)
 
-#### Opportunity for statistical research
+Causal mediation with **multiple mediators** and **multiple causes** is a hard problem, limiting realistic application until better methods/data are available
 
 ![](../fig2.png)
 
@@ -405,21 +392,19 @@ Causal mediation with **multiple mediators** and **multiple causes** is a hard p
 
 ## Interventions under [interference](https://en.wikipedia.org/wiki/Spillover_(experiment%29)
 
-Kusner, Russell, Loftus, Silva. Making Decisions that Reduce Discriminatory Impacts ([ICML 2019](http://proceedings.mlr.press/v97/kusner19a.html))
+&gt; Various models have only predicted the world in various ways. The point, however, is to change it
+
+*Making Decisions that Reduce Discriminatory Impacts* (Kusner et al [ICML 2019](http://proceedings.mlr.press/v97/kusner19a.html))
 
 - Designing an optimal policy / intervention / allocation 
 
-- Relaxing common assumption that intervention on individual/unit `\(i\)` does not effect other individuals/units
-
-(in fairness/justice applications that will often be **importantly wrong**)
+- Relaxing common assumption that intervention on individual/unit `\(i\)` does not effect other individuals/units (in fairness/justice applications that will often be **importantly wrong**)
 
 - Constraint: bound **counterfactual privilege**, preventing "rich get richer" effect
 
-
-
 ---
 
-### Optimal fair policies under interference
+### Optimal fair policies (under interference)
 
 .pull-left[
 Intervention `\(\mathbf Z\)` trying to increase `\(\mathbf Y\)`
@@ -457,28 +442,16 @@ With constraint
 
 ### Exciting advances in causal modeling
 
-Observational data, machine learning, causal reinforcement learning, ...
+Observational data, double machine learning, causal reinforcement learning, ...
 
 ### Applications in ethical data science
 
 Prioritizing normative values: fairness, privacy, interpretability, replicability, "alignment," ...
 
----
-class: inverse, center, middle
 
-## Discussion and speculation
+#### Coming soon
 
----
-
-### DAGs can be useful tools
-
-[Imbens (2019)](https://siepr.stanford.edu/sites/default/files/publications/19-022.pdf) on DAGs, reviewing The Book of Why:
-
-&gt;  TBOW and the DAG approach fully deserve the attention of all researchers and users of causal inference as one of its leading methodologies.
-
-But they have limitations:
-
-&gt; In economics the endogeneity often arises from agents actively making choices regarding the causal variable on the basis of anticipated effects of those choices
+*Counterfactuals for the Future* (Bynum et al, AAAI 2023)
 
 
 ---
@@ -488,57 +461,26 @@ But they have limitations:
 Claim: **causality** points us in good directions for research
 
 - Choosing which covariates to condition on in fair prediction/decisions
-
 - Changing focus from prediction to action, interventions, policy design, etc
-
 - Making models/assumptions transparent
 
----
+Deirdre Mulligan at (NeurIPS 2022) causal fairness workshop:
 
-[Why focus on causality?](https://twitter.com/whitesphd/status/1308094245669081089)
-
-![](truck.jpg)
+&gt; the important role [causal models] can play in supporting **collaborative reasoning about contested concepts, facilitating stakeholder participation** in decisions about how to meet policy goals within technical systems
 
 ---
-
-### Actions, decisions, trade-offs
-
-&gt; Various models have only predicted the world in various ways. The point, however, is to change it
-
-Why trade-offs? Constraints of time and other resources...
-
---
-
-#### Constructs and measures
-Validity, reliability, and **malleability**
-
-(e.g. "math ability" measured in 1088 (pre-calculus) vs 1988 (post-computer))
-
-
----
-
-### Key trade-off of the "information age"
-
-&lt;img src="ICSDS2022_files/figure-html/unnamed-chunk-8-1.png" width="504" /&gt;
-
----
-class: inverse
 
 ### Parting wisdom (hard won, not by me)
 
 Remember pragmatism, Box's rule, and what's **important** and what's **useful**? (to who? for what?)
 
-How can we [change the objective function](https://en.wikipedia.org/wiki/Twelve_leverage_points) before it's [too late](https://en.wikipedia.org/wiki/Instrumental_convergence#Paperclip_maximizer)?
 
---
 
 ### Thank you for listening!
 
 Reading for a fairly general audience: The long road to fairer algorithms ([Nature, 2020](https://www.nature.com/articles/d41586-020-00274-3))
 
-[joshualoftus.com/talks.html](joshualoftus.com/talks.html) slides
-
-[joshualoftus.com](joshualoftus.com) other research, teaching, etc
+[joshualoftus.com](joshualoftus.com) slides and other info
 
 
     </textarea>
