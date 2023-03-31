@@ -2,54 +2,54 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>http://joshualoftus.com/about.html</loc>
-    <lastmod>2022-09-29T11:23:29.283Z</lastmod>
+    <lastmod>2023-03-31T21:08:09.225Z</lastmod>
   </url>
   <url>
     <loc>http://joshualoftus.com/index.html</loc>
-    <lastmod>2023-01-02T17:44:18.166Z</lastmod>
+    <lastmod>2023-03-31T21:08:09.735Z</lastmod>
   </url>
   <url>
     <loc>http://joshualoftus.com/posts.html</loc>
-    <lastmod>2023-01-02T21:14:52.667Z</lastmod>
+    <lastmod>2023-03-31T21:08:10.501Z</lastmod>
   </url>
   <url>
     <loc>http://joshualoftus.com/posts/2020-11-23-least-squares-as-springs/least-squares-as-springs.html</loc>
-    <lastmod>2022-09-29T11:23:31.412Z</lastmod>
+    <lastmod>2023-03-31T21:08:11.233Z</lastmod>
   </url>
   <url>
     <loc>http://joshualoftus.com/posts/2020-12-21-concise-defense-of-statistical-significance/concise-defense-of-statistical-significance.html</loc>
-    <lastmod>2022-09-29T11:23:31.962Z</lastmod>
+    <lastmod>2023-03-31T21:08:11.737Z</lastmod>
   </url>
   <url>
     <loc>http://joshualoftus.com/posts/2020-12-22-a-conditional-approach-to-inference-after-model-selection/a-conditional-approach-to-inference-after-model-selection.html</loc>
-    <lastmod>2022-09-29T11:23:32.596Z</lastmod>
+    <lastmod>2023-03-31T21:08:12.378Z</lastmod>
   </url>
   <url>
     <loc>http://joshualoftus.com/posts/2020-12-22-model-selection-bias-invalidates-significance-tests/model-selection-bias-invalidates-significance-tests.html</loc>
-    <lastmod>2022-09-29T11:23:33.223Z</lastmod>
-  </url>
-  <url>
-    <loc>http://joshualoftus.com/posts/welcome/welcome.html</loc>
-    <lastmod>2022-09-29T11:23:34.411Z</lastmod>
-  </url>
-  <url>
-    <loc>http://joshualoftus.com/research.html</loc>
-    <lastmod>2022-11-23T12:42:26.316Z</lastmod>
-  </url>
-  <url>
-    <loc>http://joshualoftus.com/software.html</loc>
-    <lastmod>2022-09-29T11:23:35.229Z</lastmod>
-  </url>
-  <url>
-    <loc>http://joshualoftus.com/talks.html</loc>
-    <lastmod>2022-12-13T11:13:03.721Z</lastmod>
-  </url>
-  <url>
-    <loc>http://joshualoftus.com/teaching.html</loc>
-    <lastmod>2022-09-29T11:23:36.216Z</lastmod>
+    <lastmod>2023-03-31T21:08:13.092Z</lastmod>
   </url>
   <url>
     <loc>http://joshualoftus.com/posts/2023-01-02-books-that-have-changed-my-mind/2023-01-02-books-that-have-changed-my-mind.html</loc>
-    <lastmod>2023-01-02T21:14:51.863Z</lastmod>
+    <lastmod>2023-03-31T21:08:15.092Z</lastmod>
+  </url>
+  <url>
+    <loc>http://joshualoftus.com/posts/welcome/welcome.html</loc>
+    <lastmod>2023-03-31T21:08:15.665Z</lastmod>
+  </url>
+  <url>
+    <loc>http://joshualoftus.com/research.html</loc>
+    <lastmod>2023-03-31T21:08:16.191Z</lastmod>
+  </url>
+  <url>
+    <loc>http://joshualoftus.com/software.html</loc>
+    <lastmod>2023-03-31T21:08:16.641Z</lastmod>
+  </url>
+  <url>
+    <loc>http://joshualoftus.com/talks.html</loc>
+    <lastmod>2023-03-31T21:08:17.099Z</lastmod>
+  </url>
+  <url>
+    <loc>http://joshualoftus.com/teaching.html</loc>
+    <lastmod>2023-03-31T21:08:17.506Z</lastmod>
   </url>
 </urlset>
