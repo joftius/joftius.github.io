@@ -1,6 +1,6 @@
 ---
 title: "joshua loftus"
-subtitle: "[{{< fa solid building-columns size=Large title='university' >}}](https://www.lse.ac.uk/Statistics/People/Dr-Joshua-Loftus)
+subtitle: "[{{< fa solid graduation-cap size=Large title='cv' >}}](https://joshualoftus.com/files/cv.html) [{{< fa solid building-columns size=Large title='university' >}}](https://www.lse.ac.uk/Statistics/People/Dr-Joshua-Loftus)
 [{{< ai google-scholar size=Large title='scholar' >}}](https://scholar.google.com/citations?user=SIbr3XUAAAAJ&hl=en)
 [{{< fa brands github size=Large title='github' >}}](https://github.com/joftius/)
 [{{< fa brands linkedin size=Large title='linkedin' >}}](https://www.linkedin.com/in/joftius/)
@@ -10,6 +10,8 @@ image: me.jpg
 about:
   template: trestles
 ---
+
+Assistant Professor of Statistics at the London School of Economics. Find my full cv [here](https://joshualoftus.com/files/cv.html).
 
 I'm a first-generation college graduate who went from homeschooling, to community college, and eventually to finishing a PhD in Statistics at Stanford University. I'm grateful for the opportunities and to the teachers who helped me along the way. Diversity, inclusion, and mentoring are part of my identity. In my teaching I want to empower students to use the powerful tools of data science for good.
 
