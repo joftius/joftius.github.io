@@ -68,17 +68,65 @@ class: split-four
 
 ---
 
+### Credit to my excellent collaborators
+
+#### Alan Turing Institute (2016-)
+
+&lt;img src="ricardo.png" width="167" /&gt;![](matt.jpg)&lt;img src="chris.png" width="165" /&gt;
+
+Ricardo Silva, Matt Kusner (UCL) &amp;nbsp; Chris Russell (AWS)
+
+---
+
+#### NYU (2020-) Julia Stoyanovich, Ke Yang, Lucius Bynum
+
+&lt;img src="julia.png" width="25%" /&gt;&lt;img src="ke.jpg" width="25%" /&gt;&lt;img src="lucius.png" width="25%" /&gt;
+
+
+#### LSE (2022-) Sakina Hansen
+
+&lt;img src="sakina.jpg" width="30%" /&gt;
+
+
+---
+
 class: center, middle, inverse
 
 # Unfair algorithms
 
 ---
 
-### Origin story of my research
+### Background: ethical data science
 
-**Weapons of Math Destruction** by Cathy O'Neil
+Data and information technology are powerful tools
 
-[ProPublica](https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm):
+As with other human technologies (e.g. fossil fuel energy, nuclear technology) the **consequences** of data science will depend on **who uses it** and **for what purposes**
+
+**Data scientists** do work that becomes part of our information infrastructure. Like **city planners**, our decisions can impact everyone
+
+Professionalism: (e.g. medicine, engineering, law) often require ethical training, license to practice
+
+---
+
+### First, do no harm
+
+Tradition in medicine, [Hippocratic oath]((https://en.wikipedia.org/wiki/Primum_non_nocere)
+
+Blame for harm typically does not fall on machines or algorithms, but on the people who built or used them
+
+(that could be you!)
+
+**Avoiding harm is only the beginning** of ethics
+
+(Credit for benefit of algorithms)
+
+---
+
+### Origin story of my research (2016-)
+
+**Weapons of Math Destruction** [book](https://en.wikipedia.org/wiki/Weapons_of_Math_Destruction) by Cathy O'Neil
+
+[ProPublica](https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm) data journalism:
 
 ![](../compas.png)
 
@@ -103,6 +151,26 @@ class: center, middle, inverse
 
 ]
 
+---
+
+### Language models
+
+Statistical patterns of words occurring close to each other
+
+**Causality**: model does not know *why* words are correlated
+
+![](poem.jpg)
+... "he is hardworking, she is lazy" [source link](https://qz.com/1141122/google-translates-gender-bias-pairs-he-with-hardworking-and-she-with-lazy-and-other-examples)
+
+---
+
+### [LLMs](https://www.washingtonpost.com/technology/2023/04/05/chatgpt-lies/) and exponential growth of [bullshit](https://aisnakeoil.substack.com/p/chatgpt-is-a-bullshit-generator-but)
+
+&gt; One night, [...] law professor Jonathan Turley got a troubling email. As part of a research study, a fellow lawyer [Eugene Volokh] had asked ChatGPT to generate a list of legal scholars who had sexually harassed someone. Turley’s name was on the list.
+
+&gt; [...] Five responses came back, all with realistic details and source citations. But [...] three of them appeared to be false. They cited nonexistent articles from papers including The Post, the Miami Herald and the Los Angeles Times.
+
+&gt; [Later ✈️,] Microsoft’s Bing, [...] repeated the false claim about Turley — citing among its sources an op-ed by Turley [...] outlining his experience of being falsely accused by ChatGPT.
 
 ---
 
@@ -125,6 +193,71 @@ class: center, middle, inverse
 
 # Statistical discrimination
 
+---
+
+### Not an entirely new problem!
+
+![](../civilrights.jpg)
+
+See [50 Years of Test (Un)fairness: Lessons for Machine Learning](https://dl.acm.org/doi/10.1145/3287560.3287600) (Hutchinson and Mitchell, 2019) 
+
+---
+
+### What's new (or changing) with algorithms?
+
+WMD book: **scale**, opacity(?)
+
+
+
+Surveillance by governments: [Seeing Like a State (book)](https://en.wikipedia.org/wiki/Seeing_Like_a_State)
+
+Surveillance by business: [Surveillance capitalism](https://en.wikipedia.org/wiki/Surveillance_capitalism)
+
+[Predatory inclusion](https://journals.sagepub.com/doi/pdf/10.1177/2329496516686620) (e.g. wellness app sharing [patient data](https://techcrunch.com/2023/04/04/monument-tempest-alcohol-data-breach/))
+
+[Data colonialism](https://purdue.edu/critical-data-studies/collaborative-glossary/data-colonialism.php)
+
+---
+
+### Philosophy of statistics/science
+
+.pull-left[
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Richard_Feynman_1974.png/402px-Richard_Feynman_1974.png)
+Richard Feynman, 1974
+]
+.pull-right[
+[Cargo cult science](https://en.wikipedia.org/wiki/Cargo_cult_science)/[statistics](https://www.significancemagazine.com/2-uncategorised/593-cargo-cult-statistics-and-scientific-crisis)
+
+[Mindless statistical inference](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.821.8442&amp;rep=rep1&amp;type=pdf)
+
+*Imitate success*
+
+
+&gt; computing machines, with a perfect lack of discrimination, will do any foolish thing they are told to do
+
+&gt; the simple-mindedness of mathematics–its willingness, like that of a computing machine, to elaborate upon any idea, however absurd; to dress scientific brilliancies and scientific absurdities alike in the impressive uniform of formulae and theorems
+
+]
+
+---
+
+### Balancing views
+
+[A. N. Whitehead](https://en.wikipedia.org/wiki/Alfred_North_Whitehead) in *An Introduction to Mathematics* (1911):
+
+&gt; It is a profoundly erroneous truism [...] that we should *cultivate the habit of thinking of what we are doing*. The precise opposite is the case. **Civilization advances by extending the number of important operations which we can perform without thinking** about them. Operations of thought are like cavalry charges in a battle — they are strictly limited in number, they require fresh horses, and must only be made at decisive moments. 
+
+Key: what does it mean *civilization* advances? Who? How?
+
+---
+
+### Decreasing human judgment?
+
+Flowchart version of statistics
+
+Unintuitive for many statisticians
+
+We often want "assumption lean" methods
 
 ---
 
@@ -201,8 +334,8 @@ We've heard about biased samples in health research
 Different risk: a similar problem underlying [racist applications](https://www.nature.com/articles/d41586-018-06784-5) of behavioral genomics
 
 .pull-left[
-<div id="htmlwidget-7e09c7c2b36c453f6c18" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-7e09c7c2b36c453f6c18">{"x":{"diagram":"\ngraph LR\n  R-->Y\n  S-->Y\n  R-->G\n"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-1c65746cca1415b164b6" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1c65746cca1415b164b6">{"x":{"diagram":"\ngraph LR\n  R-->Y\n  S-->Y\n  R-->G\n"},"evals":[],"jsHooks":[]}</script>
 ]
 .pull-right[
 Race `\(R\)`, structural racism `\(S\)`, health outcome `\(Y\)`, polygenic score `\(G\)`
@@ -228,8 +361,8 @@ Higher dimensional `\(G\)` + more complex models = predicting `\(Y\)` without kn
 "Algorithm does not *explicitly* use race" -- in an unfair world, **other things can correlate with race**, e.g. prior convictions
 
 .pull-left[
-<div id="htmlwidget-2926cce08bf366c9b818" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2926cce08bf366c9b818">{"x":{"diagram":"\ngraph LR\n  R-->M\n  S-->M\n  S-->P\n  M-->P\n  P-->C\n"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-056feca44f5c8a5e17e5" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-056feca44f5c8a5e17e5">{"x":{"diagram":"\ngraph LR\n  R-->M\n  S-->M\n  S-->P\n  M-->P\n  P-->C\n"},"evals":[],"jsHooks":[]}</script>
 ]
 
 .pull-right[
@@ -332,28 +465,28 @@ class: split-four
 .column[
 &amp;nbsp; 
 
-<div id="htmlwidget-7900899ba4f2f430205e" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-7900899ba4f2f430205e">{"x":{"diagram":"\ngraph TB\n  Race-->Outcome\n"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-b48dde46db6634911154" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b48dde46db6634911154">{"x":{"diagram":"\ngraph TB\n  Race-->Outcome\n"},"evals":[],"jsHooks":[]}</script>
 ]
 .column[
 &amp;nbsp; 
 
-<div id="htmlwidget-470146666fc17798dd85" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-470146666fc17798dd85">{"x":{"diagram":"\ngraph TB\n  Racism-->Outcome\n"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-17bb9c62ebd9114e8b30" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-17bb9c62ebd9114e8b30">{"x":{"diagram":"\ngraph TB\n  Racism-->Outcome\n"},"evals":[],"jsHooks":[]}</script>
 ]
 
 .column[
 &amp;nbsp; 
 
 
-<div id="htmlwidget-3bd565f041a084e08205" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3bd565f041a084e08205">{"x":{"diagram":"\ngraph TB\n  A-->X\n  X-->Y\n  A-->Y\n"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-94c4961c83b56df2ad8b" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-94c4961c83b56df2ad8b">{"x":{"diagram":"\ngraph TB\n  A-->X\n  X-->Y\n  A-->Y\n"},"evals":[],"jsHooks":[]}</script>
 ]
 .column[
 &amp;nbsp; 
 
-<div id="htmlwidget-e3d4ecd3f36226f85f0f" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e3d4ecd3f36226f85f0f">{"x":{"diagram":"\ngraph TB\n  A-->X\n  A-->R\n  X-->Y\n  R-->Y\n  A-->Y\n"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-3ab56bdda1d7ce0c6fb2" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3ab56bdda1d7ce0c6fb2">{"x":{"diagram":"\ngraph TB\n  A-->X\n  A-->R\n  X-->Y\n  R-->Y\n  A-->Y\n"},"evals":[],"jsHooks":[]}</script>
 ]
 
 &amp;nbsp;
@@ -397,8 +530,8 @@ Lots of scholarship, not much using formal mathematical models. See [Bright et a
 
 .pull-left[
 Race, gender, weightlifting test, application score
-<div id="htmlwidget-6742b8d09f8091a87897" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6742b8d09f8091a87897">{"x":{"diagram":"\ngraph TB\n  R-->X\n  G-->X\n  R-->Y\n  X-->Y\n  G-->Y\n"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-1e3fd95df912f073a880" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1e3fd95df912f073a880">{"x":{"diagram":"\ngraph TB\n  R-->X\n  G-->X\n  R-->Y\n  X-->Y\n  G-->Y\n"},"evals":[],"jsHooks":[]}</script>
 ]
 .pull-right[
 Weightlifting considered a **resolving variable** (company argues it is a necessary qualification)
@@ -531,17 +664,17 @@ Deirdre Mulligan at (NeurIPS 2022) causal fairness workshop:
 
 ---
 
-### Parting wisdom (hard won, not by me)
 
-Remember pragmatism, Box's rule: what's **important**? what's **useful**? (to who?)
-
-
-
-### Thank you for listening!
+### 감사해요!
 
 Reading for a fairly general audience: The long road to fairer algorithms ([Nature, 2020](https://www.nature.com/articles/d41586-020-00274-3))
 
 [joshualoftus.com](joshualoftus.com) slides and other info
+
+
+### Parting wisdom (hard won, not by me)
+
+Remember Box's rule: what's **important**? what's **useful**? (to who?)
 
 ---
 

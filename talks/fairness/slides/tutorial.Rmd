@@ -42,7 +42,7 @@ style_duo_accent(
 ```
 
 ```{r xaringanextra, include=FALSE, warning=FALSE}
-#library(xaringanExtra)
+library(xaringanExtra)
 #xaringanExtra::use_animate_all("slide_left")
 #xaringanExtra::use_tile_view()
 #xaringanExtra::use_panelset()
@@ -81,17 +81,71 @@ library(modelr)
 
 ---
 
+### Credit to my excellent collaborators
+
+#### Alan Turing Institute (2016-)
+
+```{r echo = FALSE, fig.show='hold'}
+knitr::include_graphics(c("ricardo.png", "matt.jpg",  "chris.png"))
+```
+
+Ricardo Silva, Matt Kusner (UCL) &nbsp; Chris Russell (AWS)
+
+---
+
+#### NYU (2020-) Julia Stoyanovich, Ke Yang, Lucius Bynum
+
+```{r echo = FALSE, fig.show='hold', out.width="25%"}
+knitr::include_graphics(c("julia.png", "ke.jpg", "lucius.png"))
+```
+
+
+#### LSE (2022-) Sakina Hansen
+
+```{r echo = FALSE, fig.show='hold', out.width="30%"}
+knitr::include_graphics(c("sakina.jpg"))
+```
+
+
+---
+
 class: center, middle, inverse
 
 # Unfair algorithms
 
 ---
 
-### Origin story of my research
+### Background: ethical data science
 
-**Weapons of Math Destruction** by Cathy O'Neil
+Data and information technology are powerful tools
 
-[ProPublica](https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm):
+As with other human technologies (e.g. fossil fuel energy, nuclear technology) the **consequences** of data science will depend on **who uses it** and **for what purposes**
+
+**Data scientists** do work that becomes part of our information infrastructure. Like **city planners**, our decisions can impact everyone
+
+Professionalism: (e.g. medicine, engineering, law) often require ethical training, license to practice
+
+---
+
+### First, do no harm
+
+Tradition in medicine, [Hippocratic oath]((https://en.wikipedia.org/wiki/Primum_non_nocere)
+
+Blame for harm typically does not fall on machines or algorithms, but on the people who built or used them
+
+(that could be you!)
+
+**Avoiding harm is only the beginning** of ethics
+
+(Credit for benefit of algorithms)
+
+---
+
+### Origin story of my research (2016-)
+
+**Weapons of Math Destruction** [book](https://en.wikipedia.org/wiki/Weapons_of_Math_Destruction) by Cathy O'Neil
+
+[ProPublica](https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm) data journalism:
 
 ![](../compas.png)
 
@@ -116,6 +170,26 @@ class: center, middle, inverse
 
 ]
 
+---
+
+### Language models
+
+Statistical patterns of words occurring close to each other
+
+**Causality**: model does not know *why* words are correlated
+
+![](poem.jpg)
+... "he is hardworking, she is lazy" [source link](https://qz.com/1141122/google-translates-gender-bias-pairs-he-with-hardworking-and-she-with-lazy-and-other-examples)
+
+---
+
+### [LLMs](https://www.washingtonpost.com/technology/2023/04/05/chatgpt-lies/) and exponential growth of [bullshit](https://aisnakeoil.substack.com/p/chatgpt-is-a-bullshit-generator-but)
+
+> One night, [...] law professor Jonathan Turley got a troubling email. As part of a research study, a fellow lawyer [Eugene Volokh] had asked ChatGPT to generate a list of legal scholars who had sexually harassed someone. Turley’s name was on the list.
+
+> [...] Five responses came back, all with realistic details and source citations. But [...] three of them appeared to be false. They cited nonexistent articles from papers including The Post, the Miami Herald and the Los Angeles Times.
+
+> [Later `r emo::ji("airplane")`,] Microsoft’s Bing, [...] repeated the false claim about Turley — citing among its sources an op-ed by Turley [...] outlining his experience of being falsely accused by ChatGPT.
 
 ---
 
@@ -138,6 +212,71 @@ class: center, middle, inverse
 
 # Statistical discrimination
 
+---
+
+### Not an entirely new problem!
+
+![](../civilrights.jpg)
+
+See [50 Years of Test (Un)fairness: Lessons for Machine Learning](https://dl.acm.org/doi/10.1145/3287560.3287600) (Hutchinson and Mitchell, 2019) 
+
+---
+
+### What's new (or changing) with algorithms?
+
+WMD book: **scale**, opacity(?)
+
+
+
+Surveillance by governments: [Seeing Like a State (book)](https://en.wikipedia.org/wiki/Seeing_Like_a_State)
+
+Surveillance by business: [Surveillance capitalism](https://en.wikipedia.org/wiki/Surveillance_capitalism)
+
+[Predatory inclusion](https://journals.sagepub.com/doi/pdf/10.1177/2329496516686620) (e.g. wellness app sharing [patient data](https://techcrunch.com/2023/04/04/monument-tempest-alcohol-data-breach/))
+
+[Data colonialism](https://purdue.edu/critical-data-studies/collaborative-glossary/data-colonialism.php)
+
+---
+
+### Philosophy of statistics/science
+
+.pull-left[
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Richard_Feynman_1974.png/402px-Richard_Feynman_1974.png)
+Richard Feynman, 1974
+]
+.pull-right[
+[Cargo cult science](https://en.wikipedia.org/wiki/Cargo_cult_science)/[statistics](https://www.significancemagazine.com/2-uncategorised/593-cargo-cult-statistics-and-scientific-crisis)
+
+[Mindless statistical inference](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.821.8442&rep=rep1&type=pdf)
+
+*Imitate success*
+
+
+> computing machines, with a perfect lack of discrimination, will do any foolish thing they are told to do
+
+> the simple-mindedness of mathematics–its willingness, like that of a computing machine, to elaborate upon any idea, however absurd; to dress scientific brilliancies and scientific absurdities alike in the impressive uniform of formulae and theorems
+
+]
+
+---
+
+### Balancing views
+
+[A. N. Whitehead](https://en.wikipedia.org/wiki/Alfred_North_Whitehead) in *An Introduction to Mathematics* (1911):
+
+> It is a profoundly erroneous truism [...] that we should *cultivate the habit of thinking of what we are doing*. The precise opposite is the case. **Civilization advances by extending the number of important operations which we can perform without thinking** about them. Operations of thought are like cavalry charges in a battle — they are strictly limited in number, they require fresh horses, and must only be made at decisive moments. 
+
+Key: what does it mean *civilization* advances? Who? How?
+
+---
+
+### Decreasing human judgment?
+
+Flowchart version of statistics
+
+Unintuitive for many statisticians
+
+We often want "assumption lean" methods
 
 ---
 
@@ -597,17 +736,17 @@ Deirdre Mulligan at (NeurIPS 2022) causal fairness workshop:
 
 ---
 
-### Parting wisdom (hard won, not by me)
 
-Remember pragmatism, Box's rule: what's **important**? what's **useful**? (to who?)
-
-
-
-### Thank you for listening!
+### 감사해요!
 
 Reading for a fairly general audience: The long road to fairer algorithms ([Nature, 2020](https://www.nature.com/articles/d41586-020-00274-3))
 
 [joshualoftus.com](joshualoftus.com) slides and other info
+
+
+### Parting wisdom (hard won, not by me)
+
+Remember Box's rule: what's **important**? what's **useful**? (to who?)
 
 ---
 
