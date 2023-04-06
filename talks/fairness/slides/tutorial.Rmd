@@ -65,21 +65,6 @@ library(modelr)
 }
 </style>
 
-## Outline
-
-- Examples of unfair algorithms
-
-- Statistical discrimination
-
-- (Structural) causal models
-
-- Counterfactual fairness
-
-- Auditing (black-box) algorithms
-
-- Causal interpretability
-
----
 
 ### Credit to my excellent collaborators
 
@@ -106,38 +91,29 @@ knitr::include_graphics(c("julia.png", "ke.jpg", "lucius.png"))
 knitr::include_graphics(c("sakina.jpg"))
 ```
 
-
 ---
 
+## Outline
+
+- Unfair algorithms: examples and background
+
+- Statistical fairness
+
+- (Structural) causal models
+
+- Counterfactual fairness
+
+- Auditing (black-box) algorithms
+
+- Causal interpretability
+
+---
 class: center, middle, inverse
 
 # Unfair algorithms
 
----
+## Examples and background
 
-### Background: ethical data science
-
-Data and information technology are powerful tools
-
-As with other human technologies (e.g. fossil fuel energy, nuclear technology) the **consequences** of data science will depend on **who uses it** and **for what purposes**
-
-**Data scientists** do work that becomes part of our information infrastructure. Like **city planners**, our decisions can impact everyone
-
-Professionalism: (e.g. medicine, engineering, law) often require ethical training, license to practice
-
----
-
-### First, do no harm
-
-Tradition in medicine, [Hippocratic oath]((https://en.wikipedia.org/wiki/Primum_non_nocere)
-
-Blame for harm typically does not fall on machines or algorithms, but on the people who built or used them
-
-(that could be you!)
-
-**Avoiding harm is only the beginning** of ethics
-
-(Credit for benefit of algorithms)
 
 ---
 
@@ -148,7 +124,9 @@ Blame for harm typically does not fall on machines or algorithms, but on the peo
 [ProPublica](https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm) data journalism:
 
 ![](../compas.png)
+---
 
+![](compas_logit.png)
 
 
 ---
@@ -183,7 +161,7 @@ Statistical patterns of words occurring close to each other
 
 ---
 
-### [LLMs](https://www.washingtonpost.com/technology/2023/04/05/chatgpt-lies/) and exponential growth of [bullshit](https://aisnakeoil.substack.com/p/chatgpt-is-a-bullshit-generator-but)
+### [LLMs](https://www.washingtonpost.com/technology/2023/04/05/chatgpt-lies/) and exponential growth of [bullsh*t](https://aisnakeoil.substack.com/p/chatgpt-is-a-bullshit-generator-but)
 
 > One night, [...] law professor Jonathan Turley got a troubling email. As part of a research study, a fellow lawyer [Eugene Volokh] had asked ChatGPT to generate a list of legal scholars who had sexually harassed someone. Turley’s name was on the list.
 
@@ -206,11 +184,6 @@ Source: [WIRED](https://www.wired.com/story/google-microsoft-warn-ai-may-do-dumb
 ]
 
 
----
-
-class: center, middle, inverse
-
-# Statistical discrimination
 
 ---
 
@@ -220,248 +193,121 @@ class: center, middle, inverse
 
 See [50 Years of Test (Un)fairness: Lessons for Machine Learning](https://dl.acm.org/doi/10.1145/3287560.3287600) (Hutchinson and Mitchell, 2019) 
 
----
-
-### What's new (or changing) with algorithms?
-
-WMD book: **scale**, opacity(?)
-
-
-
-Surveillance by governments: [Seeing Like a State (book)](https://en.wikipedia.org/wiki/Seeing_Like_a_State)
-
-Surveillance by business: [Surveillance capitalism](https://en.wikipedia.org/wiki/Surveillance_capitalism)
-
-[Predatory inclusion](https://journals.sagepub.com/doi/pdf/10.1177/2329496516686620) (e.g. wellness app sharing [patient data](https://techcrunch.com/2023/04/04/monument-tempest-alcohol-data-breach/))
-
-[Data colonialism](https://purdue.edu/critical-data-studies/collaborative-glossary/data-colonialism.php)
 
 ---
 
-### Philosophy of statistics/science
+#### Background: race and wealth in the US
+
+Source: [W. E. B. Du Bois](https://www.smithsonianmag.com/history/first-time-together-and-color-book-displays-web-du-bois-visionary-infographics-180970826/) for Paris World Fair in 1900
 
 .pull-left[
-![](https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Richard_Feynman_1974.png/402px-Richard_Feynman_1974.png)
-Richard Feynman, 1974
+![](dubois1.jpg)
 ]
 .pull-right[
-[Cargo cult science](https://en.wikipedia.org/wiki/Cargo_cult_science)/[statistics](https://www.significancemagazine.com/2-uncategorised/593-cargo-cult-statistics-and-scientific-crisis)
-
-[Mindless statistical inference](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.821.8442&rep=rep1&type=pdf)
-
-*Imitate success*
-
-
-> computing machines, with a perfect lack of discrimination, will do any foolish thing they are told to do
-
-> the simple-mindedness of mathematics–its willingness, like that of a computing machine, to elaborate upon any idea, however absurd; to dress scientific brilliancies and scientific absurdities alike in the impressive uniform of formulae and theorems
-
+![](dubois2.jpg)
 ]
 
 ---
 
-### Balancing views
+#### Background: race and wealth in the US
 
-[A. N. Whitehead](https://en.wikipedia.org/wiki/Alfred_North_Whitehead) in *An Introduction to Mathematics* (1911):
-
-> It is a profoundly erroneous truism [...] that we should *cultivate the habit of thinking of what we are doing*. The precise opposite is the case. **Civilization advances by extending the number of important operations which we can perform without thinking** about them. Operations of thought are like cavalry charges in a battle — they are strictly limited in number, they require fresh horses, and must only be made at decisive moments. 
-
-Key: what does it mean *civilization* advances? Who? How?
+![](wealthgap.png) [Source](https://www.washingtonpost.com/business/2020/06/04/economic-divide-black-households/)
 
 ---
 
-### Decreasing human judgment?
+# How to get wealthy
 
-Flowchart version of statistics
+--
 
-Unintuitive for many statisticians
+1. Inheritance (entirely luck)
+2. Employment (trade your life) and some luck
 
-We often want "assumption lean" methods
-
----
-
-class: center, middle, inverse
-
-# Causal models
-
----
-
-class: center, middle, inverse
-
-# Counterfactual fairness
-
----
-
-### Back in 2016
-
-I thought: seems like this is about **causality**?
-
-The "effect" of one variable, possibly "controlling for" others
-
-Holland: **no causation without manipulation**
-
-
-What can we manipulate?
+*Simple as*
 
 ---
 
 .small[
 **Are Emily and Greg More Employable than Lakisha and Jamal?** (Bertrand and Mullainathan, 2003)
 
-Whitened Resumes: Race and Self-Presentation in the Labor Market (Kang et al, 2016)
+Systemic Discrimination Among Large U.S. Employers (Kline et al, 2022)
 
-*Systemic Discrimination Among Large U.S. Employers* (Kline et al, 2022)
+*Whitened Resumes: Race and Self-Presentation in the Labor Market* (Kang et al, 2016)
 ]
 
-![](https://hbswk.hbs.edu/PublishingImages/whitened-resumes.png)
+![](https://hbswk.hbs.edu/PublishingImages/whitened-resumes.png) [Source](https://hbswk.hbs.edu/item/minorities-who-whiten-job-resumes-get-more-interviews)
 
 ---
 
-Randomize (or blind) the **perception** of a sensitive variable (e.g. race) at one (late?) time point
-
-![](darkness.png)
-
-
-
-
----
-
-### Berkeley graduate admissions example
-
-> The bias in the aggregated data stems **not from any pattern of discrimination on the part of admissions committees**, which seem quite fair on the whole, but apparently from **prior screening at earlier levels** of the educational system. Women are shunted by their **socialization and education** toward fields of graduate study that are generally more crowded, less productive of completed degrees, and less well funded, and that frequently offer poorer professional employment prospects.
-
-From the final paragraph of Bickel et al (1975)
-
-#### What information / covariates should we condition on?
-
----
-
-### Directed Acyclic Graph (DAG) models
-
-![](berkeley.png)
-
-- Assumption: paths show conditional dependence
-- Assumption: intervention to change one variable also affects all variables on paths away from it
-
-
----
-
-### Race and genomics in healthcare
-
-We've heard about biased samples in health research
-
-Different risk: a similar problem underlying [racist applications](https://www.nature.com/articles/d41586-018-06784-5) of behavioral genomics
+#### Background: race and policing in the US
 
 .pull-left[
-```{r echo = FALSE}
-library(DiagrammeR)
-mermaid("
-graph LR
-  R-->Y
-  S-->Y
-  R-->G
-")
-```
+![](incarceration.png)
+Above [source](https://okpolicy.org/surprisingly-weak-link-incarceration-crime/)
+
+Right [source](http://econweb.umd.edu/~tuttle/files/tuttle_mandatory_minimums.pdf)
 ]
 .pull-right[
-Race $R$, structural racism $S$, health outcome $Y$, polygenic score $G$
-
-Higher dimensional $G$ + more complex models = predicting $Y$ without knowing why
+![](cocaine.png)
 ]
+---
+
+#### Background: gender and education
+
+![](womenincs.png)
+---
+
+
+#### Background: gender and employment
+
+![Amazon scraps secret AI recruiting tool that showed bias against women](amazonhiring.png)
+
+> Amazon’s system **taught itself** that male candidates were preferable. It penalized resumes that included the word "women's," as in "women's chess club captain." And it downgraded graduates of two all-women's colleges, according to people familiar with the matter.
+
+[Source](https://www.reuters.com/article/us-amazon-com-jobs-automation-insight-idUSKCN1MK08G)
 
 ---
 
-### Healthcare recap
+#### Background: gender and employment
 
-- **Optimizing for the wrong thing**: price signals aggregate a lot of social information, possibly including lack of access, poverty, etc. Also an **opacity** issue because we generally don't know all these influences on observed demand/spending
+![](fredfemalelabor.png)
 
-- **Sampling bias**: differential access to healthcare
+[Source](https://fred.stlouisfed.org/series/LNS11300002)
 
-- **Dimensionality and causation**: we have far more (high-dimensional) genomic data now than socio-economic/environment data
+*Imagine* debating about "human nature" in 1950...
 
-
----
-
-### (Infamous?) policing example
-
-"Algorithm does not *explicitly* use race" -- in an unfair world, **other things can correlate with race**, e.g. prior convictions
-
-.pull-left[
-```{r echo = FALSE}
-library(DiagrammeR)
-mermaid("
-graph LR
-  R-->M
-  S-->M
-  S-->P
-  M-->P
-  P-->C
-")
-```
-]
-
-.pull-right[
-Race $R$, structural racism $S$, arrested for marijuana $M$, prior conviction $P$, risk score $C$
-
-If $C$ is computed using only $P$ (and not $R$ *directly*), is that "fair"?
-]
+(this ends the time series part of the talk)
 
 ---
 
-### Fairness focused on one (later?) stage
+### Background: spatial discrimination
 
-- *perception* of race/gender
-- balance *among applicants*
-
-#### does not fix unfairness that occurred earlier
-
-**Counterfactuals** help us think about this. **Depth** of the counterfactual story (starting earlier in time and/or length of causal pathway) corresponds to more/less fairness
-
-VanderWeele and Robinson, 2015:
-
-> ... we tried to [...] provide a causal interpretation of the race coefficient in regression models that would be palatable to someone who was opposed to discussing causal effects for non-manipulable variables.
-
-
+![](atlanta.png)
+[Redlining](https://en.wikipedia.org/wiki/Redlining): (dis)advantaged status *correlates* with location
 
 ---
 
-## Defining fairness causally
+### Background: spatial discrimination
 
-Kusner, Loftus, Russell, Silva. *Counterfactual fairness* ([NeurIPS 2017](https://papers.nips.cc/paper/2017/hash/a486cd07e4ac3d270571622f4f316ec5-Abstract.html)):
-
-Given a DAG, the predictor $\hat Y$ is **counterfactually fair** if
-
-$$P(\hat Y_a | x, a) = P(\hat Y_{a'} |x, a)$$
-
-
-
-#### Proposition (sufficient, not necessary):
-Any predictor $\hat Y$ which is a function of only non-descendents of $A$ in the DAG is counterfactually fair
-
+![](carinsurance.png)
 
 ---
 
-### Pathway analysis / decomposition
+### At some point we must decide
 
-.pull-left[
+#### Which (causal) model reveals our beliefs?
 
-![](../nabi.png)
-
-- [Kilbertus et al (2017)](https://papers.nips.cc/paper/2017/hash/f5f8590cd58a54e94377e6ae2eded4d9-Abstract.html): proxies and **resolving variables**
-
-]
+[George Box](https://en.wikipedia.org/wiki/George_E._P._Box):
 
 
-.pull-right[
-- [Kusner et al (2017)](https://papers.nips.cc/paper/2017/hash/a486cd07e4ac3d270571622f4f316ec5-Abstract.html): path-dependent counterfactual fairness (see supplement)
-- [Zhang et al (2017)](https://www.ijcai.org/proceedings/2017/549)
-- [Nabi and Shpitser (2018)](https://ojs.aaai.org/index.php/AAAI/article/view/11553)
-- [Zhang and Bareinboim (2018)](https://aaai.org/ocs/index.php/AAAI/AAAI18/paper/view/16949/0)
-- [Chiappa (2019)](https://ojs.aaai.org//index.php/AAAI/article/view/4777)
-- ...
+> [All models are wrong](All_models_are_wrong) but some are useful
 
-]
+--
 
+therefore,
+
+> ... the scientist must be alert to what is **importantly wrong**
+
+> ... **cannot obtain a "correct" one** by excessive elaboration
 
 ---
 
@@ -471,350 +317,83 @@ Any predictor $\hat Y$ which is a function of only non-descendents of $A$ in the
 
 **(Simplified) impossibility theorem** see, e.g.: Kleinberg et al (2016), Chouldechova (2016) 
 
-> Unless the world is already fair, the only solutions satisfying both equal treatment (or opportunity) and equal outcomes (demographic parity) are trivial ones (e.g. jail everyone)
+> Unless the world is already fair, the only algorithms satisfying both equal treatment (or opportunity) and equal outcomes (demographic parity) are trivial ones (e.g. jail everyone)
 
-
----
-
-### At some point we must decide
-
-#### Which causal model reveals our beliefs?
-
-[George Box](https://en.wikipedia.org/wiki/George_E._P._Box):
-
-
-> [All models are wrong](All_models_are_wrong) but some are useful
-
-therefore,
-
-> ... the scientist must be alert to what is **importantly wrong**
-
-> ... **cannot obtain a "correct" one** by excessive elaboration
-
-
----
-class: split-four
-
-### Every DAG is (importantly?) wrong
-
-.column[
-&nbsp; 
-
-```{r echo = FALSE}
-library(DiagrammeR)
-mermaid("
-graph TB
-  Race-->Outcome
-")
-```
-]
-.column[
-&nbsp; 
-
-```{r echo = FALSE}
-library(DiagrammeR)
-mermaid("
-graph TB
-  Racism-->Outcome
-")
-```
-]
-
-.column[
-&nbsp; 
-
-
-```{r echo = FALSE}
-library(DiagrammeR)
-mermaid("
-graph TB
-  A-->X
-  X-->Y
-  A-->Y
-")
-```
-]
-.column[
-&nbsp; 
-
-```{r echo = FALSE}
-library(DiagrammeR)
-mermaid("
-graph TB
-  A-->X
-  A-->R
-  X-->Y
-  R-->Y
-  A-->Y
-")
-```
-]
-
-&nbsp;
-
-&nbsp;
-
-&nbsp;
-
-&nbsp;
-
-&nbsp;
-
-&nbsp;
-
-
-**Transparency**: we can say specifically what we disagree on
-
-**Interpretation**: meanings of variables, edges (mechanisms)
-
-
-
----
-
-## [Intersectional](https://en.wikipedia.org/wiki/Intersectionality) fairness
-
-*Causal Intersectionality and Fair Ranking* (Yang, Stoyanovich, Loftus, [FORC 2021](https://drops.dagstuhl.de/opus/portals/lipics/index.php?semnr=16187))
-
-- Multiple sensitive attributes, e.g. race and gender
-
-- Variety of relationships with other mediating variables
-
-- Some of these mediators may be resolving/non-resolving for different sensitive attributes
-
-Lots of scholarship, not much using formal mathematical models. See [Bright et al (2016)](https://www.journals.uchicago.edu/doi/abs/10.1086/684173), 
-[O'Connor et al (2019)](https://www.tandfonline.com/doi/abs/10.1080/02691728.2018.1555870), and a few other references in our paper
-
-
----
-
-## "Moving company" example
-
-.pull-left[
-Race, gender, weightlifting test, application score
-```{r echo = FALSE, fig.align='right'}
-library(DiagrammeR)
-mermaid("
-graph TB
-  R-->X
-  G-->X
-  R-->Y
-  X-->Y
-  G-->Y
-")
-```
-]
-.pull-right[
-Weightlifting considered a **resolving variable** (company argues it is a necessary qualification)
-
-```{r, echo=FALSE, out.width="100%", fig.align='center'}
-knitr::include_graphics("../moving.png")
-```
-
-(See paper for results)
-]
-
-
----
-
-### Untangling intersectional relationships
-
-*Race as a Bundle of Sticks* (Sen and Wasow, 2016)
-
-Causal mediation with **multiple mediators** and **multiple causes** is a hard problem, limiting realistic application until better methods/data are available
-
-![](../fig2.png)
-
-
+(More about these fairness definitions coming up next)
 
 ---
 
 class: center, middle, inverse
 
-# Auditing (black-box) algorithms
+# Statistical discrimination
+
+---
+
+### Notation: fairness in supervised learning
+
+- Outcome variable $Y$, consider as a score for decisions, or $Y = 1$ as the desirable decision
+- Sensitive/protected attribute(s) $A$, e.g. race, gender, ...
+- Other predictors $X$, not sensitive (*prima facie*)
+
+--
+
+Machine learning task: learn a function $f(X,A)$ from (labeled) training data to predict values of $\hat Y = f(X,A)$ on (unlabeled/future) test data (by minimizing some loss function that measures closeness of $\hat Y$ to $Y$ on the training data)
+
+--
+
+What would it mean for such function to be fair with respect to $A$?
+
+---
+
+## Statistical / demographic parity
+
+Perhaps the most straightforward definition (and my favorite), often described as **equality of outcomes**
+
+#### Demographic parity 
+Predictions (or decisions) are independent of $A$:
+$$
+P(\hat Y | A = 0) = P(\hat Y | A = 1)
+$$
+
+---
+
+## Equality of opportunity
+
+#### Equality of opportunity (Hardt et al, 2016)
+The accuracy of the algorithm does not depend on $A$:
+$$
+P(\hat Y = 1 | A = 0, Y = 1) = P(\hat Y = 1 | A = 1, Y = 1)
+$$
+Demographic parity but only among individuals 'qualified' for the desirable outcome
+
+---
+
+## Fairness through unawareness
+
+"Equal treatment," people tend to believe such treatment is fair.
+
+#### Grgic-Hlaca et al. (2016)
+Prediction does not explicitly use $A$, i.e.
+$$
+\hat Y = f(X)
+$$
+
+---
+
+## Individual fairness
+
+#### Dwork et al. (2012)
+Similar predictions for individuals who are similar (in their unprotected attributes). If $X_i \approx X_{i'}$ then
+
+$$\hat Y(X_i, A_i) \approx \hat Y(X_{i'}, A_{i'})$$
+
+Continuity-like condition but not in $A$. Intuitively related to privacy and also matching approaches to causal inference.
 
 ---
 
 class: center, middle, inverse
 
-# Causal interpretability
+# Break time
 
----
-
-### Classic methods (context/comparison)
-
-#### Decision trees (recall: vaccine eligibility)
-
-- If `Age >= 40` then `yes`, otherwise `continue`
-- If `HighRisk == TRUE` then `yes`, otherwise `continue`
-- If `Job == CareWorker` then `yes`, otherwise `no`
-
-#### Regression
-
-- Predictor variables in the dataset: $x_1, x_2, \ldots, x_p$
-- Coefficients/**parameters**, unknown: $\beta_1, \beta_2, \ldots, \beta_p$
-- Outcome variable, also in data: $y$
-- Algorithm inputs the data, outputs: estimated parameters, predictions of $y$ using "recipe" or "weighted" combination
-
-$$
-\beta_1 x_1 + \beta_2 x_2 + \cdots + \beta_p x_p
-$$
-
----
-
-## Transparent models
-
-Understand how the model uses $x_1$ to make a prediction...
-
-## Opaque or black-box models
-
-Internal model structure is hidden, or complicated enough to be difficult to understand
-
-### xAI / IML
-
-Tools to help human understanding of models
-
-Usually focused on input-output
-
----
-
-## Model-agnostic interpretability
-
-If we can only access the input-output interface (e.g. external auditing of a proprietary model)
-
-Does this black-box model discriminate? How does it depend on age?
-
-Various IML tools: variable importance, partial dependence plots, local surrogates, "counterfactual" explanations (misnamed)
-
-**Problem**: What do we mean by "depend" in "how does the output depend on a given input?"
-
-e.g. proxies for sensitive attributes
-
----
-
-## Causal interpretability
-
-- *Causal Interpretations of Black-Box Models* (Zhao and Hastie, 2019)
-
-Conditions under which a particular IML tool (PDP/ICE plots) can give valid causal conclusions
-
-- *Causal Dependence Plots for Interpretable Machine Learning* (Loftus, Bynum, Hansen, 2023 [preprint](https://arxiv.org/abs/2303.04209))
-
----
-
-![](../CDP.jpg)
-
----
-
-class: center, middle
-
-# Concluding
-
----
-
-### Exciting advances in causal modeling
-
-Observational data, double machine learning, causal reinforcement learning, ...
-
-### Applications in ethical data science
-
-Prioritizing normative values: fairness, privacy, interpretability, replicability, "alignment," ...
-
-
----
-
-### Bet on causality
-
-Claim: **causality** points us in good directions for research
-
-- Choosing which covariates to condition on in fair prediction/decisions
-- Changing focus from prediction to action, interventions, policy design, etc
-- Making models/assumptions transparent
-
-Deirdre Mulligan at (NeurIPS 2022) causal fairness workshop:
-
-> the important role [causal models] can play in supporting **collaborative reasoning about contested concepts, facilitating stakeholder participation** in decisions about how to meet policy goals within technical systems
-
----
-
-
-### 감사해요!
-
-Reading for a fairly general audience: The long road to fairer algorithms ([Nature, 2020](https://www.nature.com/articles/d41586-020-00274-3))
-
-[joshualoftus.com](joshualoftus.com) slides and other info
-
-
-### Parting wisdom (hard won, not by me)
-
-Remember Box's rule: what's **important**? what's **useful**? (to who?)
-
----
-
-Additional slides for question/discussion
-
-
----
-
-### Impossibility: competing DAGs / pathways
-
-*When Worlds Collide: Integrating Different Counterfactual Assumptions in Fairness* (Russell et al, [NeurIPS 2017](https://papers.nips.cc/paper/2017/hash/1271a7029c9df08643b631b02cf9e116-Abstract.html))
-
-- Approximate counterfactual fairness (relax equality constraint)
-- Approximately satisfy fairness across both (all) models
-- Limitation: the more contradictory are the competing models, the more trivial the predictions (constant)
-- Causal framing of fundamental contradiction
-
-#### Resolving the contradiction
-I think this is a good *path*. It's now about understanding the causes of unfairness well enough to reach consensus.
-
-
----
-
-## Interventions under [interference](https://en.wikipedia.org/wiki/Spillover_(experiment%29)
-
-> Various models have only predicted the world in various ways. The point, however, is to change it
-
-*Making Decisions that Reduce Discriminatory Impacts* (Kusner et al [ICML 2019](http://proceedings.mlr.press/v97/kusner19a.html))
-
-- Designing an optimal policy / intervention / allocation 
-
-- Relaxing common assumption that intervention on individual/unit $i$ does not effect other individuals/units (in fairness/justice applications that will often be **importantly wrong**)
-
-- Constraint: bound **counterfactual privilege**, preventing "rich get richer" effect
-
----
-
-### Optimal fair policies (under interference)
-
-.pull-left[
-Intervention $\mathbf Z$ trying to increase $\mathbf Y$
-
-Privilege constraint, for $\tau \geq 0$
-$$
-\mathbb{E}[\mathbf{\hat Y}({\color{red}a},\mathbf{Z})] - \mathbb{E}[\mathbf{\hat Y}({\color{blue}a'},\mathbf{Z})] \leq \tau
-$$
-]
-.pull-right[
-![](../interference.png)
-]
-
-Optimization problem (with budget constraint $b$)
-
-$$\mathbf{Z} = \arg \max \sum_i \mathbb{E}\left[\mathbf{\hat Y}^{(i)}(a^{(i)}, \mathbf Z) | \mathbf A^{(i)}, \mathbf X^{(i)}  \right]$$
-
-$$\quad s.t. \quad \sum_i \mathbf{Z}^{(i)} \leq b$$
----
-
-### Allocating resources to (NYC) schools
-
-.pull-left[
-Without constraint
-![](../unfairschools.png)
-]
-.pull-right[
-With constraint
-![](../fairschools.png)
-]
-
-(See paper for discussion of results)
+[Slides for part 2](tutorial2.html)
 
