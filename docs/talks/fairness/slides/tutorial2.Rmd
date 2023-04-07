@@ -71,19 +71,13 @@ library(modelr)
 
 - Statistical fairness
 
-- **(Structural) causal models**
+- (Structural) causal models
 
-- Counterfactual fairness
+- **Counterfactual fairness**
 
 - Auditing (black-box) algorithms
 
 - Causal interpretability
-
----
-
-class: center, middle, inverse
-
-# Causal models
 
 
 ---
@@ -100,12 +94,13 @@ I thought: seems like this is about **causality**?
 
 The "effect" of one variable, possibly "controlling for" others
 
-Holland: **no causation without manipulation**
+--
 
+Holland: **no causation without manipulation**
 
 What can we manipulate?
 
-
+e.g. names on resumes
 
 ---
 
@@ -134,42 +129,6 @@ From the final paragraph of Bickel et al (1975)
 
 - Assumption: paths show conditional dependence
 - Assumption: intervention to change one variable also affects all variables on paths away from it
-
-
----
-
-### Race and genomics in healthcare
-
-We've heard about biased samples in health research
-
-Different risk: a similar problem underlying [racist applications](https://www.nature.com/articles/d41586-018-06784-5) of behavioral genomics
-
-.pull-left[
-```{r echo = FALSE}
-library(DiagrammeR)
-mermaid("
-graph LR
-  R-->Y
-  S-->Y
-  R-->G
-")
-```
-]
-.pull-right[
-Race $R$, structural racism $S$, health outcome $Y$, polygenic score $G$
-
-Higher dimensional $G$ + more complex models = predicting $Y$ without knowing why
-]
-
----
-
-### Healthcare recap
-
-- **Optimizing for the wrong thing**: price signals aggregate a lot of social information, possibly including lack of access, poverty, etc. Also an **opacity** issue because we generally don't know all these influences on observed demand/spending
-
-- **Sampling bias**: differential access to healthcare
-
-- **Dimensionality and causation**: we have far more (high-dimensional) genomic data now than socio-economic/environment data
 
 
 ---
@@ -208,11 +167,6 @@ If $C$ is computed using only $P$ (and not $R$ *directly*), is that "fair"?
 #### does not fix unfairness that occurred earlier
 
 **Counterfactuals** help us think about this. **Depth** of the counterfactual story (starting earlier in time and/or length of causal pathway) corresponds to more/less fairness
-
-VanderWeele and Robinson, 2015:
-
-> ... we tried to [...] provide a causal interpretation of the race coefficient in regression models that would be palatable to someone who was opposed to discussing causal effects for non-manipulable variables.
-
 
 
 ---
@@ -254,6 +208,15 @@ Any predictor $\hat Y$ which is a function of only non-descendents of $A$ in the
 
 ]
 
+---
+
+### Statistical fairness $\leftrightarrow$ causal fairness?
+
+**Exercise**: Pick one or more definitions of statistical fairness and determine a DAG/SCM with a related/corresponding definition of [path-specific] counterfactual fairness
+
+--
+
+e.g. what if $Y$ is a resolving variable?
 
 ---
 class: split-four
@@ -441,11 +404,11 @@ If we can only access the input-output interface (e.g. external auditing of a pr
 
 Does this black-box model discriminate? How does it depend on `age`?
 
-Various IML tools: variable importance, partial dependence plots, local surrogates, "counterfactual" explanations (misnamed)
+Various IML tools: variable importance, **partial dependence plots**, local surrogates, "counterfactual" explanations (misnamed)
 
-**Problem**: What do we mean by "depend" in "how does the output depend on a given input?"
+**Problem**: In the question "how does the output depend on a given input?" *what do we mean* by "depend"?
 
-e.g. *proxies* for sensitive attributes
+e.g. fairness and (proxies for) sensitive attributes
 
 ---
 
@@ -466,13 +429,20 @@ Conditions under which a particular IML tool (PDP/ICE plots) can give valid caus
 
 ---
 
+### Assume a causal model, create explanations
+
+
 ![](../CDP.jpg)
+
+Checking: if explanations are absurd, *either* the black-box model *or* the auxiliary causal model has problems
 
 ---
 
 class: center, middle
 
-# Concluding
+# Conclusion
+
+## and takeaway messages
 
 ---
 
@@ -498,6 +468,20 @@ Claim: **causality** points us in good directions for research
 Deirdre Mulligan at (NeurIPS 2022) causal fairness workshop:
 
 > the important role [causal models] can play in supporting **collaborative reasoning about contested concepts, facilitating stakeholder participation** in decisions about how to meet policy goals within technical systems
+
+
+---
+
+### Always question, doubt, test...
+
+Jack Schwartz in 
+[The Pernicious Influence of Mathematics on Science](https://www.sciencedirect.com/science/article/abs/pii/S0049237X09706032):
+
+> computing machines, with a perfect lack of discrimination, will do any foolish thing they are told to do
+
+> the simple-mindedness of mathematics–its willingness, like that of a computing machine, to elaborate upon any idea, however absurd; [...]
+
+> Unfortunately however, an absurdity in uniform is far more persuasive than an absurdity unclad. The very fact that a theory appears in mathematical form, [...] somehow makes us more ready to take it seriously.
 
 ---
 
@@ -527,11 +511,6 @@ Richard Feynman, 1974
 [Mindless statistical inference](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.821.8442&rep=rep1&type=pdf)
 
 *Imitate success*
-
-
-> computing machines, with a perfect lack of discrimination, will do any foolish thing they are told to do
-
-> the simple-mindedness of mathematics–its willingness, like that of a computing machine, to elaborate upon any idea, however absurd; to dress scientific brilliancies and scientific absurdities alike in the impressive uniform of formulae and theorems
 
 ]
 

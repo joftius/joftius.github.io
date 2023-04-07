@@ -58,19 +58,13 @@ class: split-four
 
 - Statistical fairness
 
-- **(Structural) causal models**
+- (Structural) causal models
 
-- Counterfactual fairness
+- **Counterfactual fairness**
 
 - Auditing (black-box) algorithms
 
 - Causal interpretability
-
----
-
-class: center, middle, inverse
-
-# Causal models
 
 
 ---
@@ -87,12 +81,13 @@ I thought: seems like this is about **causality**?
 
 The "effect" of one variable, possibly "controlling for" others
 
-Holland: **no causation without manipulation**
+--
 
+Holland: **no causation without manipulation**
 
 What can we manipulate?
 
-
+e.g. names on resumes
 
 ---
 
@@ -125,42 +120,13 @@ From the final paragraph of Bickel et al (1975)
 
 ---
 
-### Race and genomics in healthcare
-
-We've heard about biased samples in health research
-
-Different risk: a similar problem underlying [racist applications](https://www.nature.com/articles/d41586-018-06784-5) of behavioral genomics
-
-.pull-left[
-<div id="htmlwidget-f843a680a1fcd62a0dd1" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f843a680a1fcd62a0dd1">{"x":{"diagram":"\ngraph LR\n  R-->Y\n  S-->Y\n  R-->G\n"},"evals":[],"jsHooks":[]}</script>
-]
-.pull-right[
-Race `\(R\)`, structural racism `\(S\)`, health outcome `\(Y\)`, polygenic score `\(G\)`
-
-Higher dimensional `\(G\)` + more complex models = predicting `\(Y\)` without knowing why
-]
-
----
-
-### Healthcare recap
-
-- **Optimizing for the wrong thing**: price signals aggregate a lot of social information, possibly including lack of access, poverty, etc. Also an **opacity** issue because we generally don't know all these influences on observed demand/spending
-
-- **Sampling bias**: differential access to healthcare
-
-- **Dimensionality and causation**: we have far more (high-dimensional) genomic data now than socio-economic/environment data
-
-
----
-
 ### (Infamous?) policing example
 
 "Algorithm does not *explicitly* use race" -- in an unfair world, **other things can correlate with race**, e.g. prior convictions
 
 .pull-left[
-<div id="htmlwidget-ba32e0541469b5ed4906" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ba32e0541469b5ed4906">{"x":{"diagram":"\ngraph LR\n  R-->M\n  S-->M\n  S-->P\n  M-->P\n  P-->C\n"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-f843a680a1fcd62a0dd1" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f843a680a1fcd62a0dd1">{"x":{"diagram":"\ngraph LR\n  R-->M\n  S-->M\n  S-->P\n  M-->P\n  P-->C\n"},"evals":[],"jsHooks":[]}</script>
 ]
 
 .pull-right[
@@ -179,11 +145,6 @@ If `\(C\)` is computed using only `\(P\)` (and not `\(R\)` *directly*), is that 
 #### does not fix unfairness that occurred earlier
 
 **Counterfactuals** help us think about this. **Depth** of the counterfactual story (starting earlier in time and/or length of causal pathway) corresponds to more/less fairness
-
-VanderWeele and Robinson, 2015:
-
-&gt; ... we tried to [...] provide a causal interpretation of the race coefficient in regression models that would be palatable to someone who was opposed to discussing causal effects for non-manipulable variables.
-
 
 
 ---
@@ -225,6 +186,15 @@ Any predictor `\(\hat Y\)` which is a function of only non-descendents of `\(A\)
 
 ]
 
+---
+
+### Statistical fairness `\(\leftrightarrow\)` causal fairness?
+
+**Exercise**: Pick one or more definitions of statistical fairness and determine a DAG/SCM with a related/corresponding definition of [path-specific] counterfactual fairness
+
+--
+
+e.g. what if `\(Y\)` is a resolving variable?
 
 ---
 class: split-four
@@ -234,28 +204,28 @@ class: split-four
 .column[
 &amp;nbsp; 
 
-<div id="htmlwidget-484ed42468d86de4a421" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-484ed42468d86de4a421">{"x":{"diagram":"\ngraph TB\n  Race-->Outcome\n"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-ba32e0541469b5ed4906" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ba32e0541469b5ed4906">{"x":{"diagram":"\ngraph TB\n  Race-->Outcome\n"},"evals":[],"jsHooks":[]}</script>
 ]
 .column[
 &amp;nbsp; 
+
+<div id="htmlwidget-484ed42468d86de4a421" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-484ed42468d86de4a421">{"x":{"diagram":"\ngraph TB\n  Racism-->Outcome\n"},"evals":[],"jsHooks":[]}</script>
+]
+
+.column[
+&amp;nbsp; 
+
 
 <div id="htmlwidget-697d58abce2053a24549" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-697d58abce2053a24549">{"x":{"diagram":"\ngraph TB\n  Racism-->Outcome\n"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-697d58abce2053a24549">{"x":{"diagram":"\ngraph TB\n  A-->X\n  X-->Y\n  A-->Y\n"},"evals":[],"jsHooks":[]}</script>
 ]
-
 .column[
 &amp;nbsp; 
-
 
 <div id="htmlwidget-29a56e939b13f92b7856" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-29a56e939b13f92b7856">{"x":{"diagram":"\ngraph TB\n  A-->X\n  X-->Y\n  A-->Y\n"},"evals":[],"jsHooks":[]}</script>
-]
-.column[
-&amp;nbsp; 
-
-<div id="htmlwidget-457827ab1876f7c57926" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-457827ab1876f7c57926">{"x":{"diagram":"\ngraph TB\n  A-->X\n  A-->R\n  X-->Y\n  R-->Y\n  A-->Y\n"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-29a56e939b13f92b7856">{"x":{"diagram":"\ngraph TB\n  A-->X\n  A-->R\n  X-->Y\n  R-->Y\n  A-->Y\n"},"evals":[],"jsHooks":[]}</script>
 ]
 
 &amp;nbsp;
@@ -299,8 +269,8 @@ Lots of scholarship, not much using formal mathematical models. See [Bright et a
 
 .pull-left[
 Race, gender, weightlifting test, application score
-<div id="htmlwidget-b22985179f0d812c9115" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-b22985179f0d812c9115">{"x":{"diagram":"\ngraph TB\n  R-->X\n  G-->X\n  R-->Y\n  X-->Y\n  G-->Y\n"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-457827ab1876f7c57926" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-457827ab1876f7c57926">{"x":{"diagram":"\ngraph TB\n  R-->X\n  G-->X\n  R-->Y\n  X-->Y\n  G-->Y\n"},"evals":[],"jsHooks":[]}</script>
 ]
 .pull-right[
 Weightlifting considered a **resolving variable** (company argues it is a necessary qualification)
@@ -375,11 +345,11 @@ If we can only access the input-output interface (e.g. external auditing of a pr
 
 Does this black-box model discriminate? How does it depend on `age`?
 
-Various IML tools: variable importance, partial dependence plots, local surrogates, "counterfactual" explanations (misnamed)
+Various IML tools: variable importance, **partial dependence plots**, local surrogates, "counterfactual" explanations (misnamed)
 
-**Problem**: What do we mean by "depend" in "how does the output depend on a given input?"
+**Problem**: In the question "how does the output depend on a given input?" *what do we mean* by "depend"?
 
-e.g. *proxies* for sensitive attributes
+e.g. fairness and (proxies for) sensitive attributes
 
 ---
 
@@ -400,13 +370,20 @@ Conditions under which a particular IML tool (PDP/ICE plots) can give valid caus
 
 ---
 
+### Assume a causal model, create explanations
+
+
 ![](../CDP.jpg)
+
+Checking: if explanations are absurd, *either* the black-box model *or* the auxiliary causal model has problems
 
 ---
 
 class: center, middle
 
-# Concluding
+# Conclusion
+
+## and takeaway messages
 
 ---
 
@@ -432,6 +409,20 @@ Claim: **causality** points us in good directions for research
 Deirdre Mulligan at (NeurIPS 2022) causal fairness workshop:
 
 &gt; the important role [causal models] can play in supporting **collaborative reasoning about contested concepts, facilitating stakeholder participation** in decisions about how to meet policy goals within technical systems
+
+
+---
+
+### Always question, doubt, test...
+
+Jack Schwartz in 
+[The Pernicious Influence of Mathematics on Science](https://www.sciencedirect.com/science/article/abs/pii/S0049237X09706032):
+
+&gt; computing machines, with a perfect lack of discrimination, will do any foolish thing they are told to do
+
+&gt; the simple-mindedness of mathematics–its willingness, like that of a computing machine, to elaborate upon any idea, however absurd; [...]
+
+&gt; Unfortunately however, an absurdity in uniform is far more persuasive than an absurdity unclad. The very fact that a theory appears in mathematical form, [...] somehow makes us more ready to take it seriously.
 
 ---
 
@@ -461,11 +452,6 @@ Richard Feynman, 1974
 [Mindless statistical inference](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.821.8442&amp;rep=rep1&amp;type=pdf)
 
 *Imitate success*
-
-
-&gt; computing machines, with a perfect lack of discrimination, will do any foolish thing they are told to do
-
-&gt; the simple-mindedness of mathematics–its willingness, like that of a computing machine, to elaborate upon any idea, however absurd; to dress scientific brilliancies and scientific absurdities alike in the impressive uniform of formulae and theorems
 
 ]
 
