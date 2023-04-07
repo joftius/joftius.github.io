@@ -487,6 +487,10 @@ Jack Schwartz in
 
 WMD book: **scale**, opacity(?)
 
+Incontestability
+
+Scaling up data infrastructure has many benefits, but also...
+
 Surveillance by governments: [Seeing Like a State (book)](https://en.wikipedia.org/wiki/Seeing_Like_a_State)
 
 Surveillance by business: [Surveillance capitalism](https://en.wikipedia.org/wiki/Surveillance_capitalism)
@@ -531,6 +535,8 @@ Flowchart version of statistics
 Unintuitive for many statisticians
 
 We often want "assumption lean" methods
+
+Algorithm design *can* build assumptions in to infrastructure that becomes frozen, incontestable
 
 ---
 
