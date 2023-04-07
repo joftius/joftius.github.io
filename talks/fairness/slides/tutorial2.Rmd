@@ -94,8 +94,6 @@ I thought: seems like this is about **causality**?
 
 The "effect" of one variable, possibly "controlling for" others
 
---
-
 Holland: **no causation without manipulation**
 
 What can we manipulate?
