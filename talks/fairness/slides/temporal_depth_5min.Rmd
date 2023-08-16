@@ -1,0 +1,181 @@
+---
+title: "It's about time"
+subtitle: "Fairness and temporal depth"
+author: "Joshua Loftus (LSE Statistics)"
+output:
+  xaringan::moon_reader:
+    css: ["default", "xaringan-themer.css",  "ninjutsu", "extra.css"]
+    seal: true
+    lib_dir: libs
+    nature:
+      titleSlideClass: ["bottom", "left"]
+      countdown: 59000
+      highlightStyle: github
+      highlightLines: true
+      highlightSpans: true
+      countIncrementalSlides: false
+header-includes: 
+  - \usepackage{tikz}
+  - \usepackage{color}      
+---
+
+class: split-four
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(fig.retina = 3, warning = FALSE, message = FALSE)
+options(knitr.table.format = "html")
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_duo_accent(
+  primary_color = "#2d708e",
+  secondary_color = "#230433",
+  link_color = "#55c667",
+  text_bold_color = '#f68f46',
+#  title_slide_text_color = "#444444",
+  title_slide_background_color = "#ffffff", #"#042333",
+  title_slide_background_image = "../../../files/theme/LSE/LSEcrest_large.jpg",
+  title_slide_background_size = "cover",
+  ) #or contain
+```
+
+```{r xaringanextra, include=FALSE, warning=FALSE}
+#library(xaringanExtra)
+#xaringanExtra::use_animate_all("slide_left")
+#xaringanExtra::use_tile_view()
+#xaringanExtra::use_panelset()
+#xaringanExtra::style_panelset_tabs(font_family = "inherit")
+```
+
+```{r tidyverse, include=FALSE, warning=FALSE}
+library(tidyverse)
+library(knitr)
+theme_set(theme_minimal(base_size = 22))
+set.seed(1)
+library(broom)
+library(modelr)
+```
+
+<style type="text/css">
+.remark-slide-content {
+    font-size: 1.2rem;
+    padding: 1em 4em 1em 4em;
+}
+</style>
+
+#### Problem
+
+- Lots of fairness definitions (at least 21!)
+- Impossibility/trade-offs between them
+- What do?
+- How to think about this choice?
+
+--
+
+#### Time heuristic
+"Center" an oft-ignored dimension: **time**
+
+(i.e. consider the times when variable values are determined)
+
+---
+
+#### Notation for fair classification
+
+Desired outcome $Y = 1$, sensitive attribute $A$, predictor $M$ (mediator/merit), algorithm score/classification $D$
+
+#### Causal graph: time flows left to right
+.left-column[
+Note: arrows from $A$ may be due to discrimination (e.g. $M$ could be an unfair measure of "merit")
+]
+.right-column[
+<center>
+```{r echo = FALSE}
+library(DiagrammeR)
+mermaid("
+graph LR
+  subgraph  
+  A((A))-->M((M))
+  M-->Y((Y))
+  end
+  Y-.->D
+  A-->Y
+  A-.->D
+  M-.->D
+")
+```
+
+</center>
+]
+
+
+---
+
+#### Demographic parity 
+Predictions (or decisions) are independent of $A$:
+$$
+\mathbb P(D = 1 | A = 0) = \mathbb P(D = 1 | A = 1)
+$$
+
+
+#### Equality of opportunity (Hardt et al, 2016)
+Conditional parity, among individuals 'qualified' for the desirable outcome
+$$
+\mathbb P(D = 1 | A = 0, Y = 1) = \mathbb P(D = 1 | A = 1, Y = 1)
+$$
+
+#### Causal versions (e.g. counterfactual fairness)
+Pathway analysis, *allowing* a causal pathway to change the prediction is like conditioning on a variable in that pathway
+
+---
+
+### Allowed variables
+
+Definition: Variable $W$ determined at time $t$ is "allowed" by fairness definition $C$ if:
+  - $C$ is a conditional fairness definition and $W$ is in the condition
+  - $C$ is a causal pathway definition and $W$ is on an unblocked (i.e. resolving) pathway
+
+---
+
+### Temporal depth heuristic
+
+
+#### Weak heuristic
+If $W$, determined at time $t$, is allowed by $C$ then $C$ "justifies" any unfairness associated with (or causally flowing through) $W$ occurring before $t$
+
+#### Strong heuristic (thick/dense causality)
+If $W$, determined at time $t$, is allowed by $C$ then $C$ "justifies" all unfairness occurring before time $t$
+
+
+---
+
+### Applying the time heuristic
+
+According to the strong heuristic, *equality of opportunity essentially allows all unfairness*
+
+Demographic parity or (non-path-specific) counterfactual fairness do not justify any unfairness
+
+(Future work tbd)
+
+---
+
+### Why allow any unfairness?
+
+EU [Equality Directive](https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX:32000L0043), CHAPTER I, Article 2 (b):
+
+> indirect discrimination [...] would put persons of a racial or ethnic origin at a particular disadvantage compared with other persons, *unless that provision, criterion or practice is objectively **justified*** by a legitimate aim and the means of achieving that aim are appropriate and necessary.
+
+US [civil rights](https://www.justice.gov/crt/fcs/T6Manual7#P) law: 
+
+> If the evidence establishes a prima facie case of adverse disparate impact [...] courts then determine whether the recipient has articulated a "*substantial legitimate **justification***" [...]
+
+---
+
+### Maybe the law is bad?
+
+Disclaimer: I am not a lawyer
+
+**The end** 
+
+(please talk to me)

@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Using causal models</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Joshua Loftus (LSE Statistics)" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/ninjutsu.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <script src="libs/d3/d3.min.js"></script>
+    <script src="libs/dagre/dagre-d3.min.js"></script>
+    <link href="libs/mermaid/dist/mermaid.css" rel="stylesheet" />
+    <script src="libs/mermaid/dist/mermaid.slim.min.js"></script>
+    <link href="libs/DiagrammeR-styles/styles.css" rel="stylesheet" />
+    <script src="libs/chromatography/chromatography.js"></script>
+    <script src="libs/DiagrammeR-binding/DiagrammeR.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="extra.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: bottom, left, title-slide
+
+.title[
+# Using causal models
+]
+.subtitle[
+## for fairness and explanations
+]
+.author[
+### Joshua Loftus (LSE Statistics)
+]
+
+---
+
+
+class: split-four
+
+
+
+
+
+
+
+
+
+&lt;style type="text/css"&gt;
+.remark-slide-content {
+    font-size: 1.2rem;
+    padding: 1em 4em 1em 4em;
+}
+&lt;/style&gt;
+
+
+### Credit to my excellent collaborators
+
+#### Alan Turing Institute (2016-)
+
+&lt;img src="ricardo.png" width="167" /&gt;![](matt.jpg)&lt;img src="chris.png" width="165" /&gt;
+
+Ricardo Silva, Matt Kusner (UCL) &amp;nbsp; Chris Russell (AWS)
+
+---
+
+#### NYU (2020-) Julia Stoyanovich, Ke Yang, Lucius Bynum
+
+&lt;img src="julia.png" width="25%" /&gt;&lt;img src="ke.jpg" width="25%" /&gt;&lt;img src="lucius.png" width="25%" /&gt;
+
+
+#### LSE (2022-) Sakina Hansen
+
+&lt;img src="sakina.jpg" width="30%" /&gt;
+
+---
+class: inverse, center, middle
+
+# Causal fairness
+
+---
+
+### The red car example
+
+Consider a car insurance company that wants to predict the risk of insuring potential customers using data on
+
+- Gender `\(A\)`
+- Car color `\(X\)`
+- Driving records `\(Y\)`
+
+ML task: learn a function `\(f(X,A)\)` to predict `\(Y\)`
+
+Why? Use the learned function `\(f\)` to predict the risk of the policy for a new customer.
+
+**Q**: Is it fair to fit a function `\(f(X) \approx Y\)`?
+
+**A**: It depends on the *underlying causal structure of the world*
+
+---
+
+Let's generate some data in an idealized world:
+
+
+```r
+A &lt;- rbinom(1000, 1, .5)
+U &lt;- rnorm(1000)
+X &lt;- A + U &gt; 1
+Y &lt;- U &gt; 1/2
+world &lt;- data.frame(Gender = factor(c("Other", "Woman")[as.numeric(A)+1]),
+                    CarColor = factor(c("Silver", "Red")[as.numeric(X)+1]),
+                    Aggressiveness = U,
+                    HighRisk = Y)
+head(world)
+```
+
+```
+##   Gender CarColor Aggressiveness HighRisk
+## 1  Other   Silver        0.07730    FALSE
+## 2  Other   Silver       -0.29687    FALSE
+## 3  Woman   Silver       -1.18324    FALSE
+## 4  Woman      Red        0.01129    FALSE
+## 5  Other   Silver        0.99160     TRUE
+## 6  Woman      Red        1.59397     TRUE
+```
+
+
+---
+
+We can visualize causal relationships between variables in a **directed acyclic graph** (DAG). A directed arrow indicates its starting point is a cause of its ending point. Every variable is a function of all its (directed) parents (and exogenous noise, if the model is probabilistic)
+
+<div id="htmlwidget-85f26f1aabdd099d8005" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-85f26f1aabdd099d8005">{"x":{"diagram":"graph TB;\n  A[Gender]-->X[Car Color]\n  U(Aggression)-->X\n  U-->Y[Risk]"},"evals":[],"jsHooks":[]}</script>
+
+---
+
+There's no relationship between gender and aggressiveness in this data (same for risk)
+
+&lt;img src="causal_fairness_and_IML_files/figure-html/unnamed-chunk-6-1.png" width="504" /&gt;
+
+---
+
+If the company bases its decisions on `\(X\)` only, and not `\(A\)`, it will charge higher costs to people with red cars:
+
+&lt;img src="causal_fairness_and_IML_files/figure-html/unnamed-chunk-7-1.png" width="504" /&gt;
+
+---
+
+There are more women with red cars than men (independently of aggression/risk).
+
+
+```r
+table(world$Gender, world$CarColor)
+```
+
+```
+##        
+##         Red Silver
+##   Other  88    432
+##   Woman 232    248
+```
+
+To summarize: we started with an ideal world where there is no actual unfairness on the basis of gender, but by *ignoring* gender in our predictions we can actually *create* unfairness
+
+Enforcing SCOTUS's definition of fairness leads to unfair predictions because the underlying causal structure of the world was ignored by the model
+
+---
+
+## Defining fairness causally
+
+#### Counterfactual fairness
+Kusner, Loftus, Russell, Silva. ([NeurIPS 2017](https://papers.nips.cc/paper/2017/hash/a486cd07e4ac3d270571622f4f316ec5-Abstract.html)):
+
+Given a DAG, the predictor `\(\hat Y\)` is **counterfactually fair** if
+
+`$$P(\hat Y_a | x, a) = P(\hat Y_{a'} |x, a)$$`
+
+
+
+#### Proposition (sufficient, not necessary):
+Any predictor `\(\hat Y\)` which is a function of only non-descendents of `\(A\)` in the DAG is counterfactually fair
+
+
+---
+
+### Pathway analysis / decomposition
+
+.pull-left[
+
+![](../nabi.png)
+
+- [Kilbertus et al (2017)](https://papers.nips.cc/paper/2017/hash/f5f8590cd58a54e94377e6ae2eded4d9-Abstract.html): proxies and **resolving variables**
+
+]
+
+
+.pull-right[
+- [Kusner et al (2017)](https://papers.nips.cc/paper/2017/hash/a486cd07e4ac3d270571622f4f316ec5-Abstract.html): path-dependent counterfactual fairness (see supplement)
+- [Zhang et al (2017)](https://www.ijcai.org/proceedings/2017/549)
+- [Nabi and Shpitser (2018)](https://ojs.aaai.org/index.php/AAAI/article/view/11553)
+- [Zhang and Bareinboim (2018)](https://aaai.org/ocs/index.php/AAAI/AAAI18/paper/view/16949/0)
+- [Chiappa (2019)](https://ojs.aaai.org//index.php/AAAI/article/view/4777)
+- ...
+
+]
+
+---
+
+## [Intersectional](https://en.wikipedia.org/wiki/Intersectionality) fairness
+
+*Causal Intersectionality and Fair Ranking* (Yang, Stoyanovich, Loftus, [FORC 2021](https://drops.dagstuhl.de/opus/portals/lipics/index.php?semnr=16187))
+
+- Multiple sensitive attributes, e.g. race and gender
+
+- Variety of relationships with other mediating variables
+
+- Some of these mediators may be resolving/non-resolving for different sensitive attributes
+
+Lots of scholarship, not much using formal mathematical models. See [Bright et al (2016)](https://www.journals.uchicago.edu/doi/abs/10.1086/684173), 
+[O'Connor et al (2019)](https://www.tandfonline.com/doi/abs/10.1080/02691728.2018.1555870), and a few other references in our paper
+
+
+---
+
+## "Moving company" example
+
+.pull-left[
+Race, gender, weightlifting test, application score
+<div id="htmlwidget-903bccb5d981dfae632b" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-903bccb5d981dfae632b">{"x":{"diagram":"\ngraph TB\n  R-->X\n  G-->X\n  R-->Y\n  X-->Y\n  G-->Y\n"},"evals":[],"jsHooks":[]}</script>
+]
+.pull-right[
+Weightlifting considered a **resolving variable** (company argues it is a necessary qualification)
+
+&lt;img src="../moving.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+(See paper for results)
+]
+
+
+---
+
+### Optimizing/allocating interventions
+
+- [Making decisions that reduce discriminatory impacts](https://proceedings.mlr.press/v97/kusner19a.html) (Kusner et al, ICML 2019)
+
+Optimizing interventions/allocations under causal interference, asymmetric bound on counterfactual privilege
+
+- [Disaggregated interventions to reduce inequality](https://dl.acm.org/doi/abs/10.1145/3465416.3483286) (Bynum et al, EAAMO 2021)
+
+Avoids using sensitive attributes as causes, optimizes for inequality reduction directly
+
+- [Counterfactuals for the Future](https://ojs.aaai.org/index.php/AAAI/article/view/26655) (Bynum et al, AAAI 2023)
+
+What can go wrong if we confuse interventional and counterfactual modeling?
+
+---
+
+### Statistical fairness `\(\leftrightarrow\)` causal fairness?
+
+**Exercise**: Pick one or more definitions of statistical fairness and determine a DAG/SCM with a related/corresponding definition of [path-specific] counterfactual fairness
+
+e.g. what if `\(Y\)` is a resolving variable?
+
+---
+class: split-four
+
+### Every DAG is (importantly?) wrong
+
+.column[
+&amp;nbsp; 
+
+<div id="htmlwidget-04d6a572535b9b8b6203" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-04d6a572535b9b8b6203">{"x":{"diagram":"\ngraph TB\n  Race-->Outcome\n"},"evals":[],"jsHooks":[]}</script>
+]
+.column[
+&amp;nbsp; 
+
+<div id="htmlwidget-2e7fed994c82ed0e7ce1" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2e7fed994c82ed0e7ce1">{"x":{"diagram":"\ngraph TB\n  Racism-->Outcome\n"},"evals":[],"jsHooks":[]}</script>
+]
+
+.column[
+&amp;nbsp; 
+
+
+<div id="htmlwidget-a5b2fcef7383bf9954d4" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a5b2fcef7383bf9954d4">{"x":{"diagram":"\ngraph TB\n  A-->X\n  X-->Y\n  A-->Y\n"},"evals":[],"jsHooks":[]}</script>
+]
+.column[
+&amp;nbsp; 
+
+<div id="htmlwidget-2d36cff9e47ed7140259" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2d36cff9e47ed7140259">{"x":{"diagram":"\ngraph TB\n  A-->X\n  A-->R\n  X-->Y\n  R-->Y\n  A-->Y\n"},"evals":[],"jsHooks":[]}</script>
+]
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+
+**Transparency**: we can say specifically what we disagree on
+
+**Interpretation**: meanings of variables, edges (mechanisms)
+
+
+---
+
+#### Problem
+
+- Lots of fairness definitions (at least 21!)
+- Impossibility/trade-offs between them
+- What do?
+- How to think about this choice?
+
+--
+
+#### Time heuristic
+"Center" an oft-ignored dimension: **time**
+
+(i.e. consider the times when variable values are determined)
+
+---
+
+#### Notation for fair classification
+
+Desired outcome `\(Y = 1\)`, sensitive attribute `\(A\)`, predictor `\(M\)` (mediator/merit), algorithm score/classification `\(D\)`
+
+#### Causal graph: time flows left to right
+.left-column[
+Note: arrows from `\(A\)` may be due to discrimination (e.g. `\(M\)` could be an unfair measure of "merit")
+]
+.right-column[
+&lt;center&gt;
+<div id="htmlwidget-56e3f630952e02ef6f37" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-56e3f630952e02ef6f37">{"x":{"diagram":"\ngraph LR\n  subgraph  \n  A((A))-->M((M))\n  M-->Y((Y))\n  end\n  Y-.->D\n  A-->Y\n  A-.->D\n  M-.->D\n"},"evals":[],"jsHooks":[]}</script>
+
+&lt;/center&gt;
+]
+
+
+---
+
+#### Demographic parity 
+Predictions (or decisions) are independent of `\(A\)`:
+$$
+\mathbb P(D = 1 | A = 0) = \mathbb P(D = 1 | A = 1)
+$$
+
+
+#### Equality of opportunity (Hardt et al, 2016)
+Conditional parity, among individuals 'qualified' for the desirable outcome
+$$
+\mathbb P(D = 1 | A = 0, Y = 1) = \mathbb P(D = 1 | A = 1, Y = 1)
+$$
+
+#### Causal versions (e.g. counterfactual fairness)
+Pathway analysis, *allowing* a causal pathway to change the prediction is like conditioning on a variable in that pathway
+
+---
+
+### Allowed variables
+
+Definition: Variable `\(W\)` determined at time `\(t\)` is "allowed" by fairness definition `\(C\)` if:
+  - `\(C\)` is a conditional fairness definition and `\(W\)` is in the condition
+  - `\(C\)` is a causal pathway definition and `\(W\)` is on an unblocked (i.e. resolving) pathway
+
+---
+
+### Temporal depth heuristic
+
+
+#### Weak heuristic
+If `\(W\)`, determined at time `\(t\)`, is allowed by `\(C\)` then `\(C\)` "justifies" any unfairness associated with (or causally flowing through) `\(W\)` occurring before `\(t\)`
+
+#### Strong heuristic (thick/dense causality)
+If `\(W\)`, determined at time `\(t\)`, is allowed by `\(C\)` then `\(C\)` "justifies" all unfairness occurring before time `\(t\)`
+
+
+---
+
+### Applying the time heuristic
+
+According to the strong heuristic, *equality of opportunity essentially allows all unfairness*
+
+Demographic parity or (non-path-specific) counterfactual fairness do not justify any unfairness
+
+(Future work tbd)
+
+---
+
+### Why allow any unfairness?
+
+EU [Equality Directive](https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX:32000L0043), CHAPTER I, Article 2 (b):
+
+&gt; indirect discrimination [...] would put persons of a racial or ethnic origin at a particular disadvantage compared with other persons, *unless that provision, criterion or practice is objectively **justified*** by a legitimate aim and the means of achieving that aim are appropriate and necessary.
+
+US [civil rights](https://www.justice.gov/crt/fcs/T6Manual7#P) law: 
+
+&gt; If the evidence establishes a prima facie case of adverse disparate impact [...] courts then determine whether the recipient has articulated a "*substantial legitimate **justification***" [...]
+
+---
+
+### Maybe the law is bad?
+
+Disclaimer: I am not a lawyer
+
+
+---
+
+class: center, middle, inverse
+
+# Causal interpretability
+
+
+---
+
+### Classic methods (context/comparison)
+
+#### Decision trees (e.g.: early vaccine eligibility)
+
+- If `Age &gt;= 40` then `yes`, otherwise `continue`
+- If `HighRisk == TRUE` then `yes`, otherwise `continue`
+- If `Job == CareWorker` then `yes`, otherwise `no`
+
+#### Regression
+
+- Predictor variables in the dataset: `\(x_1, x_2, \ldots, x_p\)`
+- Coefficients/**parameters**, unknown: `\(\beta_1, \beta_2, \ldots, \beta_p\)`
+- Outcome variable, also in data: `\(y\)`
+- Algorithm inputs the data, outputs: estimated parameters, predictions of `\(y\)` using "recipe" or "weighted" combination
+
+$$
+\beta_1 x_1 + \beta_2 x_2 + \cdots + \beta_p x_p
+$$
+
+---
+
+## Transparent models
+
+Understand how the model uses `\(x_1\)` to make a prediction...
+
+## Opaque or black-box models
+
+Internal model structure is hidden, or complicated enough to be difficult to understand
+
+### xAI / IML
+
+Tools to help human understanding of models
+
+Usually focused on input-output
+
+---
+
+## Model-agnostic interpretability
+
+If we can only access the input-output interface (e.g. external auditing of a proprietary model)
+
+Does this black-box model discriminate? How does it depend on `age`?
+
+Various IML tools: variable importance, **partial dependence plots**, local surrogates, "counterfactual" explanations (misnamed)
+
+**Problem**: In the question "how does the output depend on a given input?" *what do we mean* by "depend"?
+
+e.g. fairness and (proxies for) sensitive attributes
+
+---
+
+## Causal interpretability
+
+- *Causal Interpretations of Black-Box Models* (Zhao and Hastie, 2019)
+
+Conditions under which a particular IML tool (PDP/ICE plots) can give valid causal conclusions
+
+- *Causal Dependence Plots for Interpretable Machine Learning* (Loftus, Bynum, Hansen, 2023 [preprint](https://arxiv.org/abs/2303.04209))
+
+---
+
+### Assume a causal model, create explanations
+
+
+![](../CDP.jpg)
+
+
+
+---
+
+class: center, middle
+
+# Conclusion
+
+## and takeaway messages
+
+---
+
+### Exciting advances in causal modeling
+
+Observational data, double machine learning, causal reinforcement learning, ...
+
+### Applications in ethical data science
+
+Prioritizing normative values: fairness, privacy, interpretability, replicability, "alignment," ...
+
+
+---
+
+### Bet on causality
+
+Claim: **causality** points us in good directions for research
+
+- Choosing which covariates to condition on in fair prediction/decisions
+- Changing focus from prediction to action, interventions, policy design, etc
+- Making models/assumptions transparent
+
+Deirdre Mulligan at (NeurIPS 2022) causal fairness workshop:
+
+&gt; the important role [causal models] can play in supporting **collaborative reasoning about contested concepts, facilitating stakeholder participation** in decisions about how to meet policy goals within technical systems
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"highlightSpans": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+(function(time) {
+  var d2 = function(number) {
+    return ('0' + number).slice(-2); // left-pad 0 to minutes/seconds
+  },
+
+  time_format = function(total) {
+    var secs = Math.abs(total) / 1000;
+    var h = Math.floor(secs / 3600);
+    var m = Math.floor(secs % 3600 / 60);
+    var s = Math.round(secs % 60);
+    var res = d2(m) + ':' + d2(s);
+    if (h > 0) res = h + ':' + res;
+    return res;  // [hh:]mm:ss
+  },
+
+  slide_number_div = function(i) {
+    return document.getElementsByClassName('remark-slide-number').item(i);
+  },
+
+  current_page_number = function(i) {
+    return slide_number_div(i).firstChild.textContent;  // text "i / N"
+  };
+
+  var timer = document.createElement('span'); timer.id = 'slide-time-left';
+  var time_left = time, k = slideshow.getCurrentSlideIndex(),
+      last_page_number = current_page_number(k);
+
+  setInterval(function() {
+    time_left = time_left - 1000;
+    timer.innerHTML = ' ' + time_format(time_left);
+    if (time_left < 0) timer.style.color = 'red';
+  }, 1000);
+
+  slide_number_div(k).appendChild(timer);
+
+  slideshow.on('showSlide', function(slide) {
+    var i = slide.getSlideIndex(), n = current_page_number(i);
+    // reset timer when a new slide is shown and the page number is changed
+    if (last_page_number !== n) {
+      time_left = time; last_page_number = n;
+      timer.innerHTML = ' ' + time_format(time); timer.style.color = null;
+    }
+    slide_number_div(i).appendChild(timer);
+  });
+})(59000);
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

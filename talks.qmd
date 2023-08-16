@@ -6,6 +6,7 @@ description: |
 
 | Recent talks                                                                                                                                                                         |
 |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Talk on causal fairness and  interpretability](./talks/fairness/slides/causal_fairness_and_IML.html)                                                                                    |
 | [Tutorial on causal fairness and  interpretability](./talks/fairness/slides/tutorial.html)                                                                                    |
 | [International Conference on Statistics and Data Science](./talks/fairness/slides/ICSDS2022.html)                                                                                    |
 | [Psychometric Society keynote](./talks/fairness/slides/IMPS2022.html)                                                                                                                |
