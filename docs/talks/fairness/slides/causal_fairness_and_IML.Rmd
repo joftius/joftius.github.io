@@ -182,7 +182,7 @@ Kusner, Loftus, Russell, Silva. ([NeurIPS 2017](https://papers.nips.cc/paper/201
 
 Given a DAG, the predictor $\hat Y$ is **counterfactually fair** if
 
-$$P(\hat Y_a | x, a) = P(\hat Y_{a'} |x, a)$$
+$$\mathbb P(\hat Y_a | x, a) = \mathbb P(\hat Y_{a'} |x, a)$$
 
 
 
@@ -538,14 +538,12 @@ e.g. fairness and (proxies for) sensitive attributes
 
 Conditions under which a particular IML tool (PDP/ICE plots) can give valid causal conclusions
 
-- *Causal Dependence Plots for Interpretable Machine Learning* (Loftus, Bynum, Hansen, 2023 [preprint](https://arxiv.org/abs/2303.04209))
+- *Causal Dependence Plots* (Loftus, Bynum, Hansen, 2023 [preprint](https://arxiv.org/abs/2303.04209))
 
 ---
 
-### Assume a causal model, create explanations
 
-
-![](../CDP.jpg)
+![](../CDPeg.png)
 
 
 
