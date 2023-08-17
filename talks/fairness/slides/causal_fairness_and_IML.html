@@ -75,7 +75,7 @@ Ricardo Silva, Matt Kusner (UCL) &amp;nbsp; Chris Russell (AWS)
 ---
 class: inverse, center, middle
 
-# Causal fairness
+# Motivating example
 
 ---
 
@@ -127,8 +127,8 @@ head(world)
 
 We can visualize causal relationships between variables in a **directed acyclic graph** (DAG). A directed arrow indicates its starting point is a cause of its ending point. Every variable is a function of all its (directed) parents (and exogenous noise, if the model is probabilistic)
 
-<div id="htmlwidget-c9ec52078bca8f2a9485" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c9ec52078bca8f2a9485">{"x":{"diagram":"graph TB;\n  A[Gender]-->X[Car Color]\n  U(Aggression)-->X\n  U-->Y[Risk]"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-1817fa4b79b9049ed005" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1817fa4b79b9049ed005">{"x":{"diagram":"graph TB;\n  A[Gender]-->X[Car Color]\n  U(Aggression)-->X\n  U-->Y[Risk]"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -161,6 +161,34 @@ table(world$Gender, world$CarColor)
 To summarize: we started with an ideal world where there is no actual unfairness on the basis of gender, but by *ignoring* gender in our predictions we can actually *create* unfairness
 
 Enforcing SCOTUS's definition of fairness leads to unfair predictions because the underlying causal structure of the world was ignored by the model
+
+---
+class: inverse, center, middle
+
+## What about the real world?
+
+---
+
+.small[
+**Are Emily and Greg More Employable than Lakisha and Jamal?** (Bertrand and Mullainathan, 2003)
+
+Systemic Discrimination Among Large U.S. Employers (Kline et al, 2022)
+
+*Whitened Resumes: Race and Self-Presentation in the Labor Market* (Kang et al, 2016)
+]
+
+![](https://hbswk.hbs.edu/PublishingImages/whitened-resumes.png) [Source](https://hbswk.hbs.edu/item/minorities-who-whiten-job-resumes-get-more-interviews)
+
+---
+
+Randomize (or blind) the **perception** of a sensitive variable (e.g. race) at one (late?) time point
+
+![](darkness.png)
+
+---
+class: inverse, center, middle
+
+# Causal fairness
 
 ---
 
@@ -224,8 +252,8 @@ Lots of scholarship, not much using formal mathematical models. See [Bright et a
 
 .pull-left[
 Race, gender, weightlifting test, application score
-<div id="htmlwidget-d7d9fbc714066229205d" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d7d9fbc714066229205d">{"x":{"diagram":"\ngraph TB\n  R-->X\n  G-->X\n  R-->Y\n  X-->Y\n  G-->Y\n"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-ad9c5259da40408845bf" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ad9c5259da40408845bf">{"x":{"diagram":"\ngraph TB\n  R-->X\n  G-->X\n  R-->Y\n  X-->Y\n  G-->Y\n"},"evals":[],"jsHooks":[]}</script>
 ]
 .pull-right[
 Weightlifting considered a **resolving variable** (company argues it is a necessary qualification)
@@ -259,157 +287,6 @@ What can go wrong if we confuse interventional and counterfactual modeling?
 **Exercise**: Pick one or more definitions of statistical fairness and determine a DAG/SCM with a related/corresponding definition of [path-specific] counterfactual fairness
 
 e.g. what if `\(Y\)` is a resolving variable?
-
----
-class: split-four
-
-### Every DAG is (importantly?) wrong
-
-.column[
-&amp;nbsp; 
-
-<div id="htmlwidget-8484830a6881fb092101" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-8484830a6881fb092101">{"x":{"diagram":"\ngraph TB\n  Race-->Outcome\n"},"evals":[],"jsHooks":[]}</script>
-]
-.column[
-&amp;nbsp; 
-
-<div id="htmlwidget-7b4b856d39c8e6d204d0" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-7b4b856d39c8e6d204d0">{"x":{"diagram":"\ngraph TB\n  Racism-->Outcome\n"},"evals":[],"jsHooks":[]}</script>
-]
-
-.column[
-&amp;nbsp; 
-
-
-<div id="htmlwidget-48b5ebb5588c8b220781" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-48b5ebb5588c8b220781">{"x":{"diagram":"\ngraph TB\n  A-->X\n  X-->Y\n  A-->Y\n"},"evals":[],"jsHooks":[]}</script>
-]
-.column[
-&amp;nbsp; 
-
-<div id="htmlwidget-bdf63975c8deaf397d46" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-bdf63975c8deaf397d46">{"x":{"diagram":"\ngraph TB\n  A-->X\n  A-->R\n  X-->Y\n  R-->Y\n  A-->Y\n"},"evals":[],"jsHooks":[]}</script>
-]
-
-&amp;nbsp;
-
-&amp;nbsp;
-
-&amp;nbsp;
-
-&amp;nbsp;
-
-&amp;nbsp;
-
-&amp;nbsp;
-
-
-**Transparency**: we can say specifically what we disagree on
-
-**Interpretation**: meanings of variables, edges (mechanisms)
-
-
----
-
-#### Problem
-
-- Lots of fairness definitions (at least 21!)
-- Impossibility/trade-offs between them
-- What do?
-- How to think about this choice?
-
---
-
-#### Time heuristic
-"Center" an oft-ignored dimension: **time**
-
-(i.e. consider the times when variable values are determined)
-
----
-
-#### Notation for fair classification
-
-Desired outcome `\(Y = 1\)`, sensitive attribute `\(A\)`, predictor `\(M\)` (mediator/merit), algorithm score/classification `\(D\)`
-
-#### Causal graph: time flows left to right
-.left-column[
-Note: arrows from `\(A\)` may be due to discrimination (e.g. `\(M\)` could be an unfair measure of "merit")
-]
-.right-column[
-&lt;center&gt;
-<div id="htmlwidget-84b686a6abebdeb90153" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-84b686a6abebdeb90153">{"x":{"diagram":"\ngraph LR\n  subgraph  \n  A((A))-->M((M))\n  M-->Y((Y))\n  end\n  Y-.->D\n  A-->Y\n  A-.->D\n  M-.->D\n"},"evals":[],"jsHooks":[]}</script>
-
-&lt;/center&gt;
-]
-
-
----
-
-#### Demographic parity 
-Predictions (or decisions) are independent of `\(A\)`:
-$$
-\mathbb P(D = 1 | A = 0) = \mathbb P(D = 1 | A = 1)
-$$
-
-
-#### Equality of opportunity (Hardt et al, 2016)
-Conditional parity, among individuals 'qualified' for the desirable outcome
-$$
-\mathbb P(D = 1 | A = 0, Y = 1) = \mathbb P(D = 1 | A = 1, Y = 1)
-$$
-
-#### Causal versions (e.g. counterfactual fairness)
-Pathway analysis, *allowing* a causal pathway to change the prediction is like conditioning on a variable in that pathway
-
----
-
-### Allowed variables
-
-Definition: Variable `\(W\)` determined at time `\(t\)` is "allowed" by fairness definition `\(C\)` if:
-  - `\(C\)` is a conditional fairness definition and `\(W\)` is in the condition
-  - `\(C\)` is a causal pathway definition and `\(W\)` is on an unblocked (i.e. resolving) pathway
-
----
-
-### Temporal depth heuristic
-
-
-#### Weak heuristic
-If `\(W\)`, determined at time `\(t\)`, is allowed by `\(C\)` then `\(C\)` "justifies" any unfairness associated with (or causally flowing through) `\(W\)` occurring before `\(t\)`
-
-#### Strong heuristic (thick/dense causality)
-If `\(W\)`, determined at time `\(t\)`, is allowed by `\(C\)` then `\(C\)` "justifies" all unfairness occurring before time `\(t\)`
-
-
----
-
-### Applying the time heuristic
-
-According to the strong heuristic, *equality of opportunity essentially allows all unfairness*
-
-Demographic parity or (non-path-specific) counterfactual fairness do not justify any unfairness
-
-(Future work tbd)
-
----
-
-### Why allow any unfairness?
-
-EU [Equality Directive](https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX:32000L0043), CHAPTER I, Article 2 (b):
-
-&gt; indirect discrimination [...] would put persons of a racial or ethnic origin at a particular disadvantage compared with other persons, *unless that provision, criterion or practice is objectively **justified*** by a legitimate aim and the means of achieving that aim are appropriate and necessary.
-
-US [civil rights](https://www.justice.gov/crt/fcs/T6Manual7#P) law: 
-
-&gt; If the evidence establishes a prima facie case of adverse disparate impact [...] courts then determine whether the recipient has articulated a "*substantial legitimate **justification***" [...]
-
----
-
-### Maybe the law is bad?
-
-Disclaimer: I am not a lawyer
 
 
 ---
@@ -489,11 +366,183 @@ Conditions under which a particular IML tool (PDP/ICE plots) can give valid caus
 
 ---
 
-class: center, middle
+class: inverse, center, middle
 
-# Conclusion
+## Pathways forward
 
-## and takeaway messages
+### Conclusions and takeaways
+
+
+---
+
+### At some point we must decide
+
+#### Which (causal) model reveals our beliefs?
+
+[George Box](https://en.wikipedia.org/wiki/George_E._P._Box):
+
+
+&gt; [All models are wrong](All_models_are_wrong) but some are useful
+
+--
+
+therefore,
+
+&gt; ... the scientist must be alert to what is **importantly wrong**
+
+&gt; ... **cannot obtain a "correct" one** by excessive elaboration
+
+---
+class: split-four
+
+### Every DAG is (importantly?) wrong
+
+.column[
+&amp;nbsp; 
+
+<div id="htmlwidget-eba9e3f118be43c848ea" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-eba9e3f118be43c848ea">{"x":{"diagram":"\ngraph TB\n  Race-->Outcome\n"},"evals":[],"jsHooks":[]}</script>
+]
+.column[
+&amp;nbsp; 
+
+<div id="htmlwidget-38263d23391283a2365c" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-38263d23391283a2365c">{"x":{"diagram":"\ngraph TB\n  Racism-->Outcome\n"},"evals":[],"jsHooks":[]}</script>
+]
+
+.column[
+&amp;nbsp; 
+
+
+<div id="htmlwidget-370f82a863938d0dade0" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-370f82a863938d0dade0">{"x":{"diagram":"\ngraph TB\n  A-->X\n  X-->Y\n  A-->Y\n"},"evals":[],"jsHooks":[]}</script>
+]
+.column[
+&amp;nbsp; 
+
+<div id="htmlwidget-6b803f6be25297ca7196" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6b803f6be25297ca7196">{"x":{"diagram":"\ngraph TB\n  A-->X\n  A-->R\n  X-->Y\n  R-->Y\n  A-->Y\n"},"evals":[],"jsHooks":[]}</script>
+]
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+
+**Transparency**: we can say specifically what we disagree on
+
+**Interpretation**: meanings of variables, edges (mechanisms)
+
+
+---
+
+#### Problem
+
+- Lots of fairness definitions (at least 21!)
+- Impossibility/trade-offs between them
+- What do?
+- How to think about this choice?
+
+--
+
+#### Time heuristic
+"Center" an oft-ignored dimension: **time**
+
+(i.e. consider the times when variable values are determined)
+
+---
+
+#### Notation for fair classification
+
+Desired outcome `\(Y = 1\)`, sensitive attribute `\(A\)`, predictor `\(M\)` (mediator/merit), algorithm score/classification `\(D\)`
+
+#### Causal graph: time flows left to right
+.left-column[
+Note: arrows from `\(A\)` may be due to discrimination (e.g. `\(M\)` could be an unfair measure of "merit")
+]
+.right-column[
+&lt;center&gt;
+<div id="htmlwidget-31c1e67d13cd77efc994" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-31c1e67d13cd77efc994">{"x":{"diagram":"\ngraph LR\n  subgraph  \n  A((A))-->M((M))\n  M-->Y((Y))\n  end\n  Y-.->D\n  A-->Y\n  A-.->D\n  M-.->D\n"},"evals":[],"jsHooks":[]}</script>
+
+&lt;/center&gt;
+]
+
+
+---
+
+#### Demographic parity 
+Predictions (or decisions) are independent of `\(A\)`:
+$$
+\mathbb P(D = 1 | A = 0) = \mathbb P(D = 1 | A = 1)
+$$
+
+
+#### Equality of opportunity (Hardt et al, 2016)
+Conditional parity, among individuals 'qualified' for the desirable outcome
+$$
+\mathbb P(D = 1 | A = 0, Y = 1) = \mathbb P(D = 1 | A = 1, Y = 1)
+$$
+
+#### Causal versions (e.g. counterfactual fairness)
+Pathway analysis, *allowing* a causal pathway to change the prediction is like conditioning on a variable in that pathway
+
+---
+
+### Allowed variables
+
+Definition: Variable `\(W\)` determined at time `\(t\)` is "allowed" by fairness definition `\(C\)` if:
+  - `\(C\)` is a conditional fairness definition and `\(W\)` is in the condition
+  - `\(C\)` is a causal pathway definition and `\(W\)` is on an unblocked (i.e. resolving) pathway
+
+---
+
+### Temporal depth heuristic
+
+
+#### Weak heuristic
+If `\(W\)`, determined at time `\(t\)`, is allowed by `\(C\)` then `\(C\)` "justifies" any unfairness associated with (or causally flowing through) `\(W\)` occurring before `\(t\)`
+
+#### Strong heuristic (thick/dense causality)
+If `\(W\)`, determined at time `\(t\)`, is allowed by `\(C\)` then `\(C\)` "justifies" all unfairness occurring before time `\(t\)`
+
+
+---
+
+### Applying the time heuristic
+
+According to the strong heuristic, *equality of opportunity essentially allows all unfairness*
+
+Demographic parity or (non-path-specific) counterfactual fairness do not justify any unfairness
+
+(Future work tbd)
+
+---
+
+### Why allow any unfairness?
+
+EU [Equality Directive](https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX:32000L0043), CHAPTER I, Article 2 (b):
+
+&gt; indirect discrimination [...] would put persons of a racial or ethnic origin at a particular disadvantage compared with other persons, *unless that provision, criterion or practice is objectively **justified*** by a legitimate aim and the means of achieving that aim are appropriate and necessary.
+
+US [civil rights](https://www.justice.gov/crt/fcs/T6Manual7#P) law: 
+
+&gt; If the evidence establishes a prima facie case of adverse disparate impact [...] courts then determine whether the recipient has articulated a "*substantial legitimate **justification***" [...]
+
+---
+
+### Maybe the law is bad?
+
+Disclaimer: I am not a lawyer
+
 
 ---
 
@@ -519,7 +568,6 @@ Claim: **causality** points us in good directions for research
 Deirdre Mulligan at (NeurIPS 2022) causal fairness workshop:
 
 &gt; the important role [causal models] can play in supporting **collaborative reasoning about contested concepts, facilitating stakeholder participation** in decisions about how to meet policy goals within technical systems
-
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

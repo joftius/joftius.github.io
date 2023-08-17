@@ -95,7 +95,7 @@ knitr::include_graphics(c("sakina.jpg"))
 ---
 class: inverse, center, middle
 
-# Causal fairness
+# Motivating example
 
 ---
 
@@ -172,6 +172,34 @@ table(world$Gender, world$CarColor)
 To summarize: we started with an ideal world where there is no actual unfairness on the basis of gender, but by *ignoring* gender in our predictions we can actually *create* unfairness
 
 Enforcing SCOTUS's definition of fairness leads to unfair predictions because the underlying causal structure of the world was ignored by the model
+
+---
+class: inverse, center, middle
+
+## What about the real world?
+
+---
+
+.small[
+**Are Emily and Greg More Employable than Lakisha and Jamal?** (Bertrand and Mullainathan, 2003)
+
+Systemic Discrimination Among Large U.S. Employers (Kline et al, 2022)
+
+*Whitened Resumes: Race and Self-Presentation in the Labor Market* (Kang et al, 2016)
+]
+
+![](https://hbswk.hbs.edu/PublishingImages/whitened-resumes.png) [Source](https://hbswk.hbs.edu/item/minorities-who-whiten-job-resumes-get-more-interviews)
+
+---
+
+Randomize (or blind) the **perception** of a sensitive variable (e.g. race) at one (late?) time point
+
+![](darkness.png)
+
+---
+class: inverse, center, middle
+
+# Causal fairness
 
 ---
 
@@ -281,6 +309,110 @@ What can go wrong if we confuse interventional and counterfactual modeling?
 **Exercise**: Pick one or more definitions of statistical fairness and determine a DAG/SCM with a related/corresponding definition of [path-specific] counterfactual fairness
 
 e.g. what if $Y$ is a resolving variable?
+
+
+---
+
+class: center, middle, inverse
+
+# Causal interpretability
+
+
+---
+
+### Classic methods (context/comparison)
+
+#### Decision trees (e.g.: early vaccine eligibility)
+
+- If `Age >= 40` then `yes`, otherwise `continue`
+- If `HighRisk == TRUE` then `yes`, otherwise `continue`
+- If `Job == CareWorker` then `yes`, otherwise `no`
+
+#### Regression
+
+- Predictor variables in the dataset: $x_1, x_2, \ldots, x_p$
+- Coefficients/**parameters**, unknown: $\beta_1, \beta_2, \ldots, \beta_p$
+- Outcome variable, also in data: $y$
+- Algorithm inputs the data, outputs: estimated parameters, predictions of $y$ using "recipe" or "weighted" combination
+
+$$
+\beta_1 x_1 + \beta_2 x_2 + \cdots + \beta_p x_p
+$$
+
+---
+
+## Transparent models
+
+Understand how the model uses $x_1$ to make a prediction...
+
+## Opaque or black-box models
+
+Internal model structure is hidden, or complicated enough to be difficult to understand
+
+### xAI / IML
+
+Tools to help human understanding of models
+
+Usually focused on input-output
+
+---
+
+## Model-agnostic interpretability
+
+If we can only access the input-output interface (e.g. external auditing of a proprietary model)
+
+Does this black-box model discriminate? How does it depend on `age`?
+
+Various IML tools: variable importance, **partial dependence plots**, local surrogates, "counterfactual" explanations (misnamed)
+
+**Problem**: In the question "how does the output depend on a given input?" *what do we mean* by "depend"?
+
+e.g. fairness and (proxies for) sensitive attributes
+
+---
+
+## Causal interpretability
+
+- *Causal Interpretations of Black-Box Models* (Zhao and Hastie, 2019)
+
+Conditions under which a particular IML tool (PDP/ICE plots) can give valid causal conclusions
+
+- *Causal Dependence Plots* (Loftus, Bynum, Hansen, 2023 [preprint](https://arxiv.org/abs/2303.04209))
+
+---
+
+
+![](../CDPeg.png)
+
+
+
+---
+
+class: inverse, center, middle
+
+## Pathways forward
+
+### Conclusions and takeaways
+
+
+---
+
+### At some point we must decide
+
+#### Which (causal) model reveals our beliefs?
+
+[George Box](https://en.wikipedia.org/wiki/George_E._P._Box):
+
+
+> [All models are wrong](All_models_are_wrong) but some are useful
+
+--
+
+therefore,
+
+> ... the scientist must be alert to what is **importantly wrong**
+
+> ... **cannot obtain a "correct" one** by excessive elaboration
 
 ---
 class: split-four
@@ -474,89 +606,6 @@ Disclaimer: I am not a lawyer
 
 ---
 
-class: center, middle, inverse
-
-# Causal interpretability
-
-
----
-
-### Classic methods (context/comparison)
-
-#### Decision trees (e.g.: early vaccine eligibility)
-
-- If `Age >= 40` then `yes`, otherwise `continue`
-- If `HighRisk == TRUE` then `yes`, otherwise `continue`
-- If `Job == CareWorker` then `yes`, otherwise `no`
-
-#### Regression
-
-- Predictor variables in the dataset: $x_1, x_2, \ldots, x_p$
-- Coefficients/**parameters**, unknown: $\beta_1, \beta_2, \ldots, \beta_p$
-- Outcome variable, also in data: $y$
-- Algorithm inputs the data, outputs: estimated parameters, predictions of $y$ using "recipe" or "weighted" combination
-
-$$
-\beta_1 x_1 + \beta_2 x_2 + \cdots + \beta_p x_p
-$$
-
----
-
-## Transparent models
-
-Understand how the model uses $x_1$ to make a prediction...
-
-## Opaque or black-box models
-
-Internal model structure is hidden, or complicated enough to be difficult to understand
-
-### xAI / IML
-
-Tools to help human understanding of models
-
-Usually focused on input-output
-
----
-
-## Model-agnostic interpretability
-
-If we can only access the input-output interface (e.g. external auditing of a proprietary model)
-
-Does this black-box model discriminate? How does it depend on `age`?
-
-Various IML tools: variable importance, **partial dependence plots**, local surrogates, "counterfactual" explanations (misnamed)
-
-**Problem**: In the question "how does the output depend on a given input?" *what do we mean* by "depend"?
-
-e.g. fairness and (proxies for) sensitive attributes
-
----
-
-## Causal interpretability
-
-- *Causal Interpretations of Black-Box Models* (Zhao and Hastie, 2019)
-
-Conditions under which a particular IML tool (PDP/ICE plots) can give valid causal conclusions
-
-- *Causal Dependence Plots* (Loftus, Bynum, Hansen, 2023 [preprint](https://arxiv.org/abs/2303.04209))
-
----
-
-
-![](../CDPeg.png)
-
-
-
----
-
-class: center, middle
-
-# Conclusion
-
-## and takeaway messages
-
----
-
 ### Exciting advances in causal modeling
 
 Observational data, double machine learning, causal reinforcement learning, ...
@@ -579,4 +628,3 @@ Claim: **causality** points us in good directions for research
 Deirdre Mulligan at (NeurIPS 2022) causal fairness workshop:
 
 > the important role [causal models] can play in supporting **collaborative reasoning about contested concepts, facilitating stakeholder participation** in decisions about how to meet policy goals within technical systems
-
