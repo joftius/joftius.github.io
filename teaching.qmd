@@ -7,6 +7,6 @@ description: |
 |                                            |                                                                                           |                                                        |
 |---------|--------|----------------------------------------|
 |                                            | Guide                                                                                     | Course website                                         |
-| {{< fa solid bezier-curve size=large >}}   | [ST310](https://www.lse.ac.uk/resources/calendar2022-2023/courseGuides/ST/2022_ST310.htm) | [Machine Learning for Data Science](https://ml4ds.com) |
-| {{< fa solid scale-balanced size=large >}} | [ST313](https://www.lse.ac.uk/resources/calendar2022-2023/courseGuides/ST/2022_ST313.htm) | [Ethics for Data Science](https://ethics4ds.com)       |
-| {{< fa solid chart-column size=large >}}   |                                                                                           | [Statistics for Data Science](https://stats4ds.com)    |
+| {{< fa solid bezier-curve size=large >}}   | [ST310](https://www.lse.ac.uk/resources/calendar2024-2025/courseGuides/ST/2024_ST310.htm) | [Machine Learning for Data Science](https://ml4ds.com) |
+| {{< fa solid scale-balanced size=large >}} | [ST313](https://www.lse.ac.uk/resources/calendar2024-2025/courseGuides/ST/2024_ST313.htm) | [Ethics for Data Science](https://ethics4ds.com)       |
+| {{< fa solid chart-column size=large >}}   |                                                                                           | [Statistics for Data Science](https://stats103.com/) (notes by teaching assistant)   |

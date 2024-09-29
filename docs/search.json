@@ -4,7 +4,7 @@
     "href": "teaching.html",
     "title": "Teaching",
     "section": "",
-    "text": "Guide\nCourse website\n\n\n\nST310\nMachine Learning for Data Science\n\n\n\nST313\nEthics for Data Science\n\n\n\n\nStatistics for Data Science"
+    "text": "Guide\nCourse website\n\n\n\nST310\nMachine Learning for Data Science\n\n\n\nST313\nEthics for Data Science\n\n\n\n\nStatistics for Data Science (notes by teaching assistant)"
   },
   {
     "objectID": "software.html",
@@ -226,9 +226,9 @@
   {
     "objectID": "research.html",
     "href": "research.html",
-    "title": "Research",
+    "title": "Human-centered data science",
     "section": "",
-    "text": "Page for recent talks/slides. More information can be found on my Google Scholar profile page.\n\nCausal models for fairness\nThis work approaches fair machine learning from a causal inference perspective, arguing that determining what is fair is a similar challenge to determining causality. See our Nature Comment for a high level overview.\n\nPublications\n\nL. E. J. Bynum, J. R. Loftus, J. Stoyanovich, Counterfactuals for the Future. Proceedings of the Thirty-Seventh AAAI Conference on Artificial Intelligence, (AAAI 2023, to appear). [link]\nL. E. J. Bynum, J. R. Loftus, J. Stoyanovich, Disaggregated Interventions to Reduce Inequality. Equity and Access in Algorithms, Mechanisms, and Optimization, (EAAMO 2021). [link]\nK. Yang, J. R. Loftus, J. Stoyanovich, Causal intersectionality and fair ranking. Foundations of Responsible Computing, (FORC 2021). [link]\nM. J. Kusner, C. Russell, J. R. Loftus, R. Silva. Making Decisions that Reduce Discriminatory Impact. International Conference on Machine Learning, (ICML 2019). [link]\nM. J. Kusner, J. R. Loftus, C. Russell, R. Silva. Counterfactual fairness. Advances in Neural Information Processing Systems, (NeurIPS 2017). [link]\nC. Russell, M. J. Kusner, J. R. Loftus, R. Silva. When worlds collide: integrating different counterfactual assumptions in fairness. Advances in Neural Information Processing Systems, (NeurIPS 2017). [link]\nJ. R. Loftus, C. Russell, M. J. Kusner, R. Silva. Causal reasoning for algorithmic fairness. Preprint.\n\n\n\n\nPost-selection inference\nThis work involves challenging mathematical and computational aspects of conducting inference after model selection procedures with complicated underlying geometry. This enables significance testing, for example, after using some of the most popular model selection procedures such as the lasso with regularization chosen by cross-validation, or forward stepwise with number of steps chosen by AIC or BIC. Often the resulting significance tests are slightly modified versions of the classical tests in regression analysis. This blog post introduces the basic idea.\n\nSoftware\nI’m a co-author of the selectiveInference package on CRAN.\n\n\nPublications\n\nX. Tian, J. R. Loftus, J. E. Taylor. Selective inference with unknown variance via the square-root LASSO. Biometrika, 2018. [link]\nJ. E. Taylor, J. R. Loftus, and R. J. Tibshirani. Inference in adaptive regression via the Kac-Rice formula. Annals of Statistics, 2016. [link]\nJ. R. Loftus. Selective inference after cross-validation. Preprint.\nJ. R. Loftus and J. E. Taylor. Selective inference in regression models with groups of variables. Preprint.\nJ. R. Loftus, J. E. Taylor. A significance test for forward stepwise model selection. Preprint.\n\n\n\n\nOther publications\n\nBynum, et al., An Interactive Introduction to Causal Inference, VISxAI: IEEE Workshop on Visualization for AI Explainability, 2022. [link]\nXu, J., et al. Landscape of monoallelic DNA accessibility in mouse embryonic stem cells and neural progenitor cells. Nature Genetics, 2017. [link]"
+    "text": "My research vision is for data science to empower people with tools to guide the directions of research and technology consciously and inclusively. I’m motivated by applications in algorithmic fairness and discrimination, responsible AI, and model interpretability and explainability. My primarily theoretical work develops models based on causality, a theory of changing the world.\nSome recent talks/slides. More information can be found on my Google Scholar profile page."
   },
   {
     "objectID": "talks.html",
@@ -236,5 +236,26 @@
     "title": "Talks",
     "section": "",
     "text": "Recent talks\n\n\n\n\nTalk on causal fairness and interpretability\n\n\nTutorial on causal fairness and interpretability\n\n\nInternational Conference on Statistics and Data Science\n\n\nPsychometric Society keynote\n\n\nDiscussion of Sani, Malinsky, and Shpitser [video]\n\n\nDiscussion of Panigrahi, MacDonald, and Kessler [video]\n\n\nWorkshop on Race and Racism in Science\n\n\nConference on Machine Learning and Inequality [video]"
+  },
+  {
+    "objectID": "research.html#causal-models-in-machine-learning",
+    "href": "research.html#causal-models-in-machine-learning",
+    "title": "Human-centered data science",
+    "section": "Causal models in machine learning",
+    "text": "Causal models in machine learning\nThis work approaches fair machine learning from a causal inference perspective, arguing that determining what is fair is a similar challenge to determining causality. See our Nature Comment for a high level overview.\n\nPublications\n\nJ. R. Loftus, L. E. J. Bynum, S. Hansen. Causal Dependence Plots. Advances in Neural Information Processing Systems, (NeurIPS 2024, accepted). [link]\nL. E. J. Bynum, J. R. Loftus, J. Stoyanovich, A New Paradigm for Counterfactual Reasoning in Fairness and Recourse. Proceedings of the Thirty-Third International Joint Conference on Artificial Intelligence, (IJCAI 2024). [link]\nL. E. J. Bynum, J. R. Loftus, J. Stoyanovich, Counterfactuals for the Future. Proceedings of the Thirty-Seventh AAAI Conference on Artificial Intelligence, (AAAI 2023). [link]\nL. E. J. Bynum, J. R. Loftus, J. Stoyanovich, Disaggregated Interventions to Reduce Inequality. Equity and Access in Algorithms, Mechanisms, and Optimization, (EAAMO 2021). [link]\nK. Yang, J. R. Loftus, J. Stoyanovich, Causal intersectionality and fair ranking. Foundations of Responsible Computing, (FORC 2021). [link]\nM. J. Kusner, C. Russell, J. R. Loftus, R. Silva. Making Decisions that Reduce Discriminatory Impact. International Conference on Machine Learning, (ICML 2019). [link]\nM. J. Kusner, J. R. Loftus, C. Russell, R. Silva. Counterfactual fairness. Advances in Neural Information Processing Systems, (NeurIPS 2017). [link]\nC. Russell, M. J. Kusner, J. R. Loftus, R. Silva. When worlds collide: integrating different counterfactual assumptions in fairness. Advances in Neural Information Processing Systems, (NeurIPS 2017). [link]\nJ. R. Loftus, C. Russell, M. J. Kusner, R. Silva. Causal reasoning for algorithmic fairness. Preprint."
+  },
+  {
+    "objectID": "research.html#post-selection-inference",
+    "href": "research.html#post-selection-inference",
+    "title": "Human-centered data science",
+    "section": "Post-selection inference",
+    "text": "Post-selection inference\nThis work involves challenging mathematical and computational aspects of conducting inference after model selection procedures with complicated underlying geometry. This enables significance testing, for example, after using some of the most popular model selection procedures such as the lasso with regularization chosen by cross-validation, or forward stepwise with number of steps chosen by AIC or BIC. Often the resulting significance tests are slightly modified versions of the classical tests in regression analysis. This blog post introduces the basic idea.\n\nSoftware\nI’m a co-author of the selectiveInference package on CRAN.\n\n\nPublications\n\nX. Tian, J. R. Loftus, J. E. Taylor. Selective inference with unknown variance via the square-root LASSO. Biometrika, 2018. [link]\nJ. E. Taylor, J. R. Loftus, and R. J. Tibshirani. Inference in adaptive regression via the Kac-Rice formula. Annals of Statistics, 2016. [link]\nJ. R. Loftus. Selective inference after cross-validation. Preprint.\nJ. R. Loftus and J. E. Taylor. Selective inference in regression models with groups of variables. Preprint.\nJ. R. Loftus, J. E. Taylor. A significance test for forward stepwise model selection. Preprint."
+  },
+  {
+    "objectID": "research.html#other-publications",
+    "href": "research.html#other-publications",
+    "title": "Human-centered data science",
+    "section": "Other publications",
+    "text": "Other publications\n\nJ. R. Loftus, Position: The Causal Revolution Needs Scientific Pragmatism. Proceedings of the 41st International Conference on Machine Learning, (ICML 2024). [link]\nM. Fahrenwaldt, et al., Fairness: plurality, causality, and insurability, European Actuarial Journal, 2024. [link]\nL. Rosenblatt, et al., Epistemic Parity: Reproducibility as an Evaluation Metric for Differential Privacy, Proceedings of the VLDB Endowment, (VLDB 2023). [link]\nL. E. J. Bynum, et al., An Interactive Introduction to Causal Inference, IEEE Workshop on Visualization for AI Explainability, (VISxAI 2022). [link]\nJ. Xu, et al. Landscape of monoallelic DNA accessibility in mouse embryonic stem cells and neural progenitor cells. Nature Genetics, 2017. [link]"
   }
 ]

@@ -1,20 +1,25 @@
 ---
-title: "Research"
+title: "Human-centered data science"
 name: "Joshua Loftus"
 orcid: "0000-0002-2905-1632"
 description: |
 ---
 
-Page for recent [talks/slides](../../talks.html). More information can be found on my [Google Scholar](https://scholar.google.com/citations?user=SIbr3XUAAAAJ) profile page.
+My research vision is for data science to empower people with tools to guide the directions of research and technology consciously and inclusively. I'm motivated by applications in **algorithmic fairness** and discrimination, **responsible AI**, and model **interpretability and explainability**. My primarily theoretical work develops models based on causality, a theory of changing the world.
 
+Some recent [talks/slides](../../talks.html). More information can be found on my [Google Scholar](https://scholar.google.com/citations?user=SIbr3XUAAAAJ) profile page.
 
-# Causal models for fairness
+## Causal models in machine learning
 
 This work approaches fair machine learning from a causal inference perspective, arguing that determining what is fair is a similar challenge to determining causality. See our [Nature Comment](https://www.nature.com/articles/d41586-020-00274-3) for a high level overview.
 
 ### Publications
 
--   L. E. J. Bynum, J. R. Loftus, J. Stoyanovich, **Counterfactuals for the Future**. Proceedings of the Thirty-Seventh AAAI Conference on Artificial Intelligence, (*AAAI* 2023, to appear). \[[link](https://aaai.org/Conferences/AAAI-23/)\]
+-   J. R. Loftus, L. E. J. Bynum, S. Hansen. **Causal Dependence Plots**. Advances in Neural Information Processing Systems, (*NeurIPS* 2024, accepted). \[[link](https://arxiv.org/abs/2303.04209)\]
+
+-   L. E. J. Bynum, J. R. Loftus, J. Stoyanovich, **A New Paradigm for Counterfactual Reasoning in Fairness and Recourse**. Proceedings of the Thirty-Third International Joint Conference on Artificial Intelligence, (*IJCAI* 2024). \[[link](https://www.ijcai.org/proceedings/2024/784)\]
+
+-   L. E. J. Bynum, J. R. Loftus, J. Stoyanovich, **Counterfactuals for the Future**. Proceedings of the Thirty-Seventh AAAI Conference on Artificial Intelligence, (*AAAI* 2023). \[[link](https://aaai.org/Conferences/AAAI-23/)\]
 
 -   L. E. J. Bynum, J. R. Loftus, J. Stoyanovich, **Disaggregated Interventions to Reduce Inequality**. Equity and Access in Algorithms, Mechanisms, and Optimization, (*EAAMO* 2021). \[[link](https://dl.acm.org/doi/abs/10.1145/3465416.3483286)\]
 
@@ -28,7 +33,7 @@ This work approaches fair machine learning from a causal inference perspective, 
 
 -   J. R. Loftus, C. Russell, M. J. Kusner, R. Silva. **Causal reasoning for algorithmic fairness**. *Preprint*.
 
-# Post-selection inference
+## Post-selection inference
 
 This work involves challenging mathematical and computational aspects of conducting inference after model selection procedures with complicated underlying geometry. This enables significance testing, for example, after using some of the most popular model selection procedures such as the lasso with regularization chosen by cross-validation, or forward stepwise with number of steps chosen by AIC or BIC. Often the resulting significance tests are slightly modified versions of the classical tests in regression analysis. This [blog post](https://joshualoftus.com/posts/2020-12-22-a-conditional-approach-to-inference-after-model-selection/a-conditional-approach-to-inference-after-model-selection.html) introduces the basic idea.
 
@@ -48,9 +53,15 @@ I'm a co-author of the [selectiveInference](https://cran.r-project.org/web/packa
 
 -   J. R. Loftus, J. E. Taylor. **A significance test for forward stepwise model selection**. *Preprint*.
 
-# Other publications
+## Other publications
 
-- Bynum, et al., **An Interactive Introduction to Causal Inference**, *VISxAI*: IEEE Workshop on Visualization for AI Explainability, 2022. \[[link](https://lbynum.github.io/interactive-causal-inference/)\]
+- J. R. Loftus, **Position: The Causal Revolution Needs Scientific Pragmatism**. Proceedings of the 41st International Conference on Machine Learning, (*ICML* 2024). \[[link](https://proceedings.mlr.press/v235/loftus24a.html)\]
 
-- Xu, J., et al. **Landscape of monoallelic DNA accessibility in mouse embryonic stem cells and neural progenitor cells**. *Nature Genetics*, 2017. \[[link](https://doi.org/10.1038/ng.3769)\]
+- M. Fahrenwaldt, et al., **Fairness: plurality, causality, and insurability**, European Actuarial Journal, 2024. \[[link](https://link.springer.com/article/10.1007/s13385-024-00387-3)\]
+
+- L. Rosenblatt, et al., **Epistemic Parity: Reproducibility as an Evaluation Metric for Differential Privacy**, Proceedings of the VLDB Endowment, (*VLDB* 2023). \[[link](https://dl.acm.org/doi/abs/10.14778/3611479.3611517)\]
+
+- L. E. J. Bynum, et al., **An Interactive Introduction to Causal Inference**, IEEE Workshop on Visualization for AI Explainability, (*VISxAI* 2022). \[[link](https://lbynum.github.io/interactive-causal-inference/)\]
+
+- J. Xu, et al. **Landscape of monoallelic DNA accessibility in mouse embryonic stem cells and neural progenitor cells**. *Nature Genetics*, 2017. \[[link](https://doi.org/10.1038/ng.3769)\]
 
