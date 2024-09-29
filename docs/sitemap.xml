@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://joshualoftus.com/about.html</loc>
-    <lastmod>2023-04-03T16:00:23.793Z</lastmod>
-  </url>
-  <url>
-    <loc>http://joshualoftus.com/index.html</loc>
-    <lastmod>2023-04-03T16:01:22.114Z</lastmod>
-  </url>
-  <url>
-    <loc>http://joshualoftus.com/posts.html</loc>
-    <lastmod>2023-03-31T21:08:10.501Z</lastmod>
-  </url>
-  <url>
-    <loc>http://joshualoftus.com/posts/2020-11-23-least-squares-as-springs/least-squares-as-springs.html</loc>
-    <lastmod>2023-03-31T21:08:11.233Z</lastmod>
-  </url>
-  <url>
-    <loc>http://joshualoftus.com/posts/2020-12-21-concise-defense-of-statistical-significance/concise-defense-of-statistical-significance.html</loc>
-    <lastmod>2023-03-31T21:08:11.737Z</lastmod>
-  </url>
-  <url>
-    <loc>http://joshualoftus.com/posts/2020-12-22-a-conditional-approach-to-inference-after-model-selection/a-conditional-approach-to-inference-after-model-selection.html</loc>
-    <lastmod>2023-03-31T21:08:12.378Z</lastmod>
-  </url>
-  <url>
-    <loc>http://joshualoftus.com/posts/2020-12-22-model-selection-bias-invalidates-significance-tests/model-selection-bias-invalidates-significance-tests.html</loc>
-    <lastmod>2023-03-31T21:08:13.092Z</lastmod>
-  </url>
-  <url>
-    <loc>http://joshualoftus.com/posts/2023-01-02-books-that-have-changed-my-mind/2023-01-02-books-that-have-changed-my-mind.html</loc>
-    <lastmod>2023-03-31T21:08:15.092Z</lastmod>
-  </url>
-  <url>
-    <loc>http://joshualoftus.com/posts/welcome/welcome.html</loc>
-    <lastmod>2023-03-31T21:08:15.665Z</lastmod>
-  </url>
-  <url>
-    <loc>http://joshualoftus.com/research.html</loc>
-    <lastmod>2023-03-31T21:08:16.191Z</lastmod>
+    <loc>http://joshualoftus.com/teaching.html</loc>
+    <lastmod>2024-09-29T16:44:45.346Z</lastmod>
   </url>
   <url>
     <loc>http://joshualoftus.com/software.html</loc>
-    <lastmod>2023-03-31T21:08:16.641Z</lastmod>
+    <lastmod>2024-09-29T16:44:44.456Z</lastmod>
+  </url>
+  <url>
+    <loc>http://joshualoftus.com/posts/welcome/welcome.html</loc>
+    <lastmod>2024-09-29T16:44:43.570Z</lastmod>
+  </url>
+  <url>
+    <loc>http://joshualoftus.com/posts/2020-12-22-a-conditional-approach-to-inference-after-model-selection/a-conditional-approach-to-inference-after-model-selection.html</loc>
+    <lastmod>2024-09-29T16:44:40.789Z</lastmod>
+  </url>
+  <url>
+    <loc>http://joshualoftus.com/posts/2020-11-23-least-squares-as-springs/least-squares-as-springs.html</loc>
+    <lastmod>2024-09-29T16:44:38.942Z</lastmod>
+  </url>
+  <url>
+    <loc>http://joshualoftus.com/index.html</loc>
+    <lastmod>2024-09-29T16:44:36.587Z</lastmod>
+  </url>
+  <url>
+    <loc>http://joshualoftus.com/about.html</loc>
+    <lastmod>2024-09-29T16:44:36.095Z</lastmod>
+  </url>
+  <url>
+    <loc>http://joshualoftus.com/posts.html</loc>
+    <lastmod>2024-09-29T16:44:37.857Z</lastmod>
+  </url>
+  <url>
+    <loc>http://joshualoftus.com/posts/2020-12-21-concise-defense-of-statistical-significance/concise-defense-of-statistical-significance.html</loc>
+    <lastmod>2024-09-29T16:44:39.664Z</lastmod>
+  </url>
+  <url>
+    <loc>http://joshualoftus.com/posts/2020-12-22-model-selection-bias-invalidates-significance-tests/model-selection-bias-invalidates-significance-tests.html</loc>
+    <lastmod>2024-09-29T16:44:41.622Z</lastmod>
+  </url>
+  <url>
+    <loc>http://joshualoftus.com/posts/2023-01-02-books-that-have-changed-my-mind/2023-01-02-books-that-have-changed-my-mind.html</loc>
+    <lastmod>2024-09-29T16:44:43.010Z</lastmod>
+  </url>
+  <url>
+    <loc>http://joshualoftus.com/research.html</loc>
+    <lastmod>2024-09-29T16:44:44.045Z</lastmod>
   </url>
   <url>
     <loc>http://joshualoftus.com/talks.html</loc>
-    <lastmod>2023-08-17T07:48:16.579Z</lastmod>
-  </url>
-  <url>
-    <loc>http://joshualoftus.com/teaching.html</loc>
-    <lastmod>2023-03-31T21:08:17.506Z</lastmod>
+    <lastmod>2024-09-29T16:44:44.913Z</lastmod>
   </url>
 </urlset>

@@ -5,11 +5,11 @@
       xmlns:dc="http://purl.org/dc/elements/1.1/" 
       version="2.0">
 <channel>
-<title>{{< fa solid chart-simple size=large >}} joshua loftus</title>
+<title>{{&lt; fa solid chart-simple size=large &gt;}} joshua loftus</title>
 <link>http://joshualoftus.com/posts.html</link>
 <atom:link href="http://joshualoftus.com/posts.xml" rel="self" type="application/rss+xml"/>
 <description></description>
-<generator>quarto-1.1.251</generator>
+<generator>quarto-1.3.450</generator>
 <lastBuildDate>Mon, 02 Jan 2023 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Books that have changed my mind</title>
@@ -188,7 +188,7 @@
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="http://joshualoftus.com/posts/welcome/nyumap.jpg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Map showing the area around Washington Square Park</figcaption><p></p>
+<figcaption class="figure-caption">Map showing the area around Washington Square Park</figcaption>
 </figure>
 </div>
 
@@ -197,7 +197,6 @@
  ]]></description>
   <guid>http://joshualoftus.com/posts/welcome/welcome.html</guid>
   <pubDate>Mon, 21 Dec 2020 00:00:00 GMT</pubDate>
-  <media:content url="http://joshualoftus.com/posts/welcome/nyumap.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>A concise defense of statistical significance</title>
