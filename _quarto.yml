@@ -19,8 +19,8 @@ website:
         file: research.qmd
       - text: "{{< fa solid chalkboard size=large >}} teaching"
         file: teaching.qmd
-      - text: "{{< fa solid code size=large >}} software"
-        file: software.qmd
+#      - text: "{{< fa solid code size=large >}} software"
+#        file: software.qmd
       - text: "{{< fa solid comment size=large >}} blog"
         file: posts.qmd
       - text: "{{< fa solid user size=large >}} about"

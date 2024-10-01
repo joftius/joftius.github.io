@@ -231,13 +231,6 @@
     "text": "My research vision is for data science to empower people with tools to guide the directions of research and technology consciously and inclusively. I’m motivated by applications in algorithmic fairness and discrimination, responsible AI, and model interpretability and explainability. My primarily theoretical work develops models based on causality, a theory of changing the world.\nSome recent talks/slides. More information can be found on my Google Scholar profile page."
   },
   {
-    "objectID": "talks.html",
-    "href": "talks.html",
-    "title": "Talks",
-    "section": "",
-    "text": "Recent talks\n\n\n\n\nTalk on causal fairness and interpretability\n\n\nTutorial on causal fairness and interpretability\n\n\nInternational Conference on Statistics and Data Science\n\n\nPsychometric Society keynote\n\n\nDiscussion of Sani, Malinsky, and Shpitser [video]\n\n\nDiscussion of Panigrahi, MacDonald, and Kessler [video]\n\n\nWorkshop on Race and Racism in Science\n\n\nConference on Machine Learning and Inequality [video]"
-  },
-  {
     "objectID": "research.html#causal-models-in-machine-learning",
     "href": "research.html#causal-models-in-machine-learning",
     "title": "Human-centered data science",
@@ -257,5 +250,12 @@
     "title": "Human-centered data science",
     "section": "Other publications",
     "text": "Other publications\n\nJ. R. Loftus, Position: The Causal Revolution Needs Scientific Pragmatism. Proceedings of the 41st International Conference on Machine Learning, (ICML 2024). [link]\nM. Fahrenwaldt, et al., Fairness: plurality, causality, and insurability, European Actuarial Journal, 2024. [link]\nL. Rosenblatt, et al., Epistemic Parity: Reproducibility as an Evaluation Metric for Differential Privacy, Proceedings of the VLDB Endowment, (VLDB 2023). [link]\nL. E. J. Bynum, et al., An Interactive Introduction to Causal Inference, IEEE Workshop on Visualization for AI Explainability, (VISxAI 2022). [link]\nJ. Xu, et al. Landscape of monoallelic DNA accessibility in mouse embryonic stem cells and neural progenitor cells. Nature Genetics, 2017. [link]"
+  },
+  {
+    "objectID": "talks.html",
+    "href": "talks.html",
+    "title": "Talks",
+    "section": "",
+    "text": "Recent talks\n\n\n\n\nTalk on causal fairness and interpretability\n\n\nTutorial on causal fairness and interpretability\n\n\nInternational Conference on Statistics and Data Science\n\n\nPsychometric Society keynote\n\n\nDiscussion of Sani, Malinsky, and Shpitser [video]\n\n\nDiscussion of Panigrahi, MacDonald, and Kessler [video]\n\n\nWorkshop on Race and Racism in Science\n\n\nConference on Machine Learning and Inequality [video]"
   }
 ]
