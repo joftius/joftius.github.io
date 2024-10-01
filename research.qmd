@@ -5,13 +5,19 @@ orcid: "0000-0002-2905-1632"
 description: |
 ---
 
-My research vision is for data science to empower people with tools to guide the directions of research and technology consciously and inclusively. I'm motivated by applications in **algorithmic fairness** and discrimination, **responsible AI**, and model **interpretability and explainability**. My primarily theoretical work develops models based on causality, a theory of changing the world.
+I believe data science should empower people with tools to guide the directions of research and technology consciously and inclusively. I'm motivated by applications in **algorithmic fairness** and discrimination, **responsible AI**, and model **interpretability and explainability**. My research is primarily theoretical and develops modeling frameworks based on causality, a theory of changing the world. I hope these frameworks enable clear thinking about challenging problems and promote effective communication among interdisciplinary researchers and stakeholders alike.
 
 Some recent [talks/slides](../../talks.html). More information can be found on my [Google Scholar](https://scholar.google.com/citations?user=SIbr3XUAAAAJ) profile page.
 
 ## Causal models in machine learning
 
-This work approaches fair machine learning from a causal inference perspective, arguing that determining what is fair is a similar challenge to determining causality. See our [Nature Comment](https://www.nature.com/articles/d41586-020-00274-3) for a high level overview.
+Conceptual simplicity is important in human-centered data science. Using simple causal models as hypotheses allows people to ask the questions they really care about, make their assumptions transparent, and communicate clearly to broad audiences. I made a case for some of these benefits in a recent [position paper](https://proceedings.mlr.press/v235/loftus24a.html) (ICML 2024).
+
+My first works in this area focused on fair machine learning and algorithmic discrimination. With the paper [Counterfactual Fairness](https://proceedings.neurips.cc/paper_files/paper/2017/hash/a486cd07e4ac3d270571622f4f316ec5-Abstract.html) (NeurIPS 2017) my co-authors and I helped start a growing, interdisciplinary research field of causal fairness. See this [Nature Comment](https://www.nature.com/articles/d41586-020-00274-3) for a high level overview.
+
+Recently I started working on causal frameworks for model interpretation and explanation. Beginning with feature dependence visualization, our paper [Causal Dependence Plots](https://arxiv.org/abs/2303.04209) (NeurIPS 2024) makes use of information about causal dependence between features when plotting predicted outputs. The figure below compares CDPs (a) with several other methods for visualizing feature dependence on a simulated data example. Notice that the blue curve in panel (a), our Total Dependence Plot, indicates a stronger increasing relationship which all the other methods fail to capture.
+
+![](ale_comparison.png)
 
 ### Publications
 
